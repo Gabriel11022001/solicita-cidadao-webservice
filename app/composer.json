@@ -1,0 +1,19 @@
+{
+    "name": "gabrielsantos/webservice",
+    "description": "Web service do projeto para secretarias do meio ambiente para solicitações de serviço dos cidadãos.",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "SistemaSolicitacaoServico\\App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Gabriel Rodrigues dos Santos",
+            "email": "gabriel996567521@gmail.com"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^6.7"
+    }
+}

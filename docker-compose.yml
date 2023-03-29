@@ -1,0 +1,45 @@
+version: '3'
+
+networks:
+  ntw_sistema_solicitacoes_servico:
+    driver: bridge
+
+services:
+  # container com php na versão 7.4 e servidor de aplicação http-apache
+  php_apache:
+    build: ./
+    container_name: api_solicitacao_servico_php_apache
+    ports:
+      - '8080:80'
+    networks:
+      - ntw_sistema_solicitacoes_servico
+    volumes:
+      - ./app:/var/www/html
+  
+  # container com postgreSQL na ultima versão
+  postgreSQL_db:
+    image: postgres:latest
+    container_name: api_solicitacao_servico_postgres_db
+    ports:
+      - '9000:5432'
+    networks:
+      - ntw_sistema_solicitacoes_servico
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    volumes:
+      - ./app/docker_volumes/postgreSQL:/var/lib/postgresql/data
+  
+  # container com pgadmin na ultima versão
+  pg_admin:
+    image: dpage/pgadmin4:latest
+    container_name: api_solicitacao_servico_pgadmin
+    ports:
+      - '5000:80'
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=root@postgres.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    volumes:
+      - ./app/docker_volumes/pgadmin:/var/lib/pgadmin
+    networks:
+      - ntw_sistema_solicitacoes_servico
