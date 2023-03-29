@@ -7,5 +7,6 @@ class ValidaCep
 
     public static function validarCep($cep) {
 
+        return true;
     }
 }

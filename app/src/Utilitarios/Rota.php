@@ -34,26 +34,37 @@ class Rota
     }
 
     private static function post($endpoint) {
+        $arquivoCarregar = '';
 
+        if ($endpoint === '/cidadao') {
+            $arquivoCarregar = 'cadastrarCidadao.php';
+        } else {
+            self::requisicaoInvalida();
+
+            return;
+        }
+
+        self::carregarArquivoRequisicao($arquivoCarregar);
     }
 
     private static function get($endpoint) {
         $arquivoCarregar = '';
 
-        if ($endpoint === '/cidadaos') {
+        if ($endpoint === '/cidadao') {
             $arquivoCarregar = 'buscarTodosCidadaos.php';
-        } elseif ($endpoint === '/tecnicos-instituicao') {
+        } elseif ($endpoint === '/tecnico') {
             $arquivoCarregar = 'buscarTodosTecnicosInstituicoes.php';
-        } elseif ($endpoint === '/gestores-secretaria') {
+        } elseif ($endpoint === '/gestor-secretaria') {
             $arquivoCarregar = 'buscarTodosGestoresSecretaria.php';
-        } elseif ($endpoint === '/secretarios-secretaria') {
+        } elseif ($endpoint === '/secretario-secretaria') {
             $arquivoCarregar = 'buscarTodosSecretariosSecretaria.php';
-        } elseif ($endpoint === '/gestores-instituicoes') {
+        } elseif ($endpoint === '/gestor-instituicao') {
             $arquivoCarregar = 'buscarTodosGestoresInstituicoes.php';
-        } elseif ($endpoint === '/peritos') {
+        } elseif ($endpoint === '/perito') {
             $arquivoCarregar = 'buscarTodosPeritos.php';
         } else {
             self::requisicaoInvalida();
+
             return;
         }
 
@@ -69,9 +80,7 @@ class Rota
     }
 
     private static function requisicaoInvalida() {
-        $respostaHttpRequisicaoNaoEncontrada = new RespostaHttp();
-        $respostaHttpRequisicaoNaoEncontrada->definirParametrosResposta('Requisição inválida!', 404);
-        $respostaHttpRequisicaoNaoEncontrada->resposta();
+        RespostaHttp::resposta('Endpoint inválido!', null, 404);
     }
 
     private static function carregarArquivoRequisicao($arquivoCarregar) {

@@ -7,5 +7,6 @@ class ValidaNumeroResidencial
 
     public static function validarNumeroResidencial($numeroResidencial) {
 
+        return true;
     }
 }

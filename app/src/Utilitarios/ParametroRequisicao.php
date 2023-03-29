@@ -13,7 +13,7 @@ class ParametroRequisicao
         $propriedadesObjetosRequisicao = get_object_vars($dadosCorpoRequisicaoObj);
 
         if (!key_exists($parametro, $propriedadesObjetosRequisicao)) {
-            throw new Exception('No objeto json não existe uma propriedade definida com esse nome!');
+            throw new Exception('No objeto json não existe uma propriedade definida com o nome: ' . $parametro);
         }
 
         return $propriedadesObjetosRequisicao[$parametro];

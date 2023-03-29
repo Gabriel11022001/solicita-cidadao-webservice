@@ -10,7 +10,7 @@ class ConexaoBancoDados
     public static function obterConexao() {
         $usuario = 'root';
         $senha = 'root';
-        $bancoDados = 'db_ws_solicitacoes_servico_secretaria';
+        $bancoDados = 'solicita_cidadao_presidente_prudente';
         $pdo = new PDO('pgsql:host=postgreSQL_db;dbname=' . $bancoDados, $usuario, $senha);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         

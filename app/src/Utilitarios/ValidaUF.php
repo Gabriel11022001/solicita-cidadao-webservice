@@ -7,5 +7,6 @@ class ValidaUF
 
     public static function validarUf($uf) {
 
+        return true;
     }
 }

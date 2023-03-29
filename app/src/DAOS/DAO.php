@@ -95,6 +95,7 @@ abstract class DAO
         $query = 'SELECT * FROM ' . $this->nomeTabela . ' WHERE id = :id;';
         $stmt = $this->conexaoBancoDados->prepare($query);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
         $entidade = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($entidade === false) {

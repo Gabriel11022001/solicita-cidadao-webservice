@@ -7,5 +7,6 @@ class ValidaEmail
 
     public static function validarEmail($email) {
 
+        return true;
     }
 }
