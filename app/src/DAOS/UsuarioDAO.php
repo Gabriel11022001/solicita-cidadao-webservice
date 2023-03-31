@@ -26,4 +26,13 @@ abstract class UsuarioDAO extends DAO
 
         return $entidade;
     }
+
+    public function buscarPeloCpf($cpf) {
+        $query = 'SELECT * FROM ' . $this->nomeTabela . ' WHERE cpf = :cpf;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':cpf', $cpf);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
