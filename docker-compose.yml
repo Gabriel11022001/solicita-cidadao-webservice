@@ -5,7 +5,7 @@ networks:
     driver: bridge
 
 services:
-  # container com php na versão 7.4 e servidor de aplicação http-apache
+  # container com php na versão 8.1 e servidor de aplicação http-apache
   php_apache:
     build: ./
     container_name: api_solicitacao_servico_php_apache

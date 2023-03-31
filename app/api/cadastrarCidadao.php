@@ -2,6 +2,7 @@
 
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCep;
@@ -41,25 +42,25 @@ try {
 
     // VALIDANDO O CPF DO CIDADÃO
     if (!ValidaCpf::validarCPF($cpf)) {
-        RespostaHttp::resposta('O cpf do cidadão é inválido!', null, 400);
+        RespostaHttp::resposta('O cpf do cidadão é inválido!', 400, null);
         exit;
     }
 
     // VALIDANDO O E-MAIL DO CIDADÃO
     if (!ValidaEmail::validarEmail($email)) {
-        RespostaHttp::resposta('O e-mail do cidadão é inválido!', null, 400);
+        RespostaHttp::resposta('O e-mail do cidadão é inválido!', 400, null);
         exit;
     }
 
     // VALIDANDO O CEP
     if (!ValidaCep::validarCep($cep)) {
-        RespostaHttp::resposta('O cep do cidadão é inválido!', null, 400);
+        RespostaHttp::resposta('O cep do cidadão é inválido!', 400, null);
         exit;
     }
 
     // VALIDANDO A UNIDADE FEDERATIVA
     if (!ValidaUF::validarUf($unidadeFederativa)) {
-        RespostaHttp::resposta('Unidade federativa inválida!', null, 400);
+        RespostaHttp::resposta('Unidade federativa inválida!', 400, null);
         exit;
     }
 
@@ -72,7 +73,7 @@ try {
 
     // VALIDANDO SE A SENHA E A SENHA DE CONFIRMAÇÃO SÃO IGUAIS
     if ($senha != $senhaConfirmacao) {
-        RespostaHttp::resposta('A senha e a senha de confirmação são diferentes!', null, 400);
+        RespostaHttp::resposta('A senha e a senha de confirmação são diferentes!', 400, null);
         exit;
     }
 
@@ -81,13 +82,13 @@ try {
 
     // VALIDANDO SE JÁ EXISTE OUTRO CIDADÃO CADASTRADO COM O CPF INFORMADO
     if ($cidadaoDAO->buscarCidadaoPeloCpf($cpf) != false) {
-        RespostaHttp::resposta('Já existe outro cidadão cadastrado com esse cpf!', null, 400);
+        RespostaHttp::resposta('Já existe outro cidadão cadastrado com esse cpf!', 400, null);
         exit;
     }
 
     // VALIDANDO SE JÁ EXISTE OUTRO CIDADÃO CADASTRADO COM O E-MAIL INFORMADO
     if ($cidadaoDAO->buscarCidadaoPeloEmail($email) != false) {
-        RespostaHttp::resposta('Já existe outro cidadão cadastrado com esse e-mail!', null, 400);
+        RespostaHttp::resposta('Já existe outro cidadão cadastrado com esse e-mail!', 400, null);
         exit;
     }
 
@@ -122,9 +123,10 @@ try {
         RespostaHttp::resposta('Cidadão cadastrado com sucesso!', 201, $cidadaoCadastrado);
     } else {
         // ocorreu um erro ao tentar-se cadastrar o cidadão no banco de dados
-        RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o cidadão no banco de dados!', 400);
+        RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o cidadão no banco de dados!', 400, null);
     }
     
 } catch (Exception $e) {
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o cidadão no banco de dados!: ' . $e->getMessage(), 400);
+    Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar um cidadão!', $e->getMessage());
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o cidadão no banco de dados!: ' . $e->getMessage(), 400, null);
 }

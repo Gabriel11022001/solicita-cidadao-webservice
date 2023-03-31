@@ -12,7 +12,7 @@ class Rota
             self::post($endpoint);
             return;
         }
-
+        
         if ($metodoHttp === 'GET') {
             // requisições get
             self::get($endpoint);
@@ -52,16 +52,14 @@ class Rota
 
         if ($endpoint === '/cidadao') {
             $arquivoCarregar = 'buscarTodosCidadaos.php';
-        } elseif ($endpoint === '/tecnico') {
-            $arquivoCarregar = 'buscarTodosTecnicosInstituicoes.php';
-        } elseif ($endpoint === '/gestor-secretaria') {
-            $arquivoCarregar = 'buscarTodosGestoresSecretaria.php';
-        } elseif ($endpoint === '/secretario-secretaria') {
-            $arquivoCarregar = 'buscarTodosSecretariosSecretaria.php';
-        } elseif ($endpoint === '/gestor-instituicao') {
-            $arquivoCarregar = 'buscarTodosGestoresInstituicoes.php';
-        } elseif ($endpoint === '/perito') {
-            $arquivoCarregar = 'buscarTodosPeritos.php';
+        } elseif ($endpoint === '/cidadao/buscar-pelo-cpf-senha') {
+            $arquivoCarregar = 'buscarCidadaoPeloCpfSenha.php';
+        } elseif (str_contains($endpoint, '/cidadao/buscar-pelo-id')) {
+            $arquivoCarregar = 'buscarCidadaoPeloId.php';
+        } elseif (str_contains($endpoint, '/cidadao/buscar-pelo-cpf')) {
+            $arquivoCarregar = 'buscarCidadaoPeloCpf.php';
+        } elseif (str_contains($endpoint, '/usuario/buscar-perfis-usuario-pelo-cpf')) {
+            $arquivoCarregar = 'buscarPerfisUsuarioPeloCpf.php';
         } else {
             self::requisicaoInvalida();
 
@@ -80,7 +78,7 @@ class Rota
     }
 
     private static function requisicaoInvalida() {
-        RespostaHttp::resposta('Endpoint inválido!', null, 404);
+        RespostaHttp::resposta('Endpoint inválido!', 404, null);
     }
 
     private static function carregarArquivoRequisicao($arquivoCarregar) {
