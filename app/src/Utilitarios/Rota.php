@@ -38,6 +38,8 @@ class Rota
 
         if ($endpoint === '/cidadao') {
             $arquivoCarregar = 'cadastrarCidadao.php';
+        } elseif ($endpoint === '/cidadao/enviar-codigo-verificacao-email-cidadao') {
+            $arquivoCarregar = 'registrarEEnviarCodigoVerificacaoEmailCidadao.php';
         } else {
             self::requisicaoInvalida();
 

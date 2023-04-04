@@ -7,7 +7,7 @@ use PDO;
 
 abstract class DAO
 {
-
+    
     private $tabelasExistentes = [
         'tbl_cidadaos',
         'tbl_peritos',
