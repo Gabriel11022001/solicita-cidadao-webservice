@@ -10,6 +10,6 @@ class Log
     }
 
     public static function registrarLogDeLogin($idUsuario, $nomeUsuario, $emailUsuario, $cpfUsuario) {
-
+        
     }
 }

@@ -7,8 +7,19 @@ use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaParametroUrl;
 
 try {
-    ValidaParametroUrl::validarParametroUrl('id');
+
+    if (!isset($_GET['id'])) {
+        RespostaHttp::resposta('O id não está definido como parâmetro na url!', 400, null);
+        exit;
+    }
+
     $id = $_GET['id'];
+
+    if (empty($id)) {
+        RespostaHttp::resposta('O id é um dado obrigatório para consulta do cidadão pelo mesmo!', 400, null);
+        exit;
+    }
+
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $cidadaoDAO = new CidadaoDAO($conexaoBancoDados, 'tbl_cidadaos');
     $cidadao = $cidadaoDAO->buscarPeloId($id);

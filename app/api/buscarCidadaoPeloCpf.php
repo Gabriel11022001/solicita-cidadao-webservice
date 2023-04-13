@@ -5,12 +5,21 @@ use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCpf;
-use SistemaSolicitacaoServico\App\Utilitarios\ValidaParametroUrl;
 
 try {
-    ValidaParametroUrl::validarParametroUrl('cpf');
+    
+    if (!isset($_GET['cpf'])) {
+        RespostaHttp::resposta('O cpf não está definido como parâmetro na url!', 400, null);
+        exit;
+    }
+
     $cpf = $_GET['cpf'];
     
+    if (empty($cpf)) {
+        RespostaHttp::resposta('O cpf é obrigatório para consultar o cidadão por meio dele!', 400, null);
+        exit;
+    }
+
     if (!ValidaCpf::validarCPF($cpf)) {
         RespostaHttp::resposta('O cpf informado é inválido!', 400, null);
     } else {

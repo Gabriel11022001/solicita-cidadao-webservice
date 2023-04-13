@@ -1,6 +1,6 @@
 <?php
 
-namespace SistemaSolicitacaoServico\App\Utilitarios;
+namespace SistemaSolicitacaoServico\App\DAOS;
 
 use PDO;
 

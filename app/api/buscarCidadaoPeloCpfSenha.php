@@ -18,7 +18,7 @@ try {
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $cidadaoDAO = new CidadaoDAO($conexaoBancoDados, 'tbl_cidadaos');
     $cidadao = $cidadaoDAO->buscarPeloCpfSenha($cpf, $senha);
-
+    
     if ($cidadao != false) {
         RespostaHttp::resposta('Cidadão encontrado com sucesso!', 200, $cidadao);
     } else {

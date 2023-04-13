@@ -2,7 +2,7 @@
 
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
-use SistemaSolicitacaoServico\App\Utilitarios\CodigoRecuperacaoSenhaDAO;
+use SistemaSolicitacaoServico\App\DAOS\CodigoRecuperacaoSenhaDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;

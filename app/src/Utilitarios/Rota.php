@@ -72,7 +72,17 @@ class Rota
     }
 
     private static function put($endpoint) {
-        
+        $arquivoCarregar = '';
+
+        if ($endpoint === '/usuario/alterar-status') {
+            $arquivoCarregar = 'alterarStatusUsuario.php';
+        } else {
+            self::requisicaoInvalida();
+
+            return;
+        }
+
+        self::carregarArquivoRequisicao($arquivoCarregar);
     }
 
     private static function delete($endpoint) {

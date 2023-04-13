@@ -35,4 +35,13 @@ abstract class UsuarioDAO extends DAO
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function alterarStatusUsuario($id, $novoStatus) {
+        $query = 'UPDATE ' . $this->nomeTabela . ' SET ativo = :ativo WHERE id = :id;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':ativo', $novoStatus, PDO::PARAM_BOOL);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        
+        return $stmt->execute();
+    }
 }

@@ -5,11 +5,10 @@ use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
+use SistemaSolicitacaoServico\App\Utilitarios\ValidaCamposObrigatorios;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCep;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCpf;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaEmail;
-use SistemaSolicitacaoServico\App\Utilitarios\ValidaNumeroResidencial;
-use SistemaSolicitacaoServico\App\Utilitarios\ValidaUF;
 
 try {
     $nome = trim(ParametroRequisicao::obterParametro('nome'));
@@ -31,43 +30,43 @@ try {
     $dataCadastro = new DateTime('now');
 
     // VALIDANDO SE TODOS OS DADOS OBRIGATÓRIOS FORAM INFORMADOS
-    if (empty($nome) || empty($sobrenome) || empty($email)
-    || empty($telefone) || empty($cpf) || empty($sexo) || empty($dataNascimento)
-    || empty($logradouro) || empty($cep) || empty($bairro) || empty($cidade) 
-    || empty($unidadeFederativa) || empty($senha) || empty($senhaConfirmacao)
-    || empty($numero)) {
-        RespostaHttp::resposta('Preencha todos os campos obrigatórios!');
+    $errosDeCamposObrigatorios = ValidaCamposObrigatorios::validarFormularioCadastroCidadao(
+        $nome,
+        $sobrenome,
+        $email,
+        $telefone,
+        $cpf,
+        $sexo,
+        $dataNascimento,
+        $logradouro,
+        $cep,
+        $bairro,
+        $cidade,
+        $unidadeFederativa,
+        $senha,
+        $senhaConfirmacao
+    );
+
+    if (count($errosDeCamposObrigatorios) > 0) {
+        RespostaHttp::resposta('Informe todos os dados obrigatórios!', 400, $errosDeCamposObrigatorios);
         exit;
     }
 
     // VALIDANDO O CPF DO CIDADÃO
     if (!ValidaCpf::validarCPF($cpf)) {
-        RespostaHttp::resposta('O cpf do cidadão é inválido!', 400, null);
+        RespostaHttp::resposta('O cpf do informado é inválido!', 400, null);
         exit;
     }
 
     // VALIDANDO O E-MAIL DO CIDADÃO
     if (!ValidaEmail::validarEmail($email)) {
-        RespostaHttp::resposta('O e-mail do cidadão é inválido!', 400, null);
+        RespostaHttp::resposta('O e-mail informado é inválido!', 400, null);
         exit;
     }
 
     // VALIDANDO O CEP
     if (!ValidaCep::validarCep($cep)) {
-        RespostaHttp::resposta('O cep do cidadão é inválido!', 400, null);
-        exit;
-    }
-
-    // VALIDANDO A UNIDADE FEDERATIVA
-    if (!ValidaUF::validarUf($unidadeFederativa)) {
-        RespostaHttp::resposta('Unidade federativa inválida!', 400, null);
-        exit;
-    }
-
-    // VALIDANDO O NÚMERO RESIDENCIAL
-    if (!ValidaNumeroResidencial::validarNumeroResidencial($numero)) {
-        RespostaHttp::resposta('Número residencial inválido! Caso não possua um número residencial, deve ser '
-        . 'informado "s/n", caso possua um número residencial, o mesmo deve ser um valor numérico inteiro!', null, 400);
+        RespostaHttp::resposta('O cep informado é inválido!', 400, null);
         exit;
     }
 
@@ -81,7 +80,7 @@ try {
     $cidadaoDAO = new CidadaoDAO($conexaoBancoDados, 'tbl_cidadaos');
 
     // VALIDANDO SE JÁ EXISTE OUTRO CIDADÃO CADASTRADO COM O CPF INFORMADO
-    if ($cidadaoDAO->buscarCidadaoPeloCpf($cpf) != false) {
+    if ($cidadaoDAO->buscarPeloCpf($cpf) != false) {
         RespostaHttp::resposta('Já existe outro cidadão cadastrado com esse cpf!', 400, null);
         exit;
     }
@@ -90,6 +89,23 @@ try {
     if ($cidadaoDAO->buscarCidadaoPeloEmail($email) != false) {
         RespostaHttp::resposta('Já existe outro cidadão cadastrado com esse e-mail!', 400, null);
         exit;
+    }
+    
+    $numero = strtolower($numero);
+
+    if (empty($numero)) {
+        $numero = 's/n';
+    } elseif (!is_numeric($numero)) {
+        $numero = 's/n';
+    } elseif (intval($numero) <= 0) {
+        $numero = 's/n';
+    } else {
+        $numeroFloat = floatval($numero);
+        
+        if ($numeroFloat > 0) {
+            $numero = 's/n';
+        }
+
     }
 
     $nome = strtoupper($nome);
@@ -118,7 +134,6 @@ try {
     if ($cidadaoDAO->salvar($dadosCidadaoCadastrar)) {
         // cidadão cadastrado com sucesso
         $idCidadaoCadastrado = intval($conexaoBancoDados->lastInsertId());
-        echo $idCidadaoCadastrado . PHP_EOL;
         $cidadaoCadastrado = $cidadaoDAO->buscarPeloId($idCidadaoCadastrado);
         RespostaHttp::resposta('Cidadão cadastrado com sucesso!', 201, $cidadaoCadastrado);
     } else {
