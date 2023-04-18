@@ -40,6 +40,8 @@ class Rota
             $arquivoCarregar = 'cadastrarCidadao.php';
         } elseif ($endpoint === '/cidadao/enviar-codigo-verificacao-email-cidadao') {
             $arquivoCarregar = 'registrarEEnviarCodigoVerificacaoEmailCidadao.php';
+        } elseif ($endpoint === '/servico') {
+            $arquivoCarregar = 'cadastrarTipoServico.php';
         } else {
             self::requisicaoInvalida();
 
@@ -62,6 +64,10 @@ class Rota
             $arquivoCarregar = 'buscarCidadaoPeloCpf.php';
         } elseif (str_contains($endpoint, '/usuario/buscar-perfis-usuario-pelo-cpf')) {
             $arquivoCarregar = 'buscarPerfisUsuarioPeloCpf.php';
+        } elseif ($endpoint === '/servico') {
+            $arquivoCarregar = 'buscarTodosTiposServico.php';
+        } elseif ($endpoint === '/servico/buscar-pelo-id') {
+            $arquivoCarregar = 'buscarTipoServicoPeloId.php';
         } else {
             self::requisicaoInvalida();
 
@@ -76,6 +82,8 @@ class Rota
 
         if ($endpoint === '/usuario/alterar-status') {
             $arquivoCarregar = 'alterarStatusUsuario.php';
+        } elseif ($endpoint === '/servico') {
+            $arquivoCarregar = 'editarTipoServico.php';
         } else {
             self::requisicaoInvalida();
 

@@ -11,7 +11,7 @@ try {
     $cidadaos = $cidadaoDAO->buscarTodos();
 
     if (count($cidadaos) === 0) {
-        RespostaHttp::resposta('Não existem cidadãos cadastrados no banco de dados!');
+        RespostaHttp::resposta('Não existem cidadãos cadastrados no banco de dados!', 200, []);
         exit;
     }
 

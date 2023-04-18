@@ -35,7 +35,8 @@ try {
             
             //
             RespostaHttp::resposta('Caso exista um perfíl cadastrado com o e-mail informado, será enviado em instantes para esse e-mail um código de verificação!', 200, [
-                'id_cidadao' > $idCidadao,
+                'id' => $conexaoBancoDados->lastInsertId(),
+                'id_cidadao' => $idCidadao,
                 'codigo_recuperacao_senha' => $codigoVerificacao
             ]);
         } else {

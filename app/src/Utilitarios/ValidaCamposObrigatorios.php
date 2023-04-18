@@ -81,4 +81,22 @@ class ValidaCamposObrigatorios
 
         return $erros;
     }
+
+    public static function validarFormularioEditarTipoServico($tipoServico) {
+        $erros = [];
+
+        if (empty($tipoServico->getId())) {
+            $erros['id'] = 'Informe o id do tipo de serviço!';
+        }
+
+        if (empty($tipoServico->getNome())) {
+            $erros['nome'] = 'Informe o nome do tipo de serviço!';
+        }
+
+        if (empty($tipoServico->getDescricao())) {
+            $erros['descricao'] = 'Informe a descrição do tipo de serviço!';
+        }
+
+        return $erros;
+    }
 }
