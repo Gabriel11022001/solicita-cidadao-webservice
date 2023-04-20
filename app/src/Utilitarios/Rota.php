@@ -84,6 +84,8 @@ class Rota
             $arquivoCarregar = 'alterarStatusUsuario.php';
         } elseif ($endpoint === '/servico') {
             $arquivoCarregar = 'editarTipoServico.php';
+        } elseif ($endpoint === '/servico/alterar-status') {
+            $arquivoCarregar = 'alterarStatusTipoServico.php';
         } else {
             self::requisicaoInvalida();
 

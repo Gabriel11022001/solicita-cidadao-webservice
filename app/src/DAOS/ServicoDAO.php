@@ -30,4 +30,13 @@ class ServicoDAO extends DAO
 
         return $stmt->execute();
     }
+
+    public function alterarStatusTipoServico($tipoServico) {
+        $query = 'UPDATE tbl_servicos SET status = :status WHERE id = :id;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':status', $tipoServico->getStatus(), PDO::PARAM_BOOL);
+        $stmt->bindValue(':id', $tipoServico->getId(), PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
 }
