@@ -9,9 +9,18 @@ try {
     $idUsuario = trim(ParametroRequisicao::obterParametro('id'));
     $tipoUsuario = trim(ParametroRequisicao::obterParametro('tipo_usuario'));
     $novoStatus = boolval(ParametroRequisicao::obterParametro('novo_status'));
+    $errosCampos = [];
 
-    if (empty($idUsuario) || empty($tipoUsuario)) {
-        RespostaHttp::resposta('Informe todos os dados obrigatórios!', 400, null);
+    if (empty($idUsuario)) {
+        $errosCampos['id'] = 'Informe o id do usuário em questão!';
+    }
+
+    if (empty($tipoUsuario)) {
+        $errosCampos['tipo_usuario'] = 'Informe o tipo do usuário em questão!';
+    }
+
+    if (count($errosCampos) > 0) {
+        RespostaHttp::resposta('Informe todos os dados obrigatórios!', 400, $errosCampos);
         exit;
     }
 
@@ -22,6 +31,7 @@ try {
     && $tipoUsuario != 'gestor-secretaria' && $tipoUsuario != 'técnico'
     && $tipoUsuario != 'secretario(a)' && $tipoUsuario != 'gestor-instituição') {
         RespostaHttp::resposta('O tipo de usuário informado é inválido!', 400, null);
+        exit;
     }
     
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
@@ -37,8 +47,8 @@ try {
 
     $usuarioAlterarStatus = $usuarioDAO->buscarPeloId($idUsuario);
     
-    if (count($usuarioAlterarStatus) === 0) {
-        RespostaHttp::resposta('Não existe um usuário cadastrado com esse id no banco de dados!', 200, null);
+    if (!$usuarioAlterarStatus) {
+        RespostaHttp::resposta('Não existe um usuário cadastrado com esse id no banco de dados!', 400, null);
         exit;
     }
 

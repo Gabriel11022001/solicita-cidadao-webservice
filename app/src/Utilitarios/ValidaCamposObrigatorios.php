@@ -99,4 +99,38 @@ class ValidaCamposObrigatorios
 
         return $erros;
     }
+
+    public static function validarFormularioCadastrarInstituicao($instituicao) {
+        $erros = [];
+
+        if (empty($instituicao->getNome())) {
+            $erros['nome'] = 'Informe o nome da instituição!';
+        }
+
+        if (empty($instituicao->getDescricao())) {
+            $erros['descricao'] = 'Informe a descrição da instituição!';
+        }
+
+        if (empty($instituicao->getDataCadastro())) {
+            $erros['data_cadastro'] = 'Informe a data de cadastro da instituição!';
+        }
+
+        if (empty($instituicao->getEndereco()->getLogradouro())) {
+            $erros['logradouro'] = 'Informe o logradouro do endereço da instituição!';
+        }
+
+        if (empty($instituicao->getEndereco()->getBairro())) {
+            $erros['bairro'] = 'Informe o bairro do endereço da instituição!';
+        }
+
+        if (empty($instituicao->getEndereco()->getCidade())) {
+            $erros['cidade'] = 'Informe a cidade do endereço da instituição!';
+        }
+
+        if (empty($instituicao->getEndereco()->getCep())) {
+            $erros['cep'] = 'Informe o cep do endereço da instituição!';
+        }
+
+        return $erros;
+    }
 }

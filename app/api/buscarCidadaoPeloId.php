@@ -13,10 +13,16 @@ try {
         exit;
     }
 
-    $id = $_GET['id'];
+    $id = intval($_GET['id']);
 
     if (empty($id)) {
         RespostaHttp::resposta('O id é um dado obrigatório para consulta do cidadão pelo mesmo!', 400, null);
+        exit;
+    }
+
+    // validando se foi informado um id maior que 0
+    if ($id < 0) {
+        RespostaHttp::resposta('O id do cidadão deve ser um valor maior que 0!', 400, null);
         exit;
     }
 

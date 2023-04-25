@@ -7,10 +7,16 @@ use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
 try {
-    $id = ParametroRequisicao::obterParametro('id');
+    $id = intval(ParametroRequisicao::obterParametro('id'));
 
     if (empty($id))  {
         RespostaHttp::resposta('Informe o id do tipo de serviço para realizar a consulta!', 400, null);
+        exit;
+    }
+
+    // validando se o id do tipo de serviço é maior que 0
+    if ($id < 0) {
+        RespostaHttp::resposta('O id do tipo de serviço deve ser maior que 0!', 400, null);
         exit;
     }
 
@@ -19,7 +25,7 @@ try {
     $tipoServico = $tipoServicoDAO->buscarPeloId($id);
 
     if (!$tipoServico) {
-        RespostaHttp::resposta('Não existe um tipo de serviço cadastrado com esse id!', 200, null);
+        RespostaHttp::resposta('Não existe um tipo de serviço cadastrado com esse id!');
         exit;
     }
 

@@ -42,6 +42,8 @@ class Rota
             $arquivoCarregar = 'registrarEEnviarCodigoVerificacaoEmailCidadao.php';
         } elseif ($endpoint === '/servico') {
             $arquivoCarregar = 'cadastrarTipoServico.php';
+        } elseif ($endpoint === '/instituicao') {
+            $arquivoCarregar = 'cadastrarInstituicao.php';
         } else {
             self::requisicaoInvalida();
 

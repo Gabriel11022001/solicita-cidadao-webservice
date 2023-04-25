@@ -9,11 +9,17 @@ use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
 try {
     $tipoServico = new TipoServico();
-    $tipoServico->setId(ParametroRequisicao::obterParametro('id'));
+    $tipoServico->setId(intval(ParametroRequisicao::obterParametro('id')));
     $tipoServico->setStatus(ParametroRequisicao::obterParametro('novo_status'));
 
     if (empty($tipoServico->getId())) {
         RespostaHttp::resposta('É obrigatório informar o id do tipo de serviço para editar o mesmo!', 400, null);
+        exit;
+    }
+
+    // verificando se o usuário informou um id menor que 0
+    if ($tipoServico->getId() < 0) {
+        RespostaHttp::resposta('O id do tipo de serviço deve ser maior que 0!', 400, null);
         exit;
     }
 

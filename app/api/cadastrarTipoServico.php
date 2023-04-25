@@ -26,6 +26,21 @@ try {
         exit;
     }
 
+    // validando se o nome do tipo de serviço possui pelo menos 3 caracteres
+    if (strlen($tipoServico->getNome()) < 3) {
+        $errosCampos['nome'] = 'O nome do tipo de serviço deve possuir no mínimo 3 caracteres!';
+    }
+
+    // validando se a descrição do tipo de serviço possui no mínimo 3 caracteres
+    if (strlen($tipoServico->getDescricao()) < 3) {
+        $errosCampos['descricao'] = 'A descrição do tipo de serviço deve possuir no mínimo 3 caracteres!';
+    }
+
+    if (count($errosCampos) > 0) {
+        RespostaHttp::resposta('Ocorreram erros de validação de campos!', 400, $errosCampos);
+        exit;
+    }
+
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $tipoServicoDAO = new ServicoDAO($conexaoBancoDados, 'tbl_servicos');
 

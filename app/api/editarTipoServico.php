@@ -9,7 +9,7 @@ use SistemaSolicitacaoServico\App\Utilitarios\ValidaCamposObrigatorios;
 
 try {
     $tipoServico = new TipoServico();
-    $tipoServico->setId(ParametroRequisicao::obterParametro('id'));
+    $tipoServico->setId(intval(ParametroRequisicao::obterParametro('id')));
     $tipoServico->setNome(ParametroRequisicao::obterParametro('nome'));
     $tipoServico->setDescricao(ParametroRequisicao::obterParametro('descricao'));
     $tipoServico->setStatus(ParametroRequisicao::obterParametro('status'));
@@ -17,6 +17,26 @@ try {
 
     if (count($errosFormularioEditarTipoServico) > 0) {
         RespostaHttp::resposta('Preencha todos os campos obrigatórios!', 400, $errosFormularioEditarTipoServico);
+        exit;
+    }
+
+    // validando se o usuário informou um id maior que 0 para o tipo de serviço
+    if ($tipoServico->getId() < 0) {
+        $errosFormularioEditarTipoServico['id'] = 'O id do tipo de serviço deve ser um valor maior que 0!';
+    }
+
+    // validando se o nome do tipo de serviço possui pelo menos 3 caracteres
+    if (strlen($tipoServico->getNome()) < 3) {
+        $errosFormularioEditarTipoServico['nome'] = 'O nome do tipo de serviço deve possuir no mínimo 3 caracteres!';
+    }
+
+    // validando se a descrição do tipo de serviço possui no mínimo 3 caracteres
+    if (strlen($tipoServico->getDescricao()) < 3) {
+        $errosFormularioEditarTipoServico['descricao'] = 'A descrição do tipo de serviço deve possuir no mínimo 3 caracteres!';
+    }
+    
+    if (count($errosFormularioEditarTipoServico) > 0) {
+        RespostaHttp::resposta('Ocorreram erros de validação de campos!', 400, $errosFormularioEditarTipoServico);
         exit;
     }
 
