@@ -6,6 +6,8 @@ class Instituicao
 {
     private $id;
     private $nome;
+    private $email;
+    private $telefone;
     private $descricao;
     private $observacao;
     private $status;
@@ -36,7 +38,7 @@ class Instituicao
     }
 
     public function setDescricao($descricao) {
-        $this->descricao;
+        $this->descricao = $descricao;
     }
 
     public function getDescricao() {
@@ -87,5 +89,23 @@ class Instituicao
     public function getCnpj() {
 
         return $this->cnpj;
+    }
+
+    public function setEmail($email) {
+        $this->email = $email;
+    }
+
+    public function getEmail() {
+
+        return $this->email;
+    }
+
+    public function setTelefone($telefone) {
+        $this->telefone = $telefone;
+    }
+
+    public function getTelefone() {
+
+        return $this->telefone;
     }
 }

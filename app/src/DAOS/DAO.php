@@ -20,7 +20,8 @@ abstract class DAO
         'tbl_solicitacoes_servico',
         'tbl_laudos',
         'tbl_evidencias',
-        'tbl_motivos_cancelamentos'
+        'tbl_motivos_cancelamentos',
+        'tbl_instituicoes'
     ];
     protected $conexaoBancoDados;
     protected $nomeTabela;

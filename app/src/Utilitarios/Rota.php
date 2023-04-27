@@ -70,6 +70,10 @@ class Rota
             $arquivoCarregar = 'buscarTodosTiposServico.php';
         } elseif ($endpoint === '/servico/buscar-pelo-id') {
             $arquivoCarregar = 'buscarTipoServicoPeloId.php';
+        } elseif ($endpoint === '/instituicao') {
+            $arquivoCarregar = 'buscarTodasInstituicoes.php';
+        } elseif ($endpoint === '/instituicao/buscar-com-filtro-de-texto') {
+            $arquivoCarregar = 'buscarInstituicoesComFiltroDeTexto.php';
         } else {
             self::requisicaoInvalida();
 
