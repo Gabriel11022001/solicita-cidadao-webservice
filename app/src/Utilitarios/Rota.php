@@ -74,6 +74,8 @@ class Rota
             $arquivoCarregar = 'buscarTodasInstituicoes.php';
         } elseif ($endpoint === '/instituicao/buscar-com-filtro-de-texto') {
             $arquivoCarregar = 'buscarInstituicoesComFiltroDeTexto.php';
+        } elseif ($endpoint === '/servico/buscar-com-filtro-de-texto') {
+            $arquivoCarregar = 'buscarTiposServicoComFiltroDeTexto.php';
         } else {
             self::requisicaoInvalida();
 

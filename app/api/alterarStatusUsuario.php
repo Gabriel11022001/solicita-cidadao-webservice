@@ -25,7 +25,7 @@ try {
     }
 
     $idUsuario = intval($idUsuario);
-    $tipoUsuario = strtolower($tipoUsuario);
+    $tipoUsuario = mb_strtolower($tipoUsuario);
     
     if ($tipoUsuario != 'cidadão' && $tipoUsuario != 'perito'
     && $tipoUsuario != 'gestor-secretaria' && $tipoUsuario != 'técnico'

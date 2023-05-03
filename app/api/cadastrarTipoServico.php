@@ -9,7 +9,7 @@ use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
 try {
     $tipoServico = new TipoServico();
-    $tipoServico->setNome(ParametroRequisicao::obterParametro('nome'));
+    $tipoServico->setNome(mb_strtoupper(ParametroRequisicao::obterParametro('nome')));
     $tipoServico->setDescricao(ParametroRequisicao::obterParametro('descricao'));
     $errosCampos = [];
 

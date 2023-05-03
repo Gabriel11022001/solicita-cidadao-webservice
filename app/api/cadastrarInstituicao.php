@@ -25,7 +25,7 @@ try {
     $endereco->setCidade(ParametroRequisicao::obterParametro('cidade'));
     // objeto representando a instituição
     $instituicao = new Instituicao();
-    $instituicao->setNome(strtoupper(ParametroRequisicao::obterParametro('nome')));
+    $instituicao->setNome(mb_strtoupper(ParametroRequisicao::obterParametro('nome')));
     $instituicao->setEmail(trim(ParametroRequisicao::obterParametro('email')));
     $instituicao->setTelefone(trim(ParametroRequisicao::obterParametro('telefone')));
     $instituicao->setDescricao(ParametroRequisicao::obterParametro('descricao'));

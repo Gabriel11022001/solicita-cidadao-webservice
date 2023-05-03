@@ -9,7 +9,7 @@ try {
     /**
      * filtros aplicados: nome e cnpj
      */
-    $filtroTexto = strtoupper(ParametroRequisicao::obterParametro('filtro_texto'));
+    $filtroTexto = mb_strtoupper(ParametroRequisicao::obterParametro('filtro_texto'));
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $instituicaoDAO = new InstituicaoDAO($conexaoBancoDados, 'tbl_instituicoes');
     $instituicoes = $instituicaoDAO->buscarInstituicaoComFiltroDeTexto($filtroTexto);
@@ -19,7 +19,7 @@ try {
     } else {
         RespostaHttp::resposta('Foram encontradas instituições relacionadas ao filtro aplicado!', 200, $instituicoes);
     }
-    
+
 } catch (Exception $e) {
     echo $e->getMessage();
 }

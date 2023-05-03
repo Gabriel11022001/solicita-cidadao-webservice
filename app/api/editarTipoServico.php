@@ -10,7 +10,7 @@ use SistemaSolicitacaoServico\App\Utilitarios\ValidaCamposObrigatorios;
 try {
     $tipoServico = new TipoServico();
     $tipoServico->setId(intval(ParametroRequisicao::obterParametro('id')));
-    $tipoServico->setNome(ParametroRequisicao::obterParametro('nome'));
+    $tipoServico->setNome(mb_strtoupper(ParametroRequisicao::obterParametro('nome')));
     $tipoServico->setDescricao(ParametroRequisicao::obterParametro('descricao'));
     $tipoServico->setStatus(ParametroRequisicao::obterParametro('status'));
     $errosFormularioEditarTipoServico = ValidaCamposObrigatorios::validarFormularioEditarTipoServico($tipoServico);

@@ -4,7 +4,6 @@ use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
-use SistemaSolicitacaoServico\App\Utilitarios\ValidaParametroUrl;
 
 try {
 

@@ -39,4 +39,13 @@ class ServicoDAO extends DAO
 
         return $stmt->execute();
     }
+
+    // filtro aplicado: nome
+    public function buscarTiposServicoComFiltro($filtro) {
+        $query = "SELECT * FROM " . $this->nomeTabela . " WHERE nome LIKE '%" . $filtro . "%';";
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
