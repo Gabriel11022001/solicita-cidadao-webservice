@@ -12,12 +12,12 @@ try {
     $email = trim(ParametroRequisicao::obterParametro('email'));
     
     if (empty($email)) {
-        RespostaHttp::resposta('Informe o e-mail!', 400, null);
+        RespostaHttp::resposta('Informe o e-mail!', 200, null, false);
         exit;
     }
 
     if (!ValidaEmail::validarEmail($email)) {
-        RespostaHttp::resposta('E-mail inválido!', 400, null);
+        RespostaHttp::resposta('E-mail inválido!', 200, null, false);
         exit;
     }
 
@@ -40,7 +40,7 @@ try {
                 'codigo_recuperacao_senha' => $codigoVerificacao
             ]);
         } else {
-            RespostaHttp::resposta('Ocorreu um erro ao tentar-se registrar o código de recuperação de senha!', 400, null);
+            RespostaHttp::resposta('Ocorreu um erro ao tentar-se registrar o código de recuperação de senha!', 200, null, false);
         }
 
     } else {
@@ -49,5 +49,5 @@ try {
 
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se recuperar a senha!', $e->getMessage());
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se realizar a recuperação de senha!', 400, null);   
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se realizar a recuperação de senha!', 200, null, false);   
 }

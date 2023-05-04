@@ -20,7 +20,7 @@ try {
     }
 
     if (count($errosCampos) > 0) {
-        RespostaHttp::resposta('Informe o cpf e a senha do cidadão!', 400, $errosCampos);
+        RespostaHttp::resposta('Informe o cpf e a senha do cidadão!', 200, $errosCampos, false);
         exit;
     }
 
@@ -35,7 +35,7 @@ try {
     }
 
     if (count($errosCampos) > 0) {
-        RespostaHttp::resposta('Ocorreram erros de validação de campos!', 400, $errosCampos);
+        RespostaHttp::resposta('Ocorreram erros de validação de campos!', 200, $errosCampos, false);
         exit;
     }
 
@@ -51,5 +51,5 @@ try {
     }
 
 } catch (Exception $e) {
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar o cidadão pelo cpf e senha!', 400, null);
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar o cidadão pelo cpf e senha!', 200, null, false);
 }

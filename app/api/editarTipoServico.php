@@ -16,7 +16,7 @@ try {
     $errosFormularioEditarTipoServico = ValidaCamposObrigatorios::validarFormularioEditarTipoServico($tipoServico);
 
     if (count($errosFormularioEditarTipoServico) > 0) {
-        RespostaHttp::resposta('Preencha todos os campos obrigatórios!', 400, $errosFormularioEditarTipoServico);
+        RespostaHttp::resposta('Preencha todos os campos obrigatórios!', 200, $errosFormularioEditarTipoServico, false);
         exit;
     }
 
@@ -36,7 +36,7 @@ try {
     }
     
     if (count($errosFormularioEditarTipoServico) > 0) {
-        RespostaHttp::resposta('Ocorreram erros de validação de campos!', 400, $errosFormularioEditarTipoServico);
+        RespostaHttp::resposta('Ocorreram erros de validação de campos!', 200, $errosFormularioEditarTipoServico, false);
         exit;
     }
 
@@ -46,7 +46,7 @@ try {
     $tipoServicoComIdInformado = $tipoServicoDAO->buscarPeloId($tipoServico->getId());
 
     if (!$tipoServicoComIdInformado) {
-        RespostaHttp::resposta('Não existe um tipo de serviço cadastrado com o id informado!', 400, null);
+        RespostaHttp::resposta('Não existe um tipo de serviço cadastrado com o id informado!', 200, null, false);
         exit;
     }
 
@@ -58,7 +58,7 @@ try {
 
         if ($tipoServicoComNomeInformado['id'] != $tipoServico->getId()) {
             // é outro tipo de serviço, não pode editar!
-            RespostaHttp::resposta('Já existe outro tipo de serviço cadastrado com o nome informado!', 400, null);
+            RespostaHttp::resposta('Já existe outro tipo de serviço cadastrado com o nome informado!', 200, null, false);
             exit;
         }
 
@@ -72,7 +72,7 @@ try {
             'status' => $tipoServico->getStatus()
         ]);
     } else {
-        RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar os dados do tipo de serviço!', 400, null);
+        RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar os dados do tipo de serviço!', 200, null, false);
     }
 
 } catch (Exception $e) {

@@ -27,5 +27,5 @@ try {
     
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se buscar todas as instituições cadastradas no banco de dados!', $e->getMessage());
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar todas as instituições cadastradas no banco de dados!', 400, null);
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar todas as instituições cadastradas no banco de dados!', 200, null, false);
 }

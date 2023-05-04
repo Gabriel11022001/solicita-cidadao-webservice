@@ -22,7 +22,7 @@ try {
     }
 
     if (count($errosCampos) > 0) {
-        RespostaHttp::resposta('Preencha todos os campos obrigatórios!', 400, $errosCampos);
+        RespostaHttp::resposta('Preencha todos os campos obrigatórios!', 200, $errosCampos, false);
         exit;
     }
 
@@ -37,7 +37,7 @@ try {
     }
 
     if (count($errosCampos) > 0) {
-        RespostaHttp::resposta('Ocorreram erros de validação de campos!', 400, $errosCampos);
+        RespostaHttp::resposta('Ocorreram erros de validação de campos!', 200, $errosCampos, false);
         exit;
     }
 
@@ -45,7 +45,7 @@ try {
     $tipoServicoDAO = new ServicoDAO($conexaoBancoDados, 'tbl_servicos');
 
     if ($tipoServicoDAO->buscarTipoServicoPeloNome($tipoServico->getNome()) != false) {
-        RespostaHttp::resposta('Já existe um outro tipo de serviço cadastrado com esse nome!', 400, null);
+        RespostaHttp::resposta('Já existe um outro tipo de serviço cadastrado com esse nome!', 200, null, false);
         exit;
     }
 
@@ -68,10 +68,10 @@ try {
             'status' => true
         ]);
     } else {
-        RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o tipo de serviço!', 400, null);
+        RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o tipo de serviço!', 200, null, false);
     }
 
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar um tipo de serviço!', $e->getMessage());
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o tipo de serviço!', 400, null);
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o tipo de serviço!', 200, null, false);
 }

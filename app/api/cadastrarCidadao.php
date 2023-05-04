@@ -55,7 +55,7 @@ try {
     );
 
     if (count($errosCampos) > 0) {
-        RespostaHttp::resposta('Preencha todos os campos obrigatórios!', 400, $errosCampos);
+        RespostaHttp::resposta('Preencha todos os campos obrigatórios!', 200, $errosCampos, false);
         exit;
     }
 
@@ -117,11 +117,11 @@ try {
     }
 
     // validando o número de residência
-
+    
     // =========================================================================
 
     if (count($errosCampos) > 0) {
-        RespostaHttp::resposta('Ocorreram erros de validação de campos!', 400, $errosCampos);
+        RespostaHttp::resposta('Ocorreram erros de validação de campos!', 200, $errosCampos, false);
         exit;
     }
 
@@ -130,13 +130,13 @@ try {
 
     // validando se já existe outro cidadão cadastrado com o e-mail informado
     if ($cidadaoDAO->buscarCidadaoPeloEmail($cidadao->getEmail())) {
-        RespostaHttp::resposta('Já existe outro cidadão cadastrado com esse e-mail, informe outro e-mail!', 400, null);
+        RespostaHttp::resposta('Já existe outro cidadão cadastrado com esse e-mail, informe outro e-mail!', 200, null, false);
         exit;
     }
 
     // validando se já existe outro cidadão cadastrado com o cpf informado
     if ($cidadaoDAO->buscarPeloCpf($cidadao->getCpf())) {
-        RespostaHttp::resposta('Já existe outro cidadão cadastrado com esse cpf, informe outro cpf!', 400, null);
+        RespostaHttp::resposta('Já existe outro cidadão cadastrado com esse cpf, informe outro cpf!', 200, null, false);
         exit;
     }
 
@@ -242,18 +242,18 @@ try {
         } else {
             // ocorreu um erro ao tentar-se cadastrar os dados do cidadão na tabela tbl_cidadaos
             $conexaoBancoDados->rollBack();
-            RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o cidadão!', 400, null);
+            RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o cidadão!', 200, null, false);
         }
 
     } else {
         // ocorreu um erro ao tentar-se cadastrar os dados do usuário na tabela tbl_usuarios
         $conexaoBancoDados->rollBack();
-        RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o cidadão!', 400, null);
+        RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o cidadão!', 200, null, false);
     }
 
 } catch (Exception $e) {
     // realizando o rollback da transação
     $conexaoBancoDados->rollBack();
     Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar o cidadão!', $e->getMessage());
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o cidadão!', 400, null);
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o cidadão!', 200, null, false);
 }

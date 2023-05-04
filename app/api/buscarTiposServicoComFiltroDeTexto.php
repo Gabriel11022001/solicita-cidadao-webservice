@@ -20,5 +20,5 @@ try {
     
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se buscar os tipos de serviço com filtro de texto!', $e->getMessage());
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar os tipos de serviço com filtro de texto!', 400, null);
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar os tipos de serviço com filtro de texto!', 200, null, false);
 }

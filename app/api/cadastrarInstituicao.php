@@ -36,7 +36,7 @@ try {
     $errosFormulario = ValidaCamposObrigatorios::validarFormularioCadastrarInstituicao($instituicao);
 
     if (count($errosFormulario) > 0) {
-        RespostaHttp::resposta('Informe todos os dados obrigatórios!', 400, $errosFormulario);
+        RespostaHttp::resposta('Informe todos os dados obrigatórios!', 200, $errosFormulario, false);
         exit;
     }
 
@@ -92,7 +92,7 @@ try {
     }
 
     if (count($errosFormulario) > 0) {
-        RespostaHttp::resposta('Ocorreram erros de validação de campos!', 400, $errosFormulario);
+        RespostaHttp::resposta('Ocorreram erros de validação de campos!', 200, $errosFormulario, false);
         exit;
     }
 
@@ -101,13 +101,13 @@ try {
 
     // verificando se já existe outra instituição cadastrada com o mesmo nome
     if ($instituicaoDAO->buscarInstituicaoPeloNome($instituicao->getNome())) {
-        RespostaHttp::resposta('Já existe uma instituição cadastrada com o nome informado!', 400, null);
+        RespostaHttp::resposta('Já existe uma instituição cadastrada com o nome informado!', 200, null, false);
         exit;
     }
 
     // validando se já existe outra instituição cadastrada com o cnpj informado
     if ($instituicaoDAO->buscarInstituicaoPeloCnpj($instituicao->getCnpj())) {
-        RespostaHttp::resposta('Já existe uma instituição cadastrada com o cnpj informado!', 400, null);
+        RespostaHttp::resposta('Já existe uma instituição cadastrada com o cnpj informado!', 200, null, false);
         exit;
     }
 
@@ -190,7 +190,7 @@ try {
             'numero' => $endereco->getNumero()
         ]);
     } else {
-        RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a instituição!', 400, null);
+        RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a instituição!', 200, null, false);
     }
 
 } catch (Exception $e) {

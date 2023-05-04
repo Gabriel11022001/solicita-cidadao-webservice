@@ -10,13 +10,13 @@ try {
     $id = intval(ParametroRequisicao::obterParametro('id'));
 
     if (empty($id))  {
-        RespostaHttp::resposta('Informe o id do tipo de serviço para realizar a consulta!', 400, null);
+        RespostaHttp::resposta('Informe o id do tipo de serviço para realizar a consulta!', 200, null, false);
         exit;
     }
 
     // validando se o id do tipo de serviço é maior que 0
     if ($id < 0) {
-        RespostaHttp::resposta('O id do tipo de serviço deve ser maior que 0!', 400, null);
+        RespostaHttp::resposta('O id do tipo de serviço deve ser maior que 0!', 200, null, false);
         exit;
     }
 
@@ -33,5 +33,5 @@ try {
     RespostaHttp::resposta('Tipo de serviço encontrado com sucesso!', 200, $tipoServico);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se buscar um tipo de serviço pelo id!', $e->getMessage());
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar um tipo de serviço pelo id!', 400, null);
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar um tipo de serviço pelo id!', 200, null, false);
 }

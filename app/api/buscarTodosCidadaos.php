@@ -23,5 +23,5 @@ try {
     RespostaHttp::resposta('Existe um total de ' . count($cidadaos) . ' cidadãos cadastrados no banco de dados!', 200, $cidadaos);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se buscar todos os cidadãos cadastrados no banco de dados!', $e->getMessage());
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar todos os cidadãos cadastrados no banco de dados!', 400);
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar todos os cidadãos cadastrados no banco de dados!', 200, null, false);
 }

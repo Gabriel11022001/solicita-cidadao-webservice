@@ -9,19 +9,19 @@ use SistemaSolicitacaoServico\App\Utilitarios\ValidaCpf;
 try {
     
     if (!isset($cpf)) {
-        RespostaHttp::resposta('O cpf não está definido definido como um parêmetro na url!', 400, null);
+        RespostaHttp::resposta('O cpf não está definido definido como um parêmetro na url!', 200, null, false);
         exit;
     }
     
     $cpf = $_GET['cpf'];
 
     if (empty($cpf)) {
-        RespostaHttp::resposta('O cpf é obrigatório para realizar a consulta pelo mesmo!', 400, null);
+        RespostaHttp::resposta('O cpf é obrigatório para realizar a consulta pelo mesmo!', 200, null, false);
         exit;
     }
 
     if (!ValidaCpf::validarCPF($cpf)) {
-        RespostaHttp::resposta('O cpf informado é inválido!', 400, null);
+        RespostaHttp::resposta('O cpf informado é inválido!', 200, null, false);
     } else {
         $perfis = [];
         $conexaoBancoDados = ConexaoBancoDados::obterConexao();
@@ -43,5 +43,5 @@ try {
 
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu o seguinte erro ao tentar-se buscar os perfis vinculados ao cpf em questão!', $e->getMessage());
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar os perfis vinculados ao cpf em questão!', 400, null);
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar os perfis vinculados ao cpf em questão!', 200, null, false);
 }

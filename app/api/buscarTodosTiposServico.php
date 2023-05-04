@@ -27,5 +27,5 @@ try {
 
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se buscar todos os tipos de serviço!', $e->getMessage());
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar todos os tipos de serviço!', 400, null);
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar todos os tipos de serviço!', 200, null, false);
 }

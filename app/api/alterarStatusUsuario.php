@@ -16,7 +16,7 @@ try {
     }
 
     if (count($errosCampos) > 0) {
-        RespostaHttp::resposta('Informe todos os dados obrigatórios!', 400, $errosCampos);
+        RespostaHttp::resposta('Informe todos os dados obrigatórios!', 200, $errosCampos, false);
         exit;
     }
 
@@ -27,7 +27,7 @@ try {
     $usuarioAlterarStatus = $usuarioDAO->buscarPeloId($idUsuario);
     
     if (!$usuarioAlterarStatus) {
-        RespostaHttp::resposta('Não existe um usuário cadastrado com esse id no banco de dados!', 400, null);
+        RespostaHttp::resposta('Não existe um usuário cadastrado com esse id no banco de dados!', 200, null, false);
         exit;
     }
 
@@ -37,7 +37,7 @@ try {
             'novo_status' => $novoStatus
         ]);
     } else {
-        RespostaHttp::resposta('ocorreu um erro ao tentar-se alterar o status do usuário em questão!', 400, null);
+        RespostaHttp::resposta('ocorreu um erro ao tentar-se alterar o status do usuário em questão!', 200, null, false);
     }
     
 } catch (Exception $e) {

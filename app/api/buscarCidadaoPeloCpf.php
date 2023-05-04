@@ -9,19 +9,19 @@ use SistemaSolicitacaoServico\App\Utilitarios\ValidaCpf;
 try {
     
     if (!isset($_GET['cpf'])) {
-        RespostaHttp::resposta('O cpf não está definido como parâmetro na url!', 400, null);
+        RespostaHttp::resposta('O cpf não está definido como parâmetro na url!', 200, null, false);
         exit;
     }
 
     $cpf = $_GET['cpf'];
     
     if (empty($cpf)) {
-        RespostaHttp::resposta('O cpf é obrigatório para consultar o cidadão por meio dele!', 400, null);
+        RespostaHttp::resposta('O cpf é obrigatório para consultar o cidadão por meio dele!', 200, null, false);
         exit;
     }
 
     if (!ValidaCpf::validarCPF($cpf)) {
-        RespostaHttp::resposta('O cpf informado é inválido!', 400, null);
+        RespostaHttp::resposta('O cpf informado é inválido!', 200, null, false);
     } else {
         $conexaoBancoDados = ConexaoBancoDados::obterConexao();
         $cidadaoDAO = new CidadaoDAO($conexaoBancoDados, 'tbl_cidadaos');
@@ -37,5 +37,5 @@ try {
 
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se buscar um cidadão pelo cpf!', $e->getMessage());
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar o cidadão pelo cpf!', 400, null);
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar o cidadão pelo cpf!', 200, null, false);
 }

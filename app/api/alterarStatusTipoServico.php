@@ -13,13 +13,13 @@ try {
     $tipoServico->setStatus(ParametroRequisicao::obterParametro('novo_status'));
 
     if (empty($tipoServico->getId())) {
-        RespostaHttp::resposta('É obrigatório informar o id do tipo de serviço para editar o mesmo!', 400, null);
+        RespostaHttp::resposta('É obrigatório informar o id do tipo de serviço para editar o mesmo!', 200, null, false);
         exit;
     }
 
     // verificando se o usuário informou um id menor que 0
     if ($tipoServico->getId() < 0) {
-        RespostaHttp::resposta('O id do tipo de serviço deve ser maior que 0!', 400, null);
+        RespostaHttp::resposta('O id do tipo de serviço deve ser maior que 0!', 200, null, false);
         exit;
     }
 
@@ -28,7 +28,7 @@ try {
     
     // validando se existe um tipo de serviço cadastrado com o id informado
     if (!$tipoServicoDAO->buscarPeloId($tipoServico->getId())) {
-        RespostaHttp::resposta('Não existe um tipo de serviço cadastrado com o id informado!', 400, null);
+        RespostaHttp::resposta('Não existe um tipo de serviço cadastrado com o id informado!', 200, null, false);
         exit;
     }
 
@@ -38,10 +38,10 @@ try {
             'novo_status' => $tipoServico->getStatus()
         ]);
     } else {
-        RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar o status do tipo de serviço!', 400, null);
+        RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar o status do tipo de serviço!', 200, null, false);
     }
 
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se alterar o status do tipo de serviço!', $e->getMessage());
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar o status do tipo de serviço!', 400, null);
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar o status do tipo de serviço!', 200, null, false);
 }
