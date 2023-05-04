@@ -9,6 +9,7 @@ abstract class DAO
 {
     
     private $tabelasExistentes = [
+        'tbl_usuarios',
         'tbl_cidadaos',
         'tbl_peritos',
         'tbl_gestores_secretaria',

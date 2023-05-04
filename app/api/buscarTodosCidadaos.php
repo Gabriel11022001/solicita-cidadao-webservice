@@ -8,8 +8,8 @@ use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 try {
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $cidadaoDAO = new CidadaoDAO($conexaoBancoDados, 'tbl_cidadaos');
-    $cidadaos = $cidadaoDAO->buscarTodos();
-
+    $cidadaos = $cidadaoDAO->buscarTodosCidadaos();
+    
     if (count($cidadaos) === 0) {
         RespostaHttp::resposta('Não existem cidadãos cadastrados no banco de dados!', 200, []);
         exit;

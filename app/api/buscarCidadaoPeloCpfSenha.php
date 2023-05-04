@@ -24,7 +24,7 @@ try {
         exit;
     }
 
-    // validando se o cpf informando é válido
+    // validando se o cpf informado é válido
     if (!ValidaCpf::validarCPF($cpf)) {
         $errosCampos['cpf'] = 'O cpf informado é inválido!';
     }

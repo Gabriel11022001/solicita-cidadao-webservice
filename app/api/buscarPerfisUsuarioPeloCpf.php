@@ -12,7 +12,7 @@ try {
         RespostaHttp::resposta('O cpf não está definido definido como um parêmetro na url!', 400, null);
         exit;
     }
-
+    
     $cpf = $_GET['cpf'];
 
     if (empty($cpf)) {
