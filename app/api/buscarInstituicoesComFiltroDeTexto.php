@@ -2,14 +2,19 @@
 
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\InstituicaoDAO;
-use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
 try {
     /**
      * filtros aplicados: nome e cnpj
      */
-    $filtroTexto = mb_strtoupper(ParametroRequisicao::obterParametro('filtro_texto'));
+    
+    if (!isset($_GET['filtro_texto'])) {
+        RespostaHttp::resposta('O filtro de texto para pesquisa não foi informado na url, informe o mesmo para realizar a consulta!', 200, null, false);
+        exit;
+    }
+
+    $filtroTexto = mb_strtoupper($_GET['filtro_texto']);
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $instituicaoDAO = new InstituicaoDAO($conexaoBancoDados, 'tbl_instituicoes');
     $instituicoes = $instituicaoDAO->buscarInstituicaoComFiltroDeTexto($filtroTexto);

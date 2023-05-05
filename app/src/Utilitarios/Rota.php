@@ -56,26 +56,64 @@ class Rota
     private static function get($endpoint) {
         $arquivoCarregar = '';
 
-        if ($endpoint === '/cidadao') {
-            $arquivoCarregar = 'buscarTodosCidadaos.php';
-        } elseif ($endpoint === '/cidadao/buscar-pelo-cpf-senha') {
-            $arquivoCarregar = 'buscarCidadaoPeloCpfSenha.php';
-        } elseif (str_contains($endpoint, '/cidadao/buscar-pelo-id')) {
-            $arquivoCarregar = 'buscarCidadaoPeloId.php';
-        } elseif (str_contains($endpoint, '/cidadao/buscar-pelo-cpf')) {
-            $arquivoCarregar = 'buscarCidadaoPeloCpf.php';
-        } elseif (str_contains($endpoint, '/usuario/buscar-perfis-usuario-pelo-cpf')) {
-            $arquivoCarregar = 'buscarPerfisUsuarioPeloCpf.php';
-        } elseif ($endpoint === '/servico') {
-            $arquivoCarregar = 'buscarTodosTiposServico.php';
-        } elseif ($endpoint === '/servico/buscar-pelo-id') {
-            $arquivoCarregar = 'buscarTipoServicoPeloId.php';
-        } elseif ($endpoint === '/instituicao') {
-            $arquivoCarregar = 'buscarTodasInstituicoes.php';
-        } elseif ($endpoint === '/instituicao/buscar-com-filtro-de-texto') {
-            $arquivoCarregar = 'buscarInstituicoesComFiltroDeTexto.php';
-        } elseif ($endpoint === '/servico/buscar-com-filtro-de-texto') {
-            $arquivoCarregar = 'buscarTiposServicoComFiltroDeTexto.php';
+        if (str_contains($endpoint, '/cidadao')) {
+
+            switch ($endpoint) {
+                case str_contains($endpoint, '/buscar-pelo-id'):
+                    $arquivoCarregar = 'buscarCidadaoPeloId.php';
+                    break;
+                case str_contains($endpoint, '/buscar-pelo-cpf-senha'):
+                    $arquivoCarregar = 'buscarCidadaoPeloCpfSenha.php';
+                    break;
+                case str_contains($endpoint, '/buscar-pelo-cpf'):
+                    $arquivoCarregar = 'buscarCidadaoPeloCpf.php';
+                    break;
+                case str_contains($endpoint, '/buscar-pelo-email'):
+                    $arquivoCarregar = 'buscarCidadaoPeloEmail.php';
+                    break;
+                default:
+                    $arquivoCarregar = 'buscarTodosCidadaos.php';
+                    break;
+            }
+
+        } elseif (str_contains($endpoint, '/servico')) {
+
+            switch ($endpoint) {
+                case str_contains($endpoint, '/buscar-pelo-id'):
+                    $arquivoCarregar = 'buscarTipoServicoPeloId.php';
+                    break;
+                case str_contains($endpoint, '/buscar-com-filtro-de-texto'):
+                    $arquivoCarregar = 'buscarTiposServicoComFiltroDeTexto.php';
+                    break;
+                default:
+                    $arquivoCarregar = 'buscarTodosTiposServico.php';
+                    break;
+            }
+
+        } elseif (str_contains($endpoint, '/usuario')) {
+
+            switch ($endpoint) {
+                case str_contains($endpoint, '/buscar-perfis-usuario-pelo-cpf'):
+                    $arquivoCarregar = 'buscarPerfisUsuarioPeloCpf.php';
+                    break;
+                default:
+                    break;
+            }
+
+        } elseif (str_contains($endpoint, '/instituicao')) {
+
+            switch ($endpoint) {
+                case str_contains($endpoint, '/buscar-pelo-id'):
+                    $arquivoCarregar = 'buscarInstituicaoPeloId.php';
+                    break;
+                case str_contains($endpoint, '/buscar-com-filtro-de-texto'):
+                    $arquivoCarregar = 'buscarInstituicoesComFiltroDeTexto.php';
+                    break;
+                default:
+                    $arquivoCarregar = 'buscarTodasInstituicoes.php';
+                    break;
+            }
+
         } else {
             self::requisicaoInvalida();
 
@@ -90,13 +128,17 @@ class Rota
 
         if ($endpoint === '/usuario/alterar-status') {
             $arquivoCarregar = 'alterarStatusUsuario.php';
-        } elseif ($endpoint === '/servico') {
-            $arquivoCarregar = 'editarTipoServico.php';
         } elseif ($endpoint === '/servico/alterar-status') {
             $arquivoCarregar = 'alterarStatusTipoServico.php';
+        } elseif ($endpoint === '/servico') {
+            $arquivoCarregar = 'editarTipoServico.php';
+        } elseif ($endpoint === '/instituicao/alterar-status') {
+            $arquivoCarregar = 'alterarStatusInstituicao.php';
+        } elseif ($endpoint === '/instituicao') {
+            $arquivoCarregar = 'editarInstituicao.php';
         } else {
             self::requisicaoInvalida();
-
+            
             return;
         }
 

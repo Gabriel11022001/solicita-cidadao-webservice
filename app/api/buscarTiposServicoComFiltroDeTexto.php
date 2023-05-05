@@ -3,11 +3,16 @@
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\ServicoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
-use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
 try {
-    $filtroTexto = strtoupper(ParametroRequisicao::obterParametro('filtro_texto'));
+
+    if (!isset($_GET['filtro_texto'])) {
+        RespostaHttp::resposta('O filtro de texto para pesquisa não foi informado na url, informe o mesmo para realizar a consulta!', 200, null, false);
+        exit;
+    }
+
+    $filtroTexto = mb_strtoupper($_GET['filtro_texto']);
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $tipoServicoDAO = new ServicoDAO($conexaoBancoDados, 'tbl_servicos');
     $tiposServicosEncontradosComFiltragem = $tipoServicoDAO->buscarTiposServicoComFiltro($filtroTexto);

@@ -8,12 +8,12 @@ use SistemaSolicitacaoServico\App\Utilitarios\ValidaCpf;
 
 try {
     
-    if (!isset($cpf)) {
+    if (!isset($_GET['cpf'])) {
         RespostaHttp::resposta('O cpf não está definido definido como um parêmetro na url!', 200, null, false);
         exit;
     }
     
-    $cpf = $_GET['cpf'];
+    $cpf = trim($_GET['cpf']);
 
     if (empty($cpf)) {
         RespostaHttp::resposta('O cpf é obrigatório para realizar a consulta pelo mesmo!', 200, null, false);

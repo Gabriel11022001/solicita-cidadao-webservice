@@ -117,8 +117,25 @@ try {
     }
 
     // validando o número de residência
+    if ($cidadao->getEndereco()->getNumero() === '' || $cidadao->getEndereco()->getNumero() === 'S/N') {
+        $cidadao->getEndereco()->setNumero('s/n');
+    } else {
+        if (!is_numeric($cidadao->getEndereco()->getNumero())) {
+            $numeroResTodoMinusculo = mb_strtolower($cidadao->getEndereco()->getNumero());
     
-    // =========================================================================
+            if ($numeroResTodoMinusculo != 's/n') {
+                $errosCampos['numero_residencia'] = 'Caso você não possua um número de residência, informe s/n!';
+            }
+
+        } else {
+            $cidadao->getEndereco()->setNumero(intval($cidadao->getEndereco()->getNumero()));
+    
+            if ($cidadao->getEndereco()->getNumero() <= 0) {
+                $errosCampos['numero_residencia'] = 'O número de residência não deve ser menor ou igual a zero!';
+            }
+    
+        }
+    }
 
     if (count($errosCampos) > 0) {
         RespostaHttp::resposta('Ocorreram erros de validação de campos!', 200, $errosCampos, false);

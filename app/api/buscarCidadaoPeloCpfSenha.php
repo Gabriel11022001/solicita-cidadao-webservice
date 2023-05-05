@@ -2,14 +2,27 @@
 
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
-use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCpf;
 
 try {
-    $cpf = trim(ParametroRequisicao::obterParametro('cpf'));
-    $senha = trim(ParametroRequisicao::obterParametro('senha'));
     $errosCampos = [];
+
+    if (!isset($_GET['cpf'])) {
+        $errosCampos['cpf'] = 'O cpf do cidadão não está definido na url para consulta!';
+    }
+
+    if (!isset($_GET['senha'])) {
+        $errosCampos['senha'] = 'A senha do cidadão não está definida na url para consulta!';
+    }
+
+    if (count($errosCampos) > 0) {
+        RespostaHttp::resposta('Informe todos os dados na url para consulta!', 200, $errosCampos, false);
+        exit;
+    }
+
+    $cpf = trim($_GET['cpf']);
+    $senha = trim($_GET['senha']);
 
     if (empty($cpf)) {
         $errosCampos['cpf'] = 'Informe o cpf do cidadão!';

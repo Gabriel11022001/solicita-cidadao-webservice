@@ -3,11 +3,16 @@
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\ServicoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
-use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
 try {
-    $id = intval(ParametroRequisicao::obterParametro('id'));
+
+    if (!isset($_GET['id'])) {
+        RespostaHttp::resposta('O id do tipo de serviço não foi informado para consulta!', 200, null, false);
+        exit;
+    }
+
+    $id = intval($_GET['id']);
 
     if (empty($id))  {
         RespostaHttp::resposta('Informe o id do tipo de serviço para realizar a consulta!', 200, null, false);
