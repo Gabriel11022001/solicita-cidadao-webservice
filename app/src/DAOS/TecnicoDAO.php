@@ -2,7 +2,7 @@
 
 namespace SistemaSolicitacaoServico\App\DAOS;
 
-class PeritoDAO extends UsuarioDAO
+class TecnicoDAO extends UsuarioDAO
 {
 
     public function __construct($conexaoBancoDados, $nomeTabela) {

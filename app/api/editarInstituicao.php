@@ -123,7 +123,7 @@ try {
     
     // validando se já existe outra instituição cadastrada com o nome informado
     $instituicaoQuePossuiNomeInformado = $instituicaoDAO->buscarInstituicaoPeloNome($instituicao->getNome());
-
+    
     if ($instituicaoQuePossuiNomeInformado) {
         // foi encontrado uma instituição com o nome informado
 

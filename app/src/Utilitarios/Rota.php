@@ -57,7 +57,7 @@ class Rota
         $arquivoCarregar = '';
 
         if (str_contains($endpoint, '/cidadao')) {
-
+         
             switch ($endpoint) {
                 case str_contains($endpoint, '/buscar-pelo-id'):
                     $arquivoCarregar = 'buscarCidadaoPeloId.php';
@@ -93,6 +93,9 @@ class Rota
         } elseif (str_contains($endpoint, '/usuario')) {
 
             switch ($endpoint) {
+                case str_contains($endpoint, '/buscar-perfis-usuario-pelo-cpf-e-senha'):
+                    $arquivoCarregar = 'buscarPerfisUsuarioPeloCpfESenha.php';
+                    break;
                 case str_contains($endpoint, '/buscar-perfis-usuario-pelo-cpf'):
                     $arquivoCarregar = 'buscarPerfisUsuarioPeloCpf.php';
                     break;
