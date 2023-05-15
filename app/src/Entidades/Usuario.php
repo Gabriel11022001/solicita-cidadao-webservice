@@ -2,7 +2,7 @@
 
 namespace SistemaSolicitacaoServico\App\Entidades;
 
-abstract class Usuario
+class Usuario
 {
     private $id;
     private $nome;

@@ -1,7 +1,9 @@
 <?php
 
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
+use SistemaSolicitacaoServico\App\DAOS\GestorInstituicaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\InstituicaoDAO;
+use SistemaSolicitacaoServico\App\DAOS\TecnicoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
 try {
@@ -26,6 +28,26 @@ try {
         RespostaHttp::resposta('Não existe uma instituição cadastrada com esse id no banco de dados!');
     } else {
         $instituicao['id'] = intval($instituicao['id']);
+        // buscando todos os técnicos e gestores de instituição relacionados a instituição
+        $tecnicoDAO = new TecnicoDAO($conexaoBancoDados, 'tbl_tecnicos');
+        $gestorInstituicaoDAO = new GestorInstituicaoDAO($conexaoBancoDados, 'tbl_gestores_instituicao');
+        $tecnicos = $tecnicoDAO->buscarTecnicosPeloIdDaInstituicao($instituicao['id']);
+        $gestoresInstituicao = $gestorInstituicaoDAO->buscarGestoresInstituicaoPeloIdDaInstituicao($instituicao['id']);
+
+        if (count($tecnicos) === 0) {
+            // a instituição não não possui técnicos
+            $instituicao['tecnicos'] = [];
+        } else {
+            $instituicao['tecnicos'] = $tecnicos;
+        }
+        
+        if (count($gestoresInstituicao) === 0) {
+            // a instituição não possui gestores
+            $instituicao['gestores_instituicao'] = [];
+        } else {
+            $instituicao['gestores_instituicao'] = $gestoresInstituicao;
+        }
+        
         RespostaHttp::resposta('Instituição encontrada com sucesso!', 200, $instituicao, true);
     }
 

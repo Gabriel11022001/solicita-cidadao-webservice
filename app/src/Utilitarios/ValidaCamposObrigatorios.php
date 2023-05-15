@@ -195,4 +195,18 @@ class ValidaCamposObrigatorios
 
         return $erros;
     }
+
+    public static function validarFormularioCadastrarUsuario($usuario, $tipoUsuarioCadastrar) {
+        $errosFormulario = [];
+
+        if (empty($usuario->getNome())) {
+            $errosFormulario['nome'] = 'Informe o nome do usuário!';
+        }
+
+        if (empty($usuario->getSobrenome())) {
+            $errosFormulario['sobrenome'] = 'Informe o sobrenome do usuário!';
+        }
+
+        return $errosFormulario;
+    }
 }

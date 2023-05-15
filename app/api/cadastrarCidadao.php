@@ -16,6 +16,7 @@ use SistemaSolicitacaoServico\App\Utilitarios\ValidaEmail;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaUF;
 
 $conexaoBancoDados = ConexaoBancoDados::obterConexao();
+
 try {
     $cidadao = new Cidadao();
     $cidadao->setNome(trim(mb_strtoupper(ParametroRequisicao::obterParametro('nome'))));

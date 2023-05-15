@@ -10,7 +10,7 @@ class CidadaoDAO extends UsuarioDAO
     public function __construct($conexaoBancoDados, $nomeTabela) {
         parent::__construct($conexaoBancoDados, $nomeTabela);
     }
-
+    
     public function buscarCidadaoPeloEmail($email) {
         $query = 'SELECT * FROM tbl_usuarios AS u INNER JOIN ' . $this->nomeTabela . ' AS c ON u.id = c.usuario_id AND u.email = :email;';
         $stmt = $this->conexaoBancoDados->prepare($query);
