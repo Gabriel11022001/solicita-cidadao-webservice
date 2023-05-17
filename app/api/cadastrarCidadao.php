@@ -24,18 +24,18 @@ try {
     $cidadao->setEmail(trim(ParametroRequisicao::obterParametro('email')));
     $cidadao->setTelefone(trim(ParametroRequisicao::obterParametro('telefone')));
     $cidadao->setCpf(trim(ParametroRequisicao::obterParametro('cpf')));
-    $cidadao->setSexo(ParametroRequisicao::obterParametro('sexo'));
+    $cidadao->setSexo(trim(ParametroRequisicao::obterParametro('sexo')));
     $cidadao->setSenha(trim(ParametroRequisicao::obterParametro('senha')));
     $senhaConfirmacao = trim(ParametroRequisicao::obterParametro('senha_confirmacao'));
     $dataNascimento = trim(ParametroRequisicao::obterParametro('data_nascimento'));
     // endereço do cidadão a ser cadastrado
     $enderecoCidadao = new Endereco();
-    $enderecoCidadao->setLogradouro(ParametroRequisicao::obterParametro('logradouro'));
-    $enderecoCidadao->setComplemento(ParametroRequisicao::obterParametro('complemento'));
+    $enderecoCidadao->setLogradouro(trim(ParametroRequisicao::obterParametro('logradouro')));
+    $enderecoCidadao->setComplemento(trim(ParametroRequisicao::obterParametro('complemento')));
     $enderecoCidadao->setNumero(trim(ParametroRequisicao::obterParametro('numero_residencia')));
     $enderecoCidadao->setEstado(trim(ParametroRequisicao::obterParametro('uf')));
-    $enderecoCidadao->setCidade(ParametroRequisicao::obterParametro('cidade'));
-    $enderecoCidadao->setBairro(ParametroRequisicao::obterParametro('bairro'));
+    $enderecoCidadao->setCidade(trim(ParametroRequisicao::obterParametro('cidade')));
+    $enderecoCidadao->setBairro(trim(ParametroRequisicao::obterParametro('bairro')));
     $enderecoCidadao->setCep(trim(ParametroRequisicao::obterParametro('cep')));
     $cidadao->setEndereco($enderecoCidadao);
     $errosCampos = ValidaCamposObrigatorios::validarFormularioCadastroCidadao(

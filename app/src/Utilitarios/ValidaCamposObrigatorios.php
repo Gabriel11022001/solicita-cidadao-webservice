@@ -103,27 +103,27 @@ class ValidaCamposObrigatorios
     public static function validarFormularioCadastrarInstituicao($instituicao) {
         $erros = [];
 
-        if (empty(trim($instituicao->getNome()))) {
+        if (empty($instituicao->getNome())) {
             $erros['nome'] = 'Informe o nome da instituição!';
         }
 
-        if (empty(trim($instituicao->getDescricao()))) {
+        if (empty($instituicao->getDescricao())) {
             $erros['descricao'] = 'Informe a descrição da instituição!';
         }
         
-        if (empty(trim($instituicao->getEndereco()->getLogradouro()))) {
+        if (empty($instituicao->getEndereco()->getLogradouro())) {
             $erros['logradouro'] = 'Informe o logradouro do endereço da instituição!';
         }
 
-        if (empty(trim($instituicao->getEndereco()->getBairro()))) {
+        if (empty($instituicao->getEndereco()->getBairro())) {
             $erros['bairro'] = 'Informe o bairro do endereço da instituição!';
         }
 
-        if (empty(trim($instituicao->getEndereco()->getCidade()))) {
+        if (empty($instituicao->getEndereco()->getCidade())) {
             $erros['cidade'] = 'Informe a cidade do endereço da instituição!';
         }
 
-        if (empty(trim($instituicao->getEndereco()->getCep()))) {
+        if (empty($instituicao->getEndereco()->getCep())) {
             $erros['cep'] = 'Informe o cep do endereço da instituição!';
         }
 
@@ -149,27 +149,27 @@ class ValidaCamposObrigatorios
     public static function validarFormularioEditarInstituicao($instituicao) {
         $erros = [];
 
-        if (empty(trim($instituicao->getNome()))) {
+        if (empty($instituicao->getNome())) {
             $erros['nome'] = 'Informe o nome da instituição!';
         }
 
-        if (empty(trim($instituicao->getDescricao()))) {
+        if (empty($instituicao->getDescricao())) {
             $erros['descricao'] = 'Informe a descrição da instituição!';
         }
 
-        if (empty(trim($instituicao->getEndereco()->getLogradouro()))) {
+        if (empty($instituicao->getEndereco()->getLogradouro())) {
             $erros['logradouro'] = 'Informe o logradouro do endereço da instituição!';
         }
 
-        if (empty(trim($instituicao->getEndereco()->getBairro()))) {
+        if (empty($instituicao->getEndereco()->getBairro())) {
             $erros['bairro'] = 'Informe o bairro do endereço da instituição!';
         }
 
-        if (empty(trim($instituicao->getEndereco()->getCidade()))) {
+        if (empty($instituicao->getEndereco()->getCidade())) {
             $erros['cidade'] = 'Informe a cidade do endereço da instituição!';
         }
 
-        if (empty(trim($instituicao->getEndereco()->getCep()))) {
+        if (empty($instituicao->getEndereco()->getCep())) {
             $erros['cep'] = 'Informe o cep do endereço da instituição!';
         }
 
@@ -185,11 +185,11 @@ class ValidaCamposObrigatorios
             $erros['email'] = 'Informe o email da instituição!';
         }
 
-        if (empty(trim($instituicao->getEndereco()->getEstado()))) {
+        if (empty($instituicao->getEndereco()->getEstado())) {
             $erros['estado'] = 'Informe a unidade federativa da instituição!';
         }
 
-        if (empty(trim($instituicao->getId()))) {
+        if (empty($instituicao->getId())) {
             $erros['id'] = 'Informe o id da instituição!';
         }
 

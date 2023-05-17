@@ -13,7 +13,7 @@ try {
         exit;
     }
 
-    $cpf = $_GET['cpf'];
+    $cpf = trim($_GET['cpf']);
     
     if (empty($cpf)) {
         RespostaHttp::resposta('O cpf é obrigatório para consultar o cidadão por meio dele!', 200, null, false);

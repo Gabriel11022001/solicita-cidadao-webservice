@@ -39,9 +39,9 @@ class UsuarioDAO extends DAO
     }
 
     public function alterarStatusUsuario($id, $novoStatus) {
-        $query = 'UPDATE ' . $this->nomeTabela . ' SET ativo = :ativo WHERE id = :id;';
+        $query = 'UPDATE ' . $this->nomeTabela . ' SET status = :status WHERE id = :id;';
         $stmt = $this->conexaoBancoDados->prepare($query);
-        $stmt->bindValue(':ativo', $novoStatus, PDO::PARAM_BOOL);
+        $stmt->bindValue(':status', $novoStatus, PDO::PARAM_BOOL);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         
         return $stmt->execute();

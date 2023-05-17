@@ -14,7 +14,7 @@ try {
         exit;
     }
 
-    $filtroTexto = mb_strtoupper($_GET['filtro_texto']);
+    $filtroTexto = mb_strtoupper(trim($_GET['filtro_texto']));
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $instituicaoDAO = new InstituicaoDAO($conexaoBancoDados, 'tbl_instituicoes');
     $instituicoes = $instituicaoDAO->buscarInstituicaoComFiltroDeTexto($filtroTexto);

@@ -11,7 +11,7 @@ class CodigoRecuperacaoSenhaDAO
     public function __construct($conexaoBancoDados) {
         $this->conexaoBancoDados = $conexaoBancoDados;
     }
-
+    
     public function registrarCodigoRecuperacaoSenha($idCidadao, $codigo) {
         $query = 'INSERT INTO tbl_codigos_recuperacao_senha(cidadao_id, codigo)
         VALUES(:cidadao_id, :codigo);';

@@ -43,13 +43,13 @@ try {
     $usuario->setSenha(trim(ParametroRequisicao::obterParametro('senha')));
     $senhaConfirmacao = trim(ParametroRequisicao::obterParametro('senha_confirmacao'));
     $usuario->setStatus(ParametroRequisicao::obterParametro('status'));
-    $usuario->setSexo(ParametroRequisicao::obterParametro('sexo'));
+    $usuario->setSexo(trim(ParametroRequisicao::obterParametro('sexo')));
     $dataNascimentoUsuario = trim(ParametroRequisicao::obterParametro('data_nascimento'));
     $endereco->setCep(trim(ParametroRequisicao::obterParametro('cep')));
-    $endereco->setLogradouro(ParametroRequisicao::obterParametro('logradouro'));
-    $endereco->setComplemento(ParametroRequisicao::obterParametro('complemento'));
-    $endereco->setBairro(ParametroRequisicao::obterParametro('bairro'));
-    $endereco->setCidade(ParametroRequisicao::obterParametro('cidade'));
+    $endereco->setLogradouro(trim(ParametroRequisicao::obterParametro('logradouro')));
+    $endereco->setComplemento(trim(ParametroRequisicao::obterParametro('complemento')));
+    $endereco->setBairro(trim(ParametroRequisicao::obterParametro('bairro')));
+    $endereco->setCidade(trim(ParametroRequisicao::obterParametro('cidade')));
     $endereco->setEstado(trim(ParametroRequisicao::obterParametro('uf')));
     $endereco->setNumero(trim(ParametroRequisicao::obterParametro('numero_residencia')));
     $idDaInstituicao = null;

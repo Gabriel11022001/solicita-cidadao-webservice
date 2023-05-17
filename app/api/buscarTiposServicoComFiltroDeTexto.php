@@ -12,7 +12,7 @@ try {
         exit;
     }
 
-    $filtroTexto = mb_strtoupper($_GET['filtro_texto']);
+    $filtroTexto = mb_strtoupper(trim($_GET['filtro_texto']));
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $tipoServicoDAO = new ServicoDAO($conexaoBancoDados, 'tbl_servicos');
     $tiposServicosEncontradosComFiltragem = $tipoServicoDAO->buscarTiposServicoComFiltro($filtroTexto);

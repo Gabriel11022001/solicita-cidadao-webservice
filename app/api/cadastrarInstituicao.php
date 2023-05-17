@@ -16,20 +16,20 @@ use SistemaSolicitacaoServico\App\Utilitarios\ValidaUF;
 try {
     // objeto representando o endereço da instituição
     $endereco = new Endereco();
-    $endereco->setLogradouro(ParametroRequisicao::obterParametro('logradouro'));
-    $endereco->setComplemento(ParametroRequisicao::obterParametro('complemento'));
-    $endereco->setNumero(ParametroRequisicao::obterParametro('numero'));
-    $endereco->setBairro(ParametroRequisicao::obterParametro('bairro'));
-    $endereco->setEstado(ParametroRequisicao::obterParametro('estado'));
-    $endereco->setCep(ParametroRequisicao::obterParametro('cep'));
-    $endereco->setCidade(ParametroRequisicao::obterParametro('cidade'));
+    $endereco->setLogradouro(trim(ParametroRequisicao::obterParametro('logradouro')));
+    $endereco->setComplemento(trim(ParametroRequisicao::obterParametro('complemento')));
+    $endereco->setNumero(trim(ParametroRequisicao::obterParametro('numero')));
+    $endereco->setBairro(trim(ParametroRequisicao::obterParametro('bairro')));
+    $endereco->setEstado(trim(ParametroRequisicao::obterParametro('estado')));
+    $endereco->setCep(trim(ParametroRequisicao::obterParametro('cep')));
+    $endereco->setCidade(trim(ParametroRequisicao::obterParametro('cidade')));
     // objeto representando a instituição
     $instituicao = new Instituicao();
-    $instituicao->setNome(mb_strtoupper(ParametroRequisicao::obterParametro('nome')));
+    $instituicao->setNome(mb_strtoupper(trim(ParametroRequisicao::obterParametro('nome'))));
     $instituicao->setEmail(trim(ParametroRequisicao::obterParametro('email')));
     $instituicao->setTelefone(trim(ParametroRequisicao::obterParametro('telefone')));
-    $instituicao->setDescricao(ParametroRequisicao::obterParametro('descricao'));
-    $instituicao->setObservacao(ParametroRequisicao::obterParametro('observacao'));
+    $instituicao->setDescricao(trim(ParametroRequisicao::obterParametro('descricao')));
+    $instituicao->setObservacao(trim(ParametroRequisicao::obterParametro('observacao')));
     $instituicao->setCnpj(trim(ParametroRequisicao::obterParametro('cnpj')));
     $instituicao->setEndereco($endereco);
     $instituicao->setDataCadastro(new DateTime());

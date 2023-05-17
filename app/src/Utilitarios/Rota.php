@@ -48,7 +48,7 @@ class Rota
             $arquivoCarregar = 'cadastrarUsuario.php';
         } else {
             self::requisicaoInvalida();
-
+            
             return;
         }
 
