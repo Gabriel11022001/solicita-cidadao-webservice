@@ -31,7 +31,7 @@ try {
         'nome' => [ 'dado' => $equipe->getNome(), 'tipo_dado' => PDO::PARAM_STR ],
         'descricao' => [ 'dado' => $equipe->getDescricao(), 'tipo_dado' => PDO::PARAM_STR ]
     ];
-
+    
     if ($equipeDAO->salvar($dadosCadastrarEquipe)) {
         $idEquipe = intval($conexaoBancoDados->lastInsertId());
         $dadosRetorno = [

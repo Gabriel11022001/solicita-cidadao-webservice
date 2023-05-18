@@ -121,6 +121,17 @@ class Rota
                     break;
             }
 
+        } elseif (str_contains($endpoint, '/equipe')) {
+
+            switch ($endpoint) {
+                case str_contains($endpoint, '/buscar-pelo-id'):
+                    $arquivoCarregar = 'buscarEquipePeloId.php';
+                    break;
+                default:
+                    $arquivoCarregar = 'buscarTodasEquipes.php';
+                    break;
+            }
+
         } else {
             self::requisicaoInvalida();
 
