@@ -53,7 +53,9 @@ try {
 
     // validando o e-mail da instituição
     if (!ValidaEmail::validarEmail($instituicao->getEmail())) {
-        $errosCampos['email'] = 'O e-mail informado é inválido!';
+        $errosFormulario['email'] = 'O e-mail informado é inválido!';
+    } elseif (strlen($instituicao->getEmail()) > 255 || strlen($instituicao->getEmail()) < 3) {
+        $errosFormulario['email'] = 'O e-mail da instituição deve possuir no máximo 255 caracteres e no mínimo 3 caracteres!';
     }
 
     // validando se o nome da instituição possui pelo menos 3 caracteres
@@ -82,14 +84,36 @@ try {
         $errosCampos['estado'] = $resValidarUF;
     }
 
-    // validando se o e-mail informado possui até no máximo 255 caracteres e no mínimo 3 caracteres
-    if (strlen($instituicao->getEmail()) > 255 || strlen($instituicao->getEmail()) < 3) {
-        $errosCampos['email'] = 'O e-mail da instituição deve possuir no máximo 255 caracteres e no mínimo 3 caracteres!';
-    }
-
     // validando o telefone
     if (!ValidaTelefone::validarTelefone($instituicao->getTelefone())) {
         $errosCampos['telefone'] = 'O telefone informado é inválido, o formato do telefone deve ser (00) 00000-0000 ou (00) 0000-0000!';
+    }
+
+    // validando o número
+    if ($instituicao->getEndereco()->getNumero() === '' || $instituicao->getEndereco()->getNumero() === 'S/N') {
+        $instituicao->getEndereco()->setNumero('s/n');
+    } else {
+        if (!is_numeric($instituicao->getEndereco()->getNumero())) {
+            $numeroResTodoMinusculo = mb_strtolower($instituicao->getEndereco()->getNumero());
+    
+            if ($numeroResTodoMinusculo != 's/n') {
+                $errosCampos['numero_residencia'] = 'Caso a instituição não possua um número de residência, informe s/n!';
+            }
+
+        } else {
+
+            if (mb_strlen($instituicao->getEndereco()->getNumero()) > 255) {
+                $errosCampos['numero_residencia'] = 'O número de residência não deve possuir mais de 255 caracteres!';
+            } else {
+                $instituicao->getEndereco()->setNumero(intval($instituicao->getEndereco()->getNumero()));
+    
+                if ($usuario->getEndereco()->getNumero() <= 0) {
+                    $errosCampos['numero_residencia'] = 'O número de residência não deve ser menor ou igual a zero!';
+                }
+
+            }
+    
+        }
     }
 
     if (count($errosCampos) > 0) {

@@ -16,6 +16,8 @@ use SistemaSolicitacaoServico\App\Utilitarios\ValidaEmail;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaUF;
 
 $conexaoBancoDados = ConexaoBancoDados::obterConexao();
+// iniciando a transação
+$conexaoBancoDados->beginTransaction();
 
 try {
     $cidadao = new Cidadao();
@@ -68,6 +70,8 @@ try {
     // validando o e-mail
     if (!ValidaEmail::validarEmail($cidadao->getEmail())) {
         $errosCampos['email'] = 'O e-mail informado é inválido!';
+    } elseif (mb_strlen($cidadao->getEmail()) > 255 || mb_strlen($cidadao->getEmail()) < 3) {
+        $$errosCampos['email'] = 'O e-mail deve possuir no mínimo 3 caracteres e no máximo 255 caracteres!';
     }
 
     // validando a unidade federativa informada
@@ -103,16 +107,20 @@ try {
     // validando se o nome possui no mínimo 3 caracteres
     if (mb_strlen($cidadao->getNome()) < 3) {
         $errosCampos['nome'] = 'O nome deve possuir no mínimo 3 caracteres!';
+    } elseif (mb_strlen($cidadao->getNome()) > 255) {
+        $errosCampos['nome'] = 'O nome não deve possuir mais de 255 caracteres!';
     }
 
     // validando se o sobrenome possui no mínimo 3 caracteres
     if (mb_strlen($cidadao->getSobrenome()) < 3) {
-        $errosCampos['nome'] = 'O sobrenome deve possuir no mínimo 3 caracteres!';
+        $errosCampos['sobrenome'] = 'O sobrenome deve possuir no mínimo 3 caracteres!';
+    } elseif (mb_strlen($cidadao->getSobrenome()) > 255) {
+        $errosCampos['sobrenome'] = 'O sobrenome não deve possuir mais que 255 caracteres!';
     }
 
     // validando a senha
-    if ((mb_strlen($cidadao->getSenha()) < 6) || (mb_strlen($cidadao->getSenha()) > 15)) {
-        $errosCampos['senha'] = 'A senha deve possuir no mínimo 6 caracteres e no máximo 15 caracteres!';
+    if ((mb_strlen($cidadao->getSenha()) < 6) || (mb_strlen($cidadao->getSenha()) > 25)) {
+        $errosCampos['senha'] = 'A senha deve possuir no mínimo 6 caracteres e no máximo 25 caracteres!';
     } elseif  ($cidadao->getSenha() != $senhaConfirmacao) {
         $errosCampos['senha_confirmacao'] = 'A senha e a senha de confirmação devem ser iguais!';
     }
@@ -129,10 +137,16 @@ try {
             }
 
         } else {
-            $cidadao->getEndereco()->setNumero(intval($cidadao->getEndereco()->getNumero()));
+
+            if (mb_strlen($cidadao->getEndereco()->getNumero()) > 255) {
+                $errosCampos['numero_residencia'] = 'O número de residência não deve possuir mais de 255 caracteres!';
+            } else {
+                $cidadao->getEndereco()->setNumero(intval($cidadao->getEndereco()->getNumero()));
     
-            if ($cidadao->getEndereco()->getNumero() <= 0) {
-                $errosCampos['numero_residencia'] = 'O número de residência não deve ser menor ou igual a zero!';
+                if ($cidadao->getEndereco()->getNumero() <= 0) {
+                    $errosCampos['numero_residencia'] = 'O número de residência não deve ser menor ou igual a zero!';
+                }
+
             }
     
         }
@@ -221,8 +235,6 @@ try {
             'tipo_dado' => PDO::PARAM_STR
         ]
     ];
-    // iniciando a transação
-    $conexaoBancoDados->beginTransaction();
 
     if ($usuarioDAO->salvar($dadosUsuarioCadastrar)) {
         $usuarioId = intval($conexaoBancoDados->lastInsertId());
@@ -273,5 +285,5 @@ try {
     // realizando o rollback da transação
     $conexaoBancoDados->rollBack();
     Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar o cidadão!', $e->getMessage());
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o cidadão!', 200, null, false);
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o cidadão! ' . $e->getMessage(), 200, null, false);
 }

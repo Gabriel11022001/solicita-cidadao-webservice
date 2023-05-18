@@ -11,7 +11,7 @@ class ValidaTelefone
         
         // Verifica se o telefone tem 10 ou 11 dígitos
         if (!preg_match('/^([0-9]{10,11})$/', $telefone)) {
-
+            
             return false;
         }
         

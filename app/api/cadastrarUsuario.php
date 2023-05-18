@@ -92,6 +92,8 @@ try {
     // validando o e-mail
     if (!ValidaEmail::validarEmail($usuario->getEmail())) {
         $errosDadosUsuario['email'] = 'O e-mail informado é inválido!';
+    } elseif (mb_strlen($usuario->getEmail()) > 255 || mb_strlen($usuario->getEmail()) < 3) {
+        $errosDadosUsuario['email'] = 'O e-mail deve possuir no mínimo 3 caracteres e no máximo 255 caracteres!';
     }
 
     // validando a unidade federativa informada
@@ -127,16 +129,20 @@ try {
     // validando se o nome possui no mínimo 3 caracteres
     if (mb_strlen($usuario->getNome()) < 3) {
         $errosDadosUsuario['nome'] = 'O nome deve possuir no mínimo 3 caracteres!';
+    } elseif (mb_strlen($usuario->getNome()) > 255) {
+        $errosDadosUsuario['nome'] = 'O nome deve possuir no máximo 255 caracteres!';
     }
 
     // validando se o sobrenome possui no mínimo 3 caracteres
     if (mb_strlen($usuario->getSobrenome()) < 3) {
         $errosDadosUsuario['nome'] = 'O sobrenome deve possuir no mínimo 3 caracteres!';
+    } elseif (mb_strlen($usuario->getSobrenome()) > 255) {
+        $errosDadosUsuario['sobrenome'] = 'O sobrenome deve possuir no máximo 255 caracteres!';
     }
 
     // validando a senha
-    if ((mb_strlen($usuario->getSenha()) < 6) || (mb_strlen($usuario->getSenha()) > 15)) {
-        $errosDadosUsuario['senha'] = 'A senha deve possuir no mínimo 6 caracteres e no máximo 15 caracteres!';
+    if ((mb_strlen($usuario->getSenha()) < 6) || (mb_strlen($usuario->getSenha()) > 25)) {
+        $errosDadosUsuario['senha'] = 'A senha deve possuir no mínimo 6 caracteres e no máximo 25 caracteres!';
     } elseif  ($usuario->getSenha() != $senhaConfirmacao) {
         $errosDadosUsuario['senha_confirmacao'] = 'A senha e a senha de confirmação devem ser iguais!';
     } else {
@@ -156,10 +162,16 @@ try {
             }
 
         } else {
-            $usuario->getEndereco()->setNumero(intval($usuario->getEndereco()->getNumero()));
+
+            if (mb_strlen($usuario->getEndereco()->getNumero()) > 255) {
+                $errosDadosUsuario['numero_residencia'] = 'O número de residência não deve possuir mais de 255 caracteres!';
+            } else {
+                $usuario->getEndereco()->setNumero(intval($usuario->getEndereco()->getNumero()));
     
-            if ($usuario->getEndereco()->getNumero() <= 0) {
-                $errosDadosUsuario['numero_residencia'] = 'O número de residência não deve ser menor ou igual a zero!';
+                if ($usuario->getEndereco()->getNumero() <= 0) {
+                    $errosDadosUsuario['numero_residencia'] = 'O número de residência não deve ser menor ou igual a zero!';
+                }
+
             }
     
         }

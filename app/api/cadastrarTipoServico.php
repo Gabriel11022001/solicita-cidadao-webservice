@@ -12,7 +12,7 @@ try {
     $tipoServico->setNome(mb_strtoupper(trim(ParametroRequisicao::obterParametro('nome'))));
     $tipoServico->setDescricao(trim(ParametroRequisicao::obterParametro('descricao')));
     $errosCampos = [];
-
+    
     if (empty($tipoServico->getNome())) {
         $errosCampos['nome'] = 'Informe o nome do tipo de serviço!';
     }

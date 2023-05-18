@@ -53,6 +53,8 @@ try {
     // validando o e-mail da instituição
     if (!ValidaEmail::validarEmail($instituicao->getEmail())) {
         $errosFormulario['email'] = 'O e-mail informado é inválido!';
+    } elseif (strlen($instituicao->getEmail()) > 255 || strlen($instituicao->getEmail()) < 3) {
+        $errosFormulario['email'] = 'O e-mail da instituição deve possuir no máximo 255 caracteres e no mínimo 3 caracteres!';
     }
 
     // validando se o nome da instituição possui pelo menos 3 caracteres
@@ -81,9 +83,31 @@ try {
         $errosFormulario['estado'] = $resValidarUF;
     }
 
-    // validando se o e-mail informado possui até no máximo 255 caracteres e no mínimo 3 caracteres
-    if (strlen($instituicao->getEmail()) > 255 || strlen($instituicao->getEmail()) < 3) {
-        $errosFormulario['email'] = 'O e-mail da instituição deve possuir no máximo 255 caracteres e no mínimo 3 caracteres!';
+    // validando o número
+    if ($instituicao->getEndereco()->getNumero() === '' || $instituicao->getEndereco()->getNumero() === 'S/N') {
+        $instituicao->getEndereco()->setNumero('s/n');
+    } else {
+        if (!is_numeric($instituicao->getEndereco()->getNumero())) {
+            $numeroResTodoMinusculo = mb_strtolower($instituicao->getEndereco()->getNumero());
+    
+            if ($numeroResTodoMinusculo != 's/n') {
+                $errosFormulario['numero_residencia'] = 'Caso a instituição não possua um número de residência, informe s/n!';
+            }
+
+        } else {
+
+            if (mb_strlen($instituicao->getEndereco()->getNumero()) > 255) {
+                $errosFormulario['numero_residencia'] = 'O número de residência não deve possuir mais de 255 caracteres!';
+            } else {
+                $instituicao->getEndereco()->setNumero(intval($instituicao->getEndereco()->getNumero()));
+    
+                if ($usuario->getEndereco()->getNumero() <= 0) {
+                    $errosFormulario['numero_residencia'] = 'O número de residência não deve ser menor ou igual a zero!';
+                }
+
+            }
+    
+        }
     }
 
     // validando o telefone

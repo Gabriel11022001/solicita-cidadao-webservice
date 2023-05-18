@@ -1,7 +1,6 @@
 <?php
 
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
-use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\UsuarioDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
