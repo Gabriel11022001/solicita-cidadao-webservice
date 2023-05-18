@@ -46,6 +46,8 @@ class Rota
             $arquivoCarregar = 'cadastrarInstituicao.php';
         } elseif ($endpoint === '/usuario') {
             $arquivoCarregar = 'cadastrarUsuario.php';
+        } elseif ($endpoint === '/equipe') {
+            $arquivoCarregar = 'cadastrarEquipe.php';
         } else {
             self::requisicaoInvalida();
             

@@ -209,4 +209,18 @@ class ValidaCamposObrigatorios
 
         return $errosFormulario;
     }
+
+    public static function validarFormularioCadastrarEquipe($equipe) {
+        $errosFormulario = [];
+
+        if (empty($equipe->getNome())) {
+            $errosFormulario['nome'] = 'Informe o nome da equipe!';
+        }
+
+        if (empty($equipe->getDescricao())) {
+            $errosFormulario['descricao'] = 'Informe a descrição da equipe!';
+        }
+
+        return $errosFormulario;
+    }
 }

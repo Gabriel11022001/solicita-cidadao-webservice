@@ -22,7 +22,8 @@ abstract class DAO
         'tbl_laudos',
         'tbl_evidencias',
         'tbl_motivos_cancelamentos',
-        'tbl_instituicoes'
+        'tbl_instituicoes',
+        'tbl_equipes'
     ];
     protected $conexaoBancoDados;
     protected $nomeTabela;
