@@ -19,4 +19,13 @@ class EquipeDAO extends DAO
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function buscarEquipeComFiltroDeTexto($filtroTexto) {
+        // consultar equipe pelo nome mas com filtragem
+        $query = "SELECT * FROM " . $this->nomeTabela . " WHERE nome LIKE '%" . $filtroTexto . "%';";
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
