@@ -9,7 +9,7 @@ use SistemaSolicitacaoServico\App\Utilitarios\ValidaCamposObrigatorios;
 
 try {
     $equipe = new Equipe();
-    $equipe->setNome(trim(ParametroRequisicao::obterParametro('nome')));
+    $equipe->setNome(mb_strtoupper(trim(ParametroRequisicao::obterParametro('nome'))));
     $equipe->setDescricao(trim(ParametroRequisicao::obterParametro('descricao')));
     $errosCampos = ValidaCamposObrigatorios::validarFormularioCadastrarEquipe($equipe);
 

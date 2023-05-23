@@ -17,7 +17,7 @@ try {
     $equipes = $equipeDAO->buscarEquipeComFiltroDeTexto($filtroTexto);
 
     if (count($equipes) === 0) {
-        RespostaHttp::resposta('Não existem instituições relacionadas ao filtro aplicado cadastradas no banco de dados!', 200, []);
+        RespostaHttp::resposta('Não existem equipes relacionadas ao filtro aplicado cadastradas no banco de dados!', 200, []);
     } else {
         RespostaHttp::resposta('Foram encontradas ' . count($equipes) . ' equipes relacionadas ao filtro aplicado!', 200, $equipes, true);
     }
