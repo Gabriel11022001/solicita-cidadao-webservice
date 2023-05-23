@@ -101,7 +101,7 @@ try {
             } else {
                 $instituicao->getEndereco()->setNumero(intval($instituicao->getEndereco()->getNumero()));
     
-                if ($usuario->getEndereco()->getNumero() <= 0) {
+                if ($instituicao->getEndereco()->getNumero() <= 0) {
                     $errosFormulario['numero_residencia'] = 'O número de residência não deve ser menor ou igual a zero!';
                 }
 

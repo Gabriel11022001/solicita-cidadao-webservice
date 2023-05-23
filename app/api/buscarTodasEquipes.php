@@ -13,11 +13,11 @@ try {
         RespostaHttp::resposta('Não existem equipes cadastradas no banco de dados!', 200, [], true);
         exit;
     }
-
+    
     foreach ($equipes as $equipe) {
         $equipe['id'] = intval($equipe['id']);
     }
-    
+
     if (count($equipes) === 1) {
         RespostaHttp::resposta('Existe 1 equipe cadastrada no banco de dados!', 200, $equipes, true);
     } else {
@@ -25,5 +25,5 @@ try {
     }
 
 } catch (Exception $e) {
-
+    
 }
