@@ -39,7 +39,7 @@ try {
     } else {
         RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar o status da equipe!', 200, null, false);
     }
-
+    
 } catch (Exception $e) {
     var_dump($e->getMessage());
 }
