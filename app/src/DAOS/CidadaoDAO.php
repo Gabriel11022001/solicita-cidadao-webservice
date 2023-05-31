@@ -22,7 +22,7 @@ class CidadaoDAO extends UsuarioDAO
 
     public function buscarTodosCidadaos() {
         $query = 'SELECT * FROM tbl_usuarios AS u INNER JOIN tbl_cidadaos AS c
-        ON u.id = c.usuario_id;';
+        ON u.id = c.usuario_id ORDER BY nome ASC;';
         $stmt = $this->conexaoBancoDados->prepare($query);
         $stmt->execute();
 

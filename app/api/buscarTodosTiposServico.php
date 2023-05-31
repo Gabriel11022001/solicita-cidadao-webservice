@@ -8,7 +8,7 @@ use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 try {
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $tipoServicoDAO = new ServicoDAO($conexaoBancoDados, 'tbl_servicos');
-    $tiposServico = $tipoServicoDAO->buscarTodos();
+    $tiposServico = $tipoServicoDAO->buscarTodos('nome', 'ASC');
 
     if (count($tiposServico) === 0) {
         RespostaHttp::resposta('Não existem tipos de serviço cadastrados no banco de dados!', 200, []);

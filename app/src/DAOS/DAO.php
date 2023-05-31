@@ -86,8 +86,15 @@ abstract class DAO
         return $stmt->execute();
     }
     
-    public function buscarTodos() {
-        $query = 'SELECT * FROM ' . $this->nomeTabela . ';';
+    public function buscarTodos($colunaOrdenar = null, $tipoOrdenacao = null) {
+        $query = '';
+
+        if (empty($colunaOrdenar)) {
+            $query = 'SELECT * FROM ' . $this->nomeTabela . ';';
+        } else {
+            $query = 'SELECT * FROM ' . $this->nomeTabela . ' ORDER BY ' . $colunaOrdenar . ' ' . $tipoOrdenacao . ';';
+        }
+
         $stmt = $this->conexaoBancoDados->prepare($query);
         $stmt->execute();
 

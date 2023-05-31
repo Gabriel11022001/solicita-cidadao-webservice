@@ -28,7 +28,7 @@ try {
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $tipoServicoDAO = new ServicoDAO($conexaoBancoDados, 'tbl_servicos');
     $tipoServico = $tipoServicoDAO->buscarPeloId($id);
-
+    
     if (!$tipoServico) {
         RespostaHttp::resposta('Não existe um tipo de serviço cadastrado com esse id!');
         exit;

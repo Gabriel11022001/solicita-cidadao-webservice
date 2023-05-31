@@ -71,4 +71,12 @@ class InstituicaoDAO extends DAO
 
         return $stmt->execute();
     }
+
+    public function buscarTodasInstituicoesOrdenandoPeloNomeDeFormaAscendente() {
+        $query = 'SELECT * FROM ' . $this->nomeTabela . ' ORDER BY nome ASC;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

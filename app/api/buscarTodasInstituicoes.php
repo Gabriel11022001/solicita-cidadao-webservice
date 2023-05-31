@@ -8,8 +8,8 @@ use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 try {
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $instituicaoDAO = new InstituicaoDAO($conexaoBancoDados, 'tbl_instituicoes');
-    $instituicoes = $instituicaoDAO->buscarTodos();
-
+    $instituicoes = $instituicaoDAO->buscarTodos('nome', 'ASC');
+    
     if (count($instituicoes) === 0) {
         RespostaHttp::resposta('Não existem instituições cadastradas no banco de dados!');
         exit;

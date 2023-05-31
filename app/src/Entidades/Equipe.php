@@ -7,7 +7,8 @@ class Equipe
     private $id;
     private $nome;
     private $descricao;
-
+    private $status;
+    
     public function setId($id) {
         $this->id = $id;
     }
@@ -33,5 +34,14 @@ class Equipe
     public function getDescricao() {
 
         return $this->descricao;
+    }
+
+    public function setStatus($status) {
+        $this->status = $status;
+    }
+
+    public function getStatus() {
+
+        return $this->status;
     }
 }

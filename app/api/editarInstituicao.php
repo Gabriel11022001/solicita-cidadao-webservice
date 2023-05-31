@@ -35,7 +35,7 @@ try {
     $instituicao->setStatus(ParametroRequisicao::obterParametro('status'));
     $instituicao->setEndereco($endereco);
     $errosCampos = ValidaCamposObrigatorios::validarFormularioEditarInstituicao($instituicao);
-
+    
     if (count($errosCampos) > 0) {
         RespostaHttp::resposta('Informe todos os dados obrigatórios!', 200, $errosCampos, false);
         exit;
@@ -107,7 +107,7 @@ try {
             } else {
                 $instituicao->getEndereco()->setNumero(intval($instituicao->getEndereco()->getNumero()));
     
-                if ($usuario->getEndereco()->getNumero() <= 0) {
+                if ($instituicao->getEndereco()->getNumero() <= 0) {
                     $errosCampos['numero_residencia'] = 'O número de residência não deve ser menor ou igual a zero!';
                 }
 

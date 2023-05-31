@@ -28,4 +28,13 @@ class EquipeDAO extends DAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function alterarStatusEquipe($idEquipe, $novoStatus) {
+        $query = 'UPDATE ' . $this->nomeTabela . ' SET status = :novo_status WHERE id = :id;';
+        $stmt= $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':novo_status', $novoStatus, PDO::PARAM_BOOL);
+        $stmt->bindValue(':id', $idEquipe, PDO::PARAM_INT);
+        
+        return $stmt->execute();
+    }
 }

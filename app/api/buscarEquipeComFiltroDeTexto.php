@@ -10,7 +10,7 @@ try {
         RespostaHttp::resposta('O parâmetro não foi definido na url para consulta!', 200, null, false);
         exit;
     }
-
+    
     $filtroTexto = mb_strtoupper(trim($_GET['filtro_texto']));
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $equipeDAO = new EquipeDAO($conexaoBancoDados, 'tbl_equipes');

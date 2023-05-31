@@ -157,6 +157,8 @@ class Rota
             $arquivoCarregar = 'alterarStatusInstituicao.php';
         } elseif ($endpoint === '/instituicao') {
             $arquivoCarregar = 'editarInstituicao.php';
+        } elseif ($endpoint === '/equipe/alterar-status') {
+            $arquivoCarregar = 'alterarStatusEquipe.php';
         } else {
             self::requisicaoInvalida();
             
@@ -169,11 +171,11 @@ class Rota
     private static function delete($endpoint) {
 
     }
-
+    
     private static function requisicaoInvalida() {
         RespostaHttp::resposta('Endpoint inválido!', 404, null);
     }
-
+    
     private static function carregarArquivoRequisicao($arquivoCarregar) {
 
         if ($arquivoCarregar != '') {

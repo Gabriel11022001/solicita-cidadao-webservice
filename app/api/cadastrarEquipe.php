@@ -12,7 +12,7 @@ try {
     $equipe->setNome(mb_strtoupper(trim(ParametroRequisicao::obterParametro('nome'))));
     $equipe->setDescricao(trim(ParametroRequisicao::obterParametro('descricao')));
     $errosCampos = ValidaCamposObrigatorios::validarFormularioCadastrarEquipe($equipe);
-
+    
     if (count($errosCampos) > 0) {
         RespostaHttp::resposta('Preencha todos os campos obrigatórios!', 200, $errosCampos, false);
         exit;
@@ -43,7 +43,7 @@ try {
     } else {
         RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a equipe!', 200, null, false);
     }
-
+    
 } catch (Exception $e) {
     var_dump($e->getMessage());
 }

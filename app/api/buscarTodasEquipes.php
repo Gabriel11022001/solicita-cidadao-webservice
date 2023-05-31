@@ -7,7 +7,7 @@ use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 try {
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $equipeDAO = new EquipeDAO($conexaoBancoDados, 'tbl_equipes');
-    $equipes = $equipeDAO->buscarTodos();
+    $equipes = $equipeDAO->buscarTodos('nome', 'ASC');
 
     if (count($equipes) === 0) {
         RespostaHttp::resposta('Não existem equipes cadastradas no banco de dados!', 200, [], true);
