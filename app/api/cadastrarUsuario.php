@@ -289,7 +289,7 @@ try {
         }
 
     }
-
+    
     $dadosUsuarioCadastrar = [
         'nome' => [ 'dado' => $usuario->getNome(), 'tipo_dado' => PDO::PARAM_STR ],
         'sobrenome' => [ 'dado' => $usuario->getSobrenome(), 'tipo_dado' => PDO::PARAM_STR ],

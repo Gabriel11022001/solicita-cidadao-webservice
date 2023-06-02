@@ -24,7 +24,7 @@ try {
     $tecnicos = $tecnicoDAO->buscarTodosTecnicos();
     $secretarios = $secretarioDAO->buscarTodosSecretarios();
     $usuarios = [];
-
+    
     if (!count($cidadaos) > 0 && !count($peritos) > 0
     && !count($tecnicos) > 0 && !count($secretarios) > 0
     && !count($gestoresInstituicao) > 0 && !count($gestoresSecretaria) > 0) {

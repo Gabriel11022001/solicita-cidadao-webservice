@@ -103,6 +103,9 @@ class Rota
                 case str_contains($endpoint, '/buscar-perfis-usuario-pelo-cpf'):
                     $arquivoCarregar = 'buscarPerfisUsuarioPeloCpf.php';
                     break;
+                case str_contains($endpoint, '/buscar-pelo-id'):
+                    $arquivoCarregar = 'buscarUsuarioPeloId.php';
+                    break;
                 default:
                     $arquivoCarregar = 'buscarTodosUsuarios.php';
                     break;
