@@ -37,7 +37,7 @@ class UsuarioDAO extends DAO
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
+    
     public function alterarStatusUsuario($id, $novoStatus) {
         $query = 'UPDATE ' . $this->nomeTabela . ' SET status = :status WHERE id = :id;';
         $stmt = $this->conexaoBancoDados->prepare($query);

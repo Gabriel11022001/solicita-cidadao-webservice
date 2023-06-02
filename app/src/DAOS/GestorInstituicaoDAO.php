@@ -20,4 +20,13 @@ class GestorInstituicaoDAO extends UsuarioDAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function buscarTodosGestoresInstituicao() {
+        $query = 'SELECT * FROM tbl_usuarios AS u INNER JOIN ' . $this->nomeTabela . ' AS gi
+        ON u.id = gi.usuario_id ORDER BY nome ASC;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

@@ -104,6 +104,7 @@ class Rota
                     $arquivoCarregar = 'buscarPerfisUsuarioPeloCpf.php';
                     break;
                 default:
+                    $arquivoCarregar = 'buscarTodosUsuarios.php';
                     break;
             }
 
