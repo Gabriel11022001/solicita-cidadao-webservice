@@ -174,6 +174,8 @@ class Rota
             $arquivoCarregar = 'editarInstituicao.php';
         } elseif ($endpoint === '/equipe/alterar-status') {
             $arquivoCarregar = 'alterarStatusEquipe.php';
+        } elseif ($endpoint === '/tecnico/atribuir-a-equipe') {
+            $arquivoCarregar = 'atribuirTecnicoAEquipe.php';
         } else {
             self::requisicaoInvalida();
             

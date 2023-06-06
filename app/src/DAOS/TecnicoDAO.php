@@ -29,4 +29,13 @@ class TecnicoDAO extends UsuarioDAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function atribuirTecnicoAEquipe($idTecnico, $idEquipe) {
+        $query = 'UPDATE ' . $this->nomeTabela . ' SET equipe_id = :equipe_id WHERE id = :id;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':equipe_id', $idEquipe, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $idTecnico, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
 }

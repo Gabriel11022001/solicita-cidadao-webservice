@@ -21,6 +21,8 @@ use SistemaSolicitacaoServico\App\Utilitarios\ValidaEmail;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaUF;
 
 $conexaoBancoDados = ConexaoBancoDados::obterConexao();
+// iniciando a transação
+$conexaoBancoDados->beginTransaction();
 
 try {
     $usuario = new Usuario();
@@ -308,8 +310,6 @@ try {
         'estado' => [ 'dado' => $usuario->getEndereco()->getEstado(), 'tipo_dado' => PDO::PARAM_STR ],
         'numero_residencia' => [ 'dado' => $usuario->getEndereco()->getNumero(), 'tipo_dado' => PDO::PARAM_STR ]
     ];
-    // iniciando a transação
-    $conexaoBancoDados->beginTransaction();
 
     // cadastrando os dados do usuário em questão na tabela tbl_usuarios
     if ($usuarioDAO->salvar($dadosUsuarioCadastrar)) {
