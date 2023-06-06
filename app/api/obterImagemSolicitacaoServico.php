@@ -1,0 +1,39 @@
+<?php
+
+use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
+
+try {
+    
+    if (!isset($_GET['nome_imagem'])) {
+        RespostaHttp::resposta('Parâmetro não definido na url!', 200, null, false);
+        exit;
+    }
+
+    $nomeImagem = trim($_GET['nome_imagem']);
+    
+    if (empty($nomeImagem)) {
+        RespostaHttp::resposta('Informe o nome da imagem da solicitação de serviço!', 200, null, false);
+        exit;
+    }
+
+    $caminhoParaImagem = 'images/' . $nomeImagem;
+    
+    if (file_exists($caminhoParaImagem)) {
+        $conteudoImagem = file_get_contents($caminhoParaImagem);
+
+        if ($conteudoImagem) {
+            $imagemBase64 = base64_encode($conteudoImagem);
+            RespostaHttp::resposta('Leitura de imagem realizado com sucesso!', 200, [
+                'imagem_base_64' => $imagemBase64
+            ], true);
+        } else {
+            RespostaHttp::resposta('Ocorreu um erro ao tentar-se realizar a leitura do arquivo de imagem em questão!', 200, null, false);
+        }
+
+    } else {
+        RespostaHttp::resposta('Essa imagem não está salva no servidor!', 200, null, false);
+    }
+
+} catch (Exception $e) {
+
+}

@@ -19,7 +19,7 @@ class InstituicaoDAO extends DAO
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
+    
     public function buscarInstituicaoPeloCnpj($cnpj) {
         $query = 'SELECT * FROM ' . $this->nomeTabela . ' WHERE cnpj = :cnpj;';
         $stmt = $this->conexaoBancoDados->prepare($query);
@@ -30,7 +30,7 @@ class InstituicaoDAO extends DAO
     }
 
     public function buscarInstituicaoComFiltroDeTexto($filtroTexto) {
-        $query = "SELECT * FROM " . $this->nomeTabela . " WHERE nome LIKE '%" . $filtroTexto . "%' OR cnpj LIKE '%" . $filtroTexto . "%';";
+        $query = "SELECT * FROM " . $this->nomeTabela . " WHERE nome LIKE '%" . $filtroTexto . "%' OR cnpj LIKE '%" . $filtroTexto . "%' ORDER BY nome ASC;";
         $stmt = $this->conexaoBancoDados->prepare($query);
         $stmt->execute();
 

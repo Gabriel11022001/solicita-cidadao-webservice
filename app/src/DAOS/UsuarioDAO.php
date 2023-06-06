@@ -46,7 +46,7 @@ class UsuarioDAO extends DAO
         
         return $stmt->execute();
     }
-
+    
     public function buscarPeloEmail($email) {
         $query = 'SELECT * FROM tbl_usuarios AS u INNER JOIN ' . $this->nomeTabela . ' AS fu ON u.email = :email AND u.id = fu.usuario_id;';
         $stmt = $this->conexaoBancoDados->prepare($query);

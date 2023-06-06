@@ -20,7 +20,7 @@ try {
     $instituicoes = $instituicaoDAO->buscarInstituicaoComFiltroDeTexto($filtroTexto);
     
     if (count($instituicoes) === 0) {
-        RespostaHttp::resposta('Não foram encontradas instituições relacionadas ao filtro aplicado!', 200, []);
+        RespostaHttp::resposta('Não foram encontradas instituições relacionadas ao filtro aplicado!', 200, $instituicoes);
     } else {
         RespostaHttp::resposta('Foram encontradas instituições relacionadas ao filtro aplicado!', 200, $instituicoes);
     }

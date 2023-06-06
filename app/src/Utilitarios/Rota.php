@@ -48,6 +48,9 @@ class Rota
             $arquivoCarregar = 'cadastrarUsuario.php';
         } elseif ($endpoint === '/equipe') {
             $arquivoCarregar = 'cadastrarEquipe.php';
+        } elseif ($endpoint === '/solicitacao-servico/upload-imagem-solicitacao') {
+            // endpoint para fazer o upload da imagem da solicitação de serviço
+            $arquivoCarregar = 'realizarUploadImagemSolicitacaoServico.php';
         } else {
             self::requisicaoInvalida();
             
@@ -136,6 +139,14 @@ class Rota
                     break;
                 default:
                     $arquivoCarregar = 'buscarTodasEquipes.php';
+                    break;
+            }
+
+        } elseif (str_contains($endpoint, '/solicitacao-servico')) {
+
+            switch ($endpoint) {
+                case str_contains($endpoint, '/obter-imagem-solicitacao'):
+                    $arquivoCarregar = 'obterImagemSolicitacaoServico.php';
                     break;
             }
 

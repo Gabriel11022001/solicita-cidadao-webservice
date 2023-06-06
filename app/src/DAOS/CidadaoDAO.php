@@ -28,7 +28,7 @@ class CidadaoDAO extends UsuarioDAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    
     public function buscarPeloId($id) {
         $query = 'SELECT * FROM tbl_usuarios AS u INNER JOIN ' . $this->nomeTabela . ' AS c
         ON u.id = c.usuario_id AND u.id = :id;';
