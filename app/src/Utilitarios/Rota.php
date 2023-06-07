@@ -92,6 +92,9 @@ class Rota
                 case str_contains($endpoint, '/buscar-com-filtro-de-texto'):
                     $arquivoCarregar = 'buscarTiposServicoComFiltroDeTexto.php';
                     break;
+                case str_contains($endpoint, '/buscar-todos-tipos-servico-ativos'):
+                    $arquivoCarregar = 'buscarTodosTiposServicoAtivos.php';
+                    break;
                 default:
                     $arquivoCarregar = 'buscarTodosTiposServico.php';
                     break;

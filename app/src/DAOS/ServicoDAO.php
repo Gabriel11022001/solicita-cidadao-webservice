@@ -48,4 +48,12 @@ class ServicoDAO extends DAO
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function buscarTodosTiposServicoAtivos() {
+        $query = 'SELECT * FROM ' . $this->nomeTabela . ' WHERE status = true ORDER BY nome ASC;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
