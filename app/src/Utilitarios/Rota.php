@@ -151,6 +151,9 @@ class Rota
                 case str_contains($endpoint, '/obter-imagem-solicitacao'):
                     $arquivoCarregar = 'obterImagemSolicitacaoServico.php';
                     break;
+                case str_contains($endpoint, 'buscar-solicitacoes-servico-cidadao'):
+                    $arquivoCarregar = 'buscarSolicitacoesServicoCidadao.php';
+                    break;
             }
 
         } else {
