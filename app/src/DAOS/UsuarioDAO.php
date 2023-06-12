@@ -56,4 +56,22 @@ class UsuarioDAO extends DAO
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function buscarUsuarioPeloIdESenha($id, $senha) {
+        $query = 'SELECT id, senha FROM ' . $this->nomeTabela . ' WHERE id = :id AND senha = :senha;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':senha', $senha, PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    
+    public function alterarSenhaUsuario($id, $novaSenha) {
+        $query = 'UPDATE ' . $this->nomeTabela . ' SET senha = :nova_senha WHERE id = :id;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':nova_senha', $novaSenha, PDO::PARAM_STR);
+
+        return $stmt->execute();
+    }
 }

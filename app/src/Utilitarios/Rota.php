@@ -182,6 +182,8 @@ class Rota
             $arquivoCarregar = 'alterarStatusEquipe.php';
         } elseif ($endpoint === '/tecnico/atribuir-a-equipe') {
             $arquivoCarregar = 'atribuirTecnicoAEquipe.php';
+        } elseif ($endpoint === '/usuario/alterar-senha') {
+            $arquivoCarregar = 'alterarSenhaUsuario.php';
         } else {
             self::requisicaoInvalida();
             

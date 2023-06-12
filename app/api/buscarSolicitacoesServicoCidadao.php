@@ -47,5 +47,5 @@ try {
     }
 
 } catch (Exception $e) {
-
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se consultar as solicitações de serviço!', 200, null, false);
 }
