@@ -7,7 +7,6 @@ use SistemaSolicitacaoServico\App\DAOS\GestorSecretariaDAO;
 use SistemaSolicitacaoServico\App\DAOS\PeritoDAO;
 use SistemaSolicitacaoServico\App\DAOS\SecretarioDAO;
 use SistemaSolicitacaoServico\App\DAOS\TecnicoDAO;
-use SistemaSolicitacaoServico\App\DAOS\UsuarioDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
 try {
@@ -63,7 +62,7 @@ try {
         RespostaHttp::resposta('Não existe um usuário cadastrado no banco de dados com esse id!');
         exit;
     }
-
+    
     $usuario['tipo_usuario'] = $tipoUsuario;
     RespostaHttp::resposta('Usuário encontrado com sucesso!', 200, $usuario, true);
 } catch (Exception $e) {
