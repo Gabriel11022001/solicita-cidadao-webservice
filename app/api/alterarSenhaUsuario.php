@@ -47,7 +47,7 @@ try {
         RespostaHttp::resposta('Ocorreram erros de validação de dados!', 200, null, false);
         exit;
     }
-
+    
     $novaSenha = md5($novaSenha);
     $senhaAntiga = md5($senhaAntiga);
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
@@ -60,7 +60,7 @@ try {
     
     if ($usuarioDAO->alterarSenhaUsuario($id, $novaSenha)) {
         // enviar e-mail informando que a senha foi alterada
-        
+
         RespostaHttp::resposta('Senha alterada com sucesso!');
     } else {
         RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar a senha do perfil em questão!', 200, null, false);

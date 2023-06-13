@@ -74,4 +74,14 @@ class UsuarioDAO extends DAO
 
         return $stmt->execute();
     }
+
+    public function buscarUsuarioPeloId($id) {
+        $query = 'SELECT * FROM tbl_usuarios AS tblu INNER JOIN ' . $this->nomeTabela . ' AS tblfu
+        ON tblu.id = tblfu.usuario_id AND tblu.id = :id;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
