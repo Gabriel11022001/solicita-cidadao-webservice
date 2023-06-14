@@ -22,7 +22,7 @@ try {
         } else {
             RespostaHttp::resposta('Existe um total de ' . count($instituicoes) . ' instituições ativas cadastradas no banco de dados!', 200, $instituicoes, true);
         }
-
+        
     }
 
 } catch (Exception $e) {

@@ -29,7 +29,7 @@ try {
     }
 
     if (count($errosDados) > 0) {
-        RespostaHttp::resposta('Informe todos os dados obrigatórios!', 200, null, false);
+        RespostaHttp::resposta('Informe todos os dados obrigatórios!', 200, $errosDados, false);
         exit;
     }
 
@@ -44,7 +44,7 @@ try {
     }
 
     if (count($errosDados) > 0) {
-        RespostaHttp::resposta('Ocorreram erros de validação de dados!', 200, null, false);
+        RespostaHttp::resposta('Ocorreram erros de validação de dados!', 200, $errosDados, false);
         exit;
     }
     
@@ -52,7 +52,7 @@ try {
     $senhaAntiga = md5($senhaAntiga);
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $usuarioDAO = new UsuarioDAO($conexaoBancoDados, 'tbl_usuarios');
-
+    
     if (!$usuarioDAO->buscarUsuarioPeloIdESenha($id, $senhaAntiga)) {
         RespostaHttp::resposta('Não foi encontrado um usuário cadastrado com esse id e senha no banco de dados!', 200, null, false);
         exit;
