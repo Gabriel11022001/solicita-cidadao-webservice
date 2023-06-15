@@ -10,7 +10,7 @@ class UsuarioDAO extends DAO
     public function __construct($conexaoBancoDados, $nomeTabela) {
         parent::__construct($conexaoBancoDados, $nomeTabela);
     }
-
+    
     public function buscarPeloCpfSenha($cpf, $senha) {
         $query = 'SELECT * FROM tbl_usuarios AS u
         INNER JOIN ' . $this->nomeTabela . ' AS fu

@@ -51,6 +51,8 @@ class Rota
         } elseif ($endpoint === '/solicitacao-servico/upload-imagem-solicitacao') {
             // endpoint para fazer o upload da imagem da solicitação de serviço
             $arquivoCarregar = 'realizarUploadImagemSolicitacaoServico.php';
+        } elseif ($endpoint === '/notificacao') {
+            $arquivoCarregar = 'cadastrarNotificacao.php';
         } else {
             self::requisicaoInvalida();
             

@@ -72,6 +72,6 @@ try {
     }
 
 } catch (Exception $e) {
-    Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar um tipo de serviço!', $e->getMessage());
+    Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar o tipo de serviço!', $e->getMessage());
     RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o tipo de serviço!', 200, null, false);
 }
