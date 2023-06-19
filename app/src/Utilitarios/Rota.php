@@ -164,6 +164,19 @@ class Rota
                     break;
             }
 
+        } elseif (str_contains($endpoint, '/notificacao')) {
+
+            switch ($endpoint) {
+                case str_contains($endpoint, '/buscar-pelo-id'):
+                    $arquivoCarregar = 'buscarNotificacaoPeloId.php';
+                    break;
+                case str_contains($endpoint, '/buscar-notificacoes-cidadao'):
+                    $arquivoCarregar = 'buscarTodasNotificacoesCidadao.php';
+                    break;
+                default: 
+                    break;
+            }
+
         } else {
             self::requisicaoInvalida();
 

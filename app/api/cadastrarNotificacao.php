@@ -12,7 +12,7 @@ try {
     $idUsuario = intval(ParametroRequisicao::obterParametro('usuario_id'));
     $idSolicitacaoServico = intval(ParametroRequisicao::obterParametro('solicitacao_servico_id'));
     $errosDados = [];
-
+    
     if (empty($mensagem)) {
         $errosDados['mensagem'] = 'Informe a mensagem da notificação!';
     }
