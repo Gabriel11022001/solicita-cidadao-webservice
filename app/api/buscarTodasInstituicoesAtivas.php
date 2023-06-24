@@ -3,6 +3,7 @@
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\InstituicaoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
@@ -26,5 +27,5 @@ try {
     }
 
 } catch (Exception $e) {
-
+    Log::registrarLog('Ocorreu um erro ao tentar-se buscar todas as instituições ativas!', $e->getMessage());
 }

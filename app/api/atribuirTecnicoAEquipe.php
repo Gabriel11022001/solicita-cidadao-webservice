@@ -5,6 +5,7 @@ use SistemaSolicitacaoServico\App\DAOS\EquipeDAO;
 use SistemaSolicitacaoServico\App\DAOS\TecnicoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     $idTecnico = intval(ParametroRequisicao::obterParametro('tecnico_id'));
@@ -70,5 +71,5 @@ try {
     }
 
 } catch (Exception $e) {
-    
+    Log::registrarLog('Ocorreu um erro ao tentar-se atribuir o técnico a uma equipe!', $e->getMessage());
 }

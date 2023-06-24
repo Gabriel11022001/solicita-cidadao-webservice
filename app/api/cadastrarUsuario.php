@@ -19,6 +19,7 @@ use SistemaSolicitacaoServico\App\Utilitarios\ValidaCpf;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaDataNascimento;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaEmail;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaUF;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 $conexaoBancoDados = ConexaoBancoDados::obterConexao();
 // iniciando a transação
@@ -355,5 +356,5 @@ try {
 } catch (Exception $e) {
     // realizando o rollback da transação
     $conexaoBancoDados->rollBack();
-    echo $e->getMessage();
+    Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar esse usuário no banco de dados!', $e->getMessage());
 }

@@ -3,6 +3,7 @@
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\InstituicaoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     /**
@@ -26,5 +27,5 @@ try {
     }
 
 } catch (Exception $e) {
-    echo $e->getMessage();
+    Log::registrarLog('Ocorreu um erro ao tentar-se buscar as instituições com filtro de texto!', $e->getMessage());
 }

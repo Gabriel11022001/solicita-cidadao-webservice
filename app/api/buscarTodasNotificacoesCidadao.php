@@ -3,6 +3,7 @@
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\NotificacaoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
 
@@ -39,5 +40,5 @@ try {
     }
 
 } catch (Exception $e) {
-    var_dump($e->getMessage());
+    Log::registrarLog('Ocorreu um erro ao tentar-se buscar todas as notificações do cidadão!', $e->getMessage());
 }

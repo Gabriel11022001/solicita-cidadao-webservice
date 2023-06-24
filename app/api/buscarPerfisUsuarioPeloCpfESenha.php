@@ -9,6 +9,7 @@ use SistemaSolicitacaoServico\App\DAOS\SecretarioDAO;
 use SistemaSolicitacaoServico\App\DAOS\TecnicoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCpf;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     $errosParametrosRequisicao = [];
@@ -102,5 +103,5 @@ try {
 
     RespostaHttp::resposta('Foram encontrados perfis cadastrados com esse cpf e senha!', 200, $dadosPerfis);
 } catch (Exception $e) {
-
+    Log::registrarLog('Ocorreu um erro ao tentar-se buscar os perfis do usuário pelo cpf e senha!', $e->getMessage());
 }

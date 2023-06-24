@@ -12,6 +12,7 @@ use SistemaSolicitacaoServico\App\Utilitarios\ValidaCnpj;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaEmail;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaTelefone;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaUF;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     // objeto representando o endereço da instituição
@@ -218,5 +219,5 @@ try {
     }
 
 } catch (Exception $e) {
-    echo $e->getMessage();
+    Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar a instituição!', $e->getMessage());
 }

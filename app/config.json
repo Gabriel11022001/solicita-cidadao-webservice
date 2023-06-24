@@ -1,0 +1,27 @@
+{
+  "ambiente": "dev",
+  "db": {
+    "banco_ambiente_local": "solicita_cidadao_presidente_prudente",
+    "banco_ambiente_prod": "",
+    "banco_ambiente_teste": ""
+  },
+  "usuarios_banco": {
+    "banco_ambiente_local": {
+      "usuario": "root",
+      "senha": "root"
+    },
+    "banco_ambiente_prod": {
+      "usuario": "",
+      "senha": ""
+    },
+    "banco_ambiente_teste": {
+      "usuario": "",
+      "senha": ""
+    }
+  },
+  "hosts_bancos": {
+    "banco_ambiente_local": "postgreSQL_db",
+    "banco_ambiente_prod": "",
+    "banco_ambiente_teste": ""
+  }
+}

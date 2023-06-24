@@ -4,6 +4,7 @@ use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaEmail;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     
@@ -36,5 +37,5 @@ try {
     }
 
 } catch (Exception $e) {
-
+    Log::registrarLog('Ocorreu um erro ao tentar-se buscar o cidadão pelo e-mail!', $e->getMessage());
 }

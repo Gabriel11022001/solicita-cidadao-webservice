@@ -4,6 +4,7 @@ use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCpf;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     $errosCampos = [];
@@ -64,5 +65,6 @@ try {
     }
 
 } catch (Exception $e) {
+    Log::registrarLog('Ocorreu um erro ao tentar-se buscar o cidadão pelo cpf e senha!', $e->getMessage());
     RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar o cidadão pelo cpf e senha!', 200, null, false);
 }

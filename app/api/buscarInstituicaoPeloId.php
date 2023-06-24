@@ -5,6 +5,7 @@ use SistemaSolicitacaoServico\App\DAOS\GestorInstituicaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\InstituicaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\TecnicoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     
@@ -52,5 +53,5 @@ try {
     }
 
 } catch (Exception $e) {
-
+    Log::registrarLog('Ocorreu um erro ao tentar-se buscar a instituição pelo id!', $e->getMessage());
 }

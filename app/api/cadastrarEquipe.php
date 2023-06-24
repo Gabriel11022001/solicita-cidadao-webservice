@@ -6,6 +6,7 @@ use SistemaSolicitacaoServico\App\Entidades\Equipe;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCamposObrigatorios;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     $equipe = new Equipe();
@@ -45,5 +46,5 @@ try {
     }
     
 } catch (Exception $e) {
-    var_dump($e->getMessage());
+    Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar a equipe!', $e->getMessage());
 }

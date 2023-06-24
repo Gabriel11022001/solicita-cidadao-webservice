@@ -4,6 +4,7 @@ use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\UsuarioDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     $idUsuario = trim(ParametroRequisicao::obterParametro('id'));
@@ -36,9 +37,9 @@ try {
             'novo_status' => $novoStatus
         ]);
     } else {
-        RespostaHttp::resposta('ocorreu um erro ao tentar-se alterar o status do usuário em questão!', 200, null, false);
+        RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar o status do usuário em questão!', 200, null, false);
     }
     
 } catch (Exception $e) {
-    echo $e->getMessage();
+    Log::registrarLog('Ocorreu um erro ao tentar-se alterar o status do usuário em questão!', $e->getMessage());
 }

@@ -53,6 +53,8 @@ class Rota
             $arquivoCarregar = 'realizarUploadImagemSolicitacaoServico.php';
         } elseif ($endpoint === '/notificacao') {
             $arquivoCarregar = 'cadastrarNotificacao.php';
+        } elseif ($endpoint === '/solicitacao') {
+            $arquivoCarregar = 'cadastrarSolicitacaoServico.php';
         } else {
             self::requisicaoInvalida();
             
@@ -159,8 +161,14 @@ class Rota
                 case str_contains($endpoint, '/obter-imagem-solicitacao'):
                     $arquivoCarregar = 'obterImagemSolicitacaoServico.php';
                     break;
-                case str_contains($endpoint, 'buscar-solicitacoes-servico-cidadao'):
+                case str_contains($endpoint, '/buscar-solicitacoes-servico-cidadao'):
                     $arquivoCarregar = 'buscarSolicitacoesServicoCidadao.php';
+                    break;
+                case str_contains($endpoint, '/buscar-solicitacoes-instituicao-para-encaminhar-a-equipe'):
+                    $arquivoCarregar = 'buscarSolicitacoesServicoInstituicaoParaEncaminharAEquipe.php';
+                    break;
+                default:
+                    $arquivoCarregar = 'buscarTodasSolicitacoesServico.php';
                     break;
             }
 
@@ -205,6 +213,8 @@ class Rota
             $arquivoCarregar = 'atribuirTecnicoAEquipe.php';
         } elseif ($endpoint === '/usuario/alterar-senha') {
             $arquivoCarregar = 'alterarSenhaUsuario.php';
+        } elseif ($endpoint === '/notificacao/alterar-status-para-visualizado') {
+            $arquivoCarregar = 'alterarStatusNotificacaoParaVisualizado.php';
         } else {
             self::requisicaoInvalida();
             

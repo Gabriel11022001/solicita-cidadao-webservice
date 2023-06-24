@@ -8,6 +8,7 @@ use SistemaSolicitacaoServico\App\DAOS\PeritoDAO;
 use SistemaSolicitacaoServico\App\DAOS\SecretarioDAO;
 use SistemaSolicitacaoServico\App\DAOS\TecnicoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
 
@@ -66,5 +67,5 @@ try {
     $usuario['tipo_usuario'] = $tipoUsuario;
     RespostaHttp::resposta('Usuário encontrado com sucesso!', 200, $usuario, true);
 } catch (Exception $e) {
-    
+    Log::registrarLog('Ocorreu um erro ao tentar-se buscar o usuário pelo id!', $e->getMessage());
 }

@@ -6,6 +6,7 @@ use SistemaSolicitacaoServico\App\DAOS\SolicitacaoServicoDAO;
 use SistemaSolicitacaoServico\App\DAOS\UsuarioDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     $mensagem = trim(ParametroRequisicao::obterParametro('mensagem'));
@@ -80,5 +81,5 @@ try {
     }
 
 } catch (Exception $e) {
-    var_dump($e->getMessage());
+    Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar a notificação!', $e->getMessage());
 }

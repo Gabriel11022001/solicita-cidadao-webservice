@@ -4,6 +4,7 @@ use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\UsuarioDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     $id = intval(ParametroRequisicao::obterParametro('id'));
@@ -67,5 +68,5 @@ try {
     }
 
 } catch (Exception $e) {
-
+    Log::registrarLog('Ocorreu um erro ao tentar-se alterar a senha do perfil em questão!', $e->getMessage());
 }

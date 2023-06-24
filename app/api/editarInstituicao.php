@@ -12,6 +12,7 @@ use SistemaSolicitacaoServico\App\Utilitarios\ValidaCnpj;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaEmail;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaTelefone;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaUF;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     // objeto representando o endereço da instituição
@@ -229,5 +230,5 @@ try {
     }
 
 } catch (Exception $e) {
-    var_dump($e->getMessage());
+    Log::registrarLog('Ocorreu um erro ao tentar-se alterar os dados da instituição!', $e->getMessage());
 }

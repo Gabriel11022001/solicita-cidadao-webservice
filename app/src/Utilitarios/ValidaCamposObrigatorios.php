@@ -223,4 +223,42 @@ class ValidaCamposObrigatorios
 
         return $errosFormulario;
     }
+
+    public static function validarFormularioCadastrarSolicitacaoServico($solicitacao) {
+        $errosForm = [];
+
+        if (empty($solicitacao->getTitulo())) {
+            $errosForm['titulo'] = 'Informe o título!';
+        }
+
+        if (empty($solicitacao->getCidadaoId())) {
+            $errosForm['cidadao_id'] = 'Informe o id do cidadão!';
+        }
+
+        if (empty($solicitacao->getStatus())) {
+            $errosForm['status'] = 'Informe o status!';
+        }
+
+        if (empty($solicitacao->getPrioridade())) {
+            $errosForm['prioridade'] = 'Informe a prioridade!';
+        }
+
+        if (empty($solicitacao->getEndereco()->getLogradouro())) {
+            $errosForm['logradouro'] = 'Informe o logradouro!';
+        }
+
+        if (empty($solicitacao->getEndereco()->getBairro())) {
+            $errosForm['bairro'] = 'Informe o bairro!';
+        }
+
+        if (empty($solicitacao->getEndereco()->getCidade())) {
+            $errosForm['cidade'] = 'Informe a cidade!';
+        }
+
+        if (empty($solicitacao->getEndereco()->getEstado())) {
+            $errosForm['estado'] = 'Informe o estado!';
+        }
+
+        return $errosForm;
+    }
 }

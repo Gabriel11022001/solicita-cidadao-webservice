@@ -12,4 +12,8 @@ class Log
     public static function registrarLogDeLogin($idUsuario, $nomeUsuario, $emailUsuario, $cpfUsuario) {
         
     }
+
+    public static function registrarLogComDadosInformados($mensagem, $dadosInformados) {
+
+    }
 }

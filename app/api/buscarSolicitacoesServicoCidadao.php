@@ -4,6 +4,7 @@ use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\SolicitacaoServicoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     
@@ -47,5 +48,6 @@ try {
     }
 
 } catch (Exception $e) {
+    Log::registrarLog('Ocorreu um erro ao tentar-se consultar as solicitações de serviço!', $e->getMessage());
     RespostaHttp::resposta('Ocorreu um erro ao tentar-se consultar as solicitações de serviço!', 200, null, false);
 }

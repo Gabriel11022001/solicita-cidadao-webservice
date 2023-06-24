@@ -6,6 +6,7 @@ use SistemaSolicitacaoServico\App\Entidades\TipoServico;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCamposObrigatorios;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     $tipoServico = new TipoServico();
@@ -76,5 +77,5 @@ try {
     }
 
 } catch (Exception $e) {
-
+    Log::registrarLog('Ocorreu um erro ao tentar-se alterar os dados do tipo de serviço!', $e->getMessage());
 }

@@ -8,6 +8,7 @@ use SistemaSolicitacaoServico\App\DAOS\PeritoDAO;
 use SistemaSolicitacaoServico\App\DAOS\SecretarioDAO;
 use SistemaSolicitacaoServico\App\DAOS\TecnicoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
@@ -94,5 +95,5 @@ try {
     }
 
 } catch (Exception $e) {
-    var_dump($e->getMessage());
+    Log::registrarLog('Ocorreu um erro ao tentar-se buscar todos os usuários!', $e->getMessage());
 }

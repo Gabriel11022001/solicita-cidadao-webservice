@@ -3,6 +3,7 @@
 use SistemaSolicitacaoServico\App\Exceptions\ExtensaoArquivoInvalidoException;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\UploadArquivo;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
 
@@ -26,7 +27,7 @@ try {
     }
 
 } catch (ExtensaoArquivoInvalidoException $e) {
-    var_dump($e->getMessage());
+    Log::registrarLog('A extensão do arquivo é inválido!', $e->getMessage());
 } catch (Exception $e) {
-
+    Log::registrarLog('Ocorreu um erro ao tentar-se realizar o upload da imagem da solicitação de serviço!', $e->getMessage());
 }
