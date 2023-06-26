@@ -82,4 +82,5 @@ try {
 
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar a notificação!', $e->getMessage());
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a notificação! - ' . $e->getMessage(), 200, null, false);
 }
