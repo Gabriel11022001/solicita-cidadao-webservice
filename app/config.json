@@ -1,5 +1,5 @@
 {
-  "ambiente": "dev",
+  "ambiente": "teste",
   "db": {
     "banco_ambiente_local": "solicita_cidadao_presidente_prudente",
     "banco_ambiente_prod": "",
