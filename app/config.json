@@ -22,6 +22,6 @@
   "hosts_bancos": {
     "banco_ambiente_local": "postgreSQL_db",
     "banco_ambiente_prod": "",
-    "banco_ambiente_teste": ""
+    "banco_ambiente_teste": "sc_pp_tst.postgresql.dbaas.com.br"
   }
 }
