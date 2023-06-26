@@ -3,7 +3,7 @@
   "db": {
     "banco_ambiente_local": "solicita_cidadao_presidente_prudente",
     "banco_ambiente_prod": "",
-    "banco_ambiente_teste": "solicita_cidadao_presidente_prudente_teste"
+    "banco_ambiente_teste": "sc_pp_tst"
   },
   "usuarios_banco": {
     "banco_ambiente_local": {
@@ -15,8 +15,8 @@
       "senha": ""
     },
     "banco_ambiente_teste": {
-      "usuario": "",
-      "senha": ""
+      "usuario": "sc_pp_tst",
+      "senha": "Scteste@123"
     }
   },
   "hosts_bancos": {
