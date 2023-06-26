@@ -26,7 +26,15 @@ try {
     if (!$notificacao) {
         RespostaHttp::resposta('Não existe uma notificação cadastrada no banco de dados com esse id!');
     } else {
-        RespostaHttp::resposta('Notificação encontrada com sucesso!', 200, $notificacao, true);
+        // alterando o status da notificação para "Visualizado"
+
+        if ($notificacaoDAO->alterarStatusNotificacaoParaVisualizado($id)) {
+            $notificacao['status'] = 'Visualizado';
+            RespostaHttp::resposta('Notificação encontrada com sucesso e com status alterado com sucesso!', 200, $notificacao, true);
+        } else {
+            RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar o status da notificação para "Visualizado"!', 200, null, false);
+        }
+
     }
 
 } catch (Exception $e) {

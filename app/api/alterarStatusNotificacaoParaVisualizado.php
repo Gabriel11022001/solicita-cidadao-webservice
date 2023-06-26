@@ -37,4 +37,5 @@ try {
     
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se alterar o status da notificação para visualizado!', $e->getMessage());
+    var_dump($e->getMessage());
 }

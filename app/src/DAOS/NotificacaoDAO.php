@@ -39,7 +39,7 @@ class NotificacaoDAO extends DAO
     }
 
     public function alterarStatusNotificacaoParaVisualizado($id) {
-        $query = "UPDATE " . $this->nomeTabela . " SET status = Visualizado
+        $query = "UPDATE " . $this->nomeTabela . " SET status = 'Visualizado'
         WHERE id = :id;";
         $stmt = $this->conexaoBancoDados->prepare($query);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
