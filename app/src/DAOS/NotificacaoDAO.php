@@ -16,7 +16,7 @@ class NotificacaoDAO extends DAO
         FROM ' . $this->nomeTabela . ' AS tbln, tbl_solicitacoes_servico AS tbls, 
         tbl_usuarios AS tblu WHERE tbln.usuario_id = tblu.id
         AND tbln.solicitacao_servico_id = tbls.id
-        AND tblu.id = :usuario_id ORDER BY tbln.data_envio ASC;';
+        AND tblu.id = :usuario_id ORDER BY tbln.data_envio DESC;';
         $stmt = $this->conexaoBancoDados->prepare($query);
         $stmt->bindValue(':usuario_id', $idUsuario, PDO::PARAM_INT);
         $stmt->execute();

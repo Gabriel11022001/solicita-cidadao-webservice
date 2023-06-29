@@ -81,7 +81,7 @@ class InstituicaoDAO extends DAO
     }
 
     public function buscarTodasInstituicoesAtivas() {
-        $query = 'SELECT * FROM ' . $this->nomeTabela . ' WHERE status = true ORDER BY nome ASC;';
+        $query = 'SELECT id, nome, cnpj FROM ' . $this->nomeTabela . ' WHERE status = true ORDER BY nome ASC;';
         $stmt = $this->conexaoBancoDados->prepare($query);
         $stmt->execute();
 

@@ -167,6 +167,9 @@ class Rota
                 case str_contains($endpoint, '/buscar-solicitacoes-instituicao-para-encaminhar-a-equipe'):
                     $arquivoCarregar = 'buscarSolicitacoesServicoInstituicaoParaEncaminharAEquipe.php';
                     break;
+                case str_contains($endpoint, '/buscar-pelo-id'):
+                    $arquivoCarregar = 'buscarSolicitacaoServicoPeloId.php';
+                    break;
                 default:
                     $arquivoCarregar = 'buscarTodasSolicitacoesServico.php';
                     break;
@@ -182,6 +185,16 @@ class Rota
                     $arquivoCarregar = 'buscarTodasNotificacoesCidadao.php';
                     break;
                 default: 
+                    break;
+            }
+
+        } elseif (str_contains($endpoint, '/perito')) {
+
+            switch ($endpoint) {
+                case str_contains($endpoint, '/buscar-peritos-ativos'):
+                    $arquivoCarregar = 'buscarPeritosAtivos.php';
+                    break;
+                default:
                     break;
             }
 
