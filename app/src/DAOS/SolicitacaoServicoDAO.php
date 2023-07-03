@@ -138,4 +138,17 @@ class SolicitacaoServicoDAO extends DAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function buscarSolicitacoesEquipe($equipeId) {
+        $query = "SELECT id, titulo, protocolo, posicao_fila,
+        status, prioridade, data_registro FROM tbl_solicitacoes_servico 
+        WHERE equipe_id = :equipe_id
+        AND status = 'Aguardando tratamento'
+        ORDER BY posicao_fila ASC;";
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':equipe_id', $equipeId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

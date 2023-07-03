@@ -172,6 +172,9 @@ class Rota
                 case str_contains($endpoint, '/buscar-solicitacoes-perito'):
                     $arquivoCarregar = 'buscarSolicitacoesPerito.php';
                     break;
+                case str_contains($endpoint, '/buscar-solicitacoes-equipe'):
+                    $arquivoCarregar = 'buscarSolicitacoesEquipe.php';
+                    break;
                 case str_contains($endpoint, '/buscar-pelo-id'):
                     $arquivoCarregar = 'buscarSolicitacaoServicoPeloId.php';
                     break;
