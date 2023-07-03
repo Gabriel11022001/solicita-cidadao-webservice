@@ -30,4 +30,13 @@ class PeritoDAO extends UsuarioDAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function obterIdPeritoPeloIdUsuario($idUsuario) {
+        $query = 'SELECT id FROM ' . $this->nomeTabela . ' WHERE usuario_id = :usuario_id;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':usuario_id', $idUsuario, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

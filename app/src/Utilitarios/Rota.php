@@ -55,6 +55,8 @@ class Rota
             $arquivoCarregar = 'cadastrarNotificacao.php';
         } elseif ($endpoint === '/solicitacao') {
             $arquivoCarregar = 'cadastrarSolicitacaoServico.php';
+        } elseif ($endpoint === '/cancelamento-solicitacao-servico') {
+            $arquivoCarregar = 'cadastrarCancelamentoSolicitacaoServico.php';
         } else {
             self::requisicaoInvalida();
             
@@ -166,6 +168,9 @@ class Rota
                     break;
                 case str_contains($endpoint, '/buscar-solicitacoes-instituicao-para-encaminhar-a-equipe'):
                     $arquivoCarregar = 'buscarSolicitacoesServicoInstituicaoParaEncaminharAEquipe.php';
+                    break;
+                case str_contains($endpoint, '/buscar-solicitacoes-perito'):
+                    $arquivoCarregar = 'buscarSolicitacoesPerito.php';
                     break;
                 case str_contains($endpoint, '/buscar-pelo-id'):
                     $arquivoCarregar = 'buscarSolicitacaoServicoPeloId.php';

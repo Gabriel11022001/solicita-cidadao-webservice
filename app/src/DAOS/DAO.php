@@ -21,7 +21,7 @@ abstract class DAO
         'tbl_solicitacoes_servico',
         'tbl_laudos',
         'tbl_evidencias',
-        'tbl_motivos_cancelamentos',
+        'tbl_cancelamentos_solicitacoes',
         'tbl_instituicoes',
         'tbl_equipes'
     ];
