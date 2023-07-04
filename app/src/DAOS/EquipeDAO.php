@@ -45,4 +45,17 @@ class EquipeDAO extends DAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function buscarTecnicosDaEquipe($idEquipe) {
+        $query = 'SELECT tblu.nome, tblu.cpf FROM tbl_usuarios AS tblu,
+        tbl_tecnicos AS tblt, tbl_equipes AS tble
+        WHERE tblu.id = tblt.usuario_id
+        AND tble.id = :id_equipe
+        ORDER BY tblu.nome ASC;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':id_equipe', $idEquipe, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
