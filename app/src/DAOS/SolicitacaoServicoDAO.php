@@ -64,18 +64,6 @@ class SolicitacaoServicoDAO extends DAO
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * @param $id
-     * @return void
-     * Esse método consiste em definir como 'null' a posição
-     * da solicitação de serviço, para as solicitações
-     * que foram concluidas, canceladas ou reprovadas
-     * pelo perito na analise
-     */
-    public function removerPosicaoDaSolicitacaoDeServico($id) {
-
-    }
-
     public function alterarNumeroProtocoloSolicitacaoServico($id, $numeroProtocolo) {
         $query = 'UPDATE ' . $this->nomeTabela . ' SET protocolo = :numero_protocolo
         WHERE id = :id;';
@@ -104,16 +92,58 @@ class SolicitacaoServicoDAO extends DAO
     }
 
     public function buscarSolicitacoesServicoInstituicaoParaEncaminharParaEquipe($idInstituicao) {
-        $query = "SELECT tbls.id, tbls.titulo, tbls.protocolo, tbls.posicao_fila,
-        tbls.status, tbls.prioridade, tbls.data_registro, tblu.nome, tbli.nome 
-        FROM tbl_solicitacoes_servico AS tbls, tbl_usuarios AS tblu,
-        tbl_cidadaos AS tblc, tbl_instituicoes AS tbli WHERE tbls.cidadao_id = tblc.id
-        AND tblu.id = tblc.usuario_id
-        AND tbls.status = 'Aguardando encaminhamento a equipe responsável'
-        AND tbls.instituicao_id = :instituicao_id
-        ORDER BY tbls.posicao_fila ASC;";
+        $query = "SELECT id, titulo, protocolo, posicao_fila,
+        status, prioridade, data_registro
+        FROM tbl_solicitacoes_servico WHERE status = 'Aguardando encaminhamento a equipe responsável'
+        AND instituicao_id = :instituicao_id
+        ORDER BY posicao_fila ASC;";
         $stmt = $this->conexaoBancoDados->prepare($query);
         $stmt->bindValue(':instituicao_id', $idInstituicao, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function buscarSolicitacaoPeloId($id) {
+        $query = 'SELECT * FROM ' . $this->nomeTabela . ' WHERE id = :id;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function cancelarSolicitacao($id) {
+        $query = "UPDATE " . $this->nomeTabela . " SET status = 'Cancelado', posicao_fila = '-1'
+        WHERE id = :id;";
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    public function buscarSolicitacoesServicoPerito($peritoId) {
+        $query = "SELECT tbls.id, tbls.titulo, tbls.protocolo, tbls.posicao_fila,
+        tbls.status, tbls.prioridade, tbls.data_registro FROM tbl_solicitacoes_servico AS tbls,
+        tbl_peritos AS tblp  WHERE tbls.perito_id = tblp.id
+        AND tblp.id = :perito_id
+        AND tbls.status = 'Aguardando análise do perito'
+        ORDER BY tbls.posicao_fila ASC;";
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':perito_id', $peritoId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function buscarSolicitacoesEquipe($equipeId) {
+        $query = "SELECT id, titulo, protocolo, posicao_fila,
+        status, prioridade, data_registro FROM tbl_solicitacoes_servico 
+        WHERE equipe_id = :equipe_id
+        AND status = 'Aguardando tratamento'
+        ORDER BY posicao_fila ASC;";
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':equipe_id', $equipeId, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

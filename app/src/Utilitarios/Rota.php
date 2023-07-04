@@ -55,6 +55,8 @@ class Rota
             $arquivoCarregar = 'cadastrarNotificacao.php';
         } elseif ($endpoint === '/solicitacao') {
             $arquivoCarregar = 'cadastrarSolicitacaoServico.php';
+        } elseif ($endpoint === '/cancelamento-solicitacao-servico') {
+            $arquivoCarregar = 'cadastrarCancelamentoSolicitacaoServico.php';
         } else {
             self::requisicaoInvalida();
             
@@ -167,6 +169,15 @@ class Rota
                 case str_contains($endpoint, '/buscar-solicitacoes-instituicao-para-encaminhar-a-equipe'):
                     $arquivoCarregar = 'buscarSolicitacoesServicoInstituicaoParaEncaminharAEquipe.php';
                     break;
+                case str_contains($endpoint, '/buscar-solicitacoes-perito'):
+                    $arquivoCarregar = 'buscarSolicitacoesPerito.php';
+                    break;
+                case str_contains($endpoint, '/buscar-solicitacoes-equipe'):
+                    $arquivoCarregar = 'buscarSolicitacoesEquipe.php';
+                    break;
+                case str_contains($endpoint, '/buscar-pelo-id'):
+                    $arquivoCarregar = 'buscarSolicitacaoServicoPeloId.php';
+                    break;
                 default:
                     $arquivoCarregar = 'buscarTodasSolicitacoesServico.php';
                     break;
@@ -182,6 +193,16 @@ class Rota
                     $arquivoCarregar = 'buscarTodasNotificacoesCidadao.php';
                     break;
                 default: 
+                    break;
+            }
+
+        } elseif (str_contains($endpoint, '/perito')) {
+
+            switch ($endpoint) {
+                case str_contains($endpoint, '/buscar-peritos-ativos'):
+                    $arquivoCarregar = 'buscarPeritosAtivos.php';
+                    break;
+                default:
                     break;
             }
 

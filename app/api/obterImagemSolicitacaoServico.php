@@ -16,6 +16,7 @@ try {
         exit;
     }
 
+    $ext = explode('.', $nomeImagem)[1];
     $caminhoParaImagem = 'images/' . $nomeImagem;
     
     if (file_exists($caminhoParaImagem)) {
@@ -24,7 +25,8 @@ try {
         if ($conteudoImagem) {
             $imagemBase64 = base64_encode($conteudoImagem);
             RespostaHttp::resposta('Leitura de imagem realizado com sucesso!', 200, [
-                'imagem_base_64' => $imagemBase64
+                'imagem_base_64' => $imagemBase64,
+                'ext' => $ext
             ], true);
         } else {
             RespostaHttp::resposta('Ocorreu um erro ao tentar-se realizar a leitura do arquivo de imagem em questão!', 200, null, false);
