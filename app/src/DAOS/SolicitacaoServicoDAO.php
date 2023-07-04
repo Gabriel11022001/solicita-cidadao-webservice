@@ -92,14 +92,11 @@ class SolicitacaoServicoDAO extends DAO
     }
 
     public function buscarSolicitacoesServicoInstituicaoParaEncaminharParaEquipe($idInstituicao) {
-        $query = "SELECT tbls.id, tbls.titulo, tbls.protocolo, tbls.posicao_fila,
-        tbls.status, tbls.prioridade, tbls.data_registro, tblu.nome, tbli.nome 
-        FROM tbl_solicitacoes_servico AS tbls, tbl_usuarios AS tblu,
-        tbl_cidadaos AS tblc, tbl_instituicoes AS tbli WHERE tbls.cidadao_id = tblc.id
-        AND tblu.id = tblc.usuario_id
-        AND tbls.status = 'Aguardando encaminhamento a equipe responsável'
-        AND tbls.instituicao_id = :instituicao_id
-        ORDER BY tbls.posicao_fila ASC;";
+        $query = "SELECT id, titulo, protocolo, posicao_fila,
+        status, prioridade, data_registro
+        FROM tbl_solicitacoes_servico WHERE status = 'Aguardando encaminhamento a equipe responsável'
+        AND instituicao_id = :instituicao_id
+        ORDER BY posicao_fila ASC;";
         $stmt = $this->conexaoBancoDados->prepare($query);
         $stmt->bindValue(':instituicao_id', $idInstituicao, PDO::PARAM_INT);
         $stmt->execute();
