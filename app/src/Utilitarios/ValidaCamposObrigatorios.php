@@ -224,11 +224,33 @@ class ValidaCamposObrigatorios
         return $errosFormulario;
     }
 
+    public static function validarFormularioEditarEquipe($equipe) {
+        $errosFormulario = [];
+
+        if (empty($equipe->getNome())) {
+            $errosFormulario['nome'] = 'Informe o nome da equipe!';
+        }
+
+        if (empty($equipe->getDescricao())) {
+            $errosFormulario['descricao'] = 'Informe a descrição da equipe!';
+        }
+
+        if (empty($equipe->getId())) {
+            $errosFormulario['id'] = 'Informe o id da equipe!';
+        }
+
+        return $errosFormulario;
+    }
+
     public static function validarFormularioCadastrarSolicitacaoServico($solicitacao) {
         $errosForm = [];
 
         if (empty($solicitacao->getTitulo())) {
-            $errosForm['titulo'] = 'Informe o título!';
+            $errosForm['titulo'] = 'Informe o título da solicitação!';
+        }
+
+        if (empty($solicitacao->getDescricao())) {
+            $errosForm['descricao'] = 'Informe a descrição da solicitação!';
         }
 
         if (empty($solicitacao->getCidadaoId())) {
@@ -236,11 +258,11 @@ class ValidaCamposObrigatorios
         }
 
         if (empty($solicitacao->getStatus())) {
-            $errosForm['status'] = 'Informe o status!';
+            $errosForm['status'] = 'Informe o status da solicitação!';
         }
 
         if (empty($solicitacao->getPrioridade())) {
-            $errosForm['prioridade'] = 'Informe a prioridade!';
+            $errosForm['prioridade'] = 'Informe a prioridade da solicitação!';
         }
 
         if (empty($solicitacao->getEndereco()->getLogradouro())) {
@@ -257,6 +279,10 @@ class ValidaCamposObrigatorios
 
         if (empty($solicitacao->getEndereco()->getEstado())) {
             $errosForm['estado'] = 'Informe o estado!';
+        }
+
+        if (empty($solicitacao->getEndereco()->getCep())) {
+            $errosForm['cep'] = 'Informe o cep!';
         }
 
         return $errosForm;

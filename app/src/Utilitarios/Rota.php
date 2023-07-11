@@ -236,6 +236,8 @@ class Rota
             $arquivoCarregar = 'alterarSenhaUsuario.php';
         } elseif ($endpoint === '/notificacao/alterar-status-para-visualizado') {
             $arquivoCarregar = 'alterarStatusNotificacaoParaVisualizado.php';
+        } elseif ($endpoint === '/equipe') {
+            $arquivoCarregar = 'editarEquipe.php';
         } else {
             self::requisicaoInvalida();
             

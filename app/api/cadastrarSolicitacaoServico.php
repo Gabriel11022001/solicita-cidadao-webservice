@@ -71,6 +71,7 @@ try {
 
     $cidadaoDAO = new CidadaoDAO($conexaoBancoDados, 'tbl_cidadaos');
 
+    // validando se existe um cidadão cadastrado com o id informado
     if (!$cidadaoDAO->buscarPeloId($solicitacaoServico->getCidadaoId())) {
         RespostaHttp::resposta('Não existe um cidadão cadastrado com esse id no banco de dados!', 200, null, false);
         exit;

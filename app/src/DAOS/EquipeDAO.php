@@ -58,4 +58,17 @@ class EquipeDAO extends DAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function editarEquipe($equipe) {
+        $query = 'UPDATE ' . $this->nomeTabela . ' SET nome = :nome,
+        descricao = :descricao, status = :status
+        WHERE id = :id;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':nome', $equipe->getNome(), PDO::PARAM_STR);
+        $stmt->bindValue(':descricao', $equipe->getDescricao(), PDO::PARAM_STR);
+        $stmt->bindValue(':status', $equipe->getStatus(), PDO::PARAM_BOOL);
+        $stmt->bindValue(':id', $equipe->getId(), PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
 }

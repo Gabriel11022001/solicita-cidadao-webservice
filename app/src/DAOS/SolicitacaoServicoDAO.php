@@ -114,7 +114,7 @@ class SolicitacaoServicoDAO extends DAO
     }
 
     public function cancelarSolicitacao($id) {
-        $query = "UPDATE " . $this->nomeTabela . " SET status = 'Cancelado', posicao_fila = '-1'
+        $query = "UPDATE " . $this->nomeTabela . " SET status = 'Cancelado', posicao_fila = -1
         WHERE id = :id;";
         $stmt = $this->conexaoBancoDados->prepare($query);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
