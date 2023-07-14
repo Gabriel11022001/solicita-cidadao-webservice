@@ -238,6 +238,8 @@ class Rota
             $arquivoCarregar = 'alterarStatusNotificacaoParaVisualizado.php';
         } elseif ($endpoint === '/equipe') {
             $arquivoCarregar = 'editarEquipe.php';
+        } elseif ($endpoint === '/solicitacao-servico/encaminhar-instituicao-ou-perito') {
+            $arquivoCarregar = 'encaminharSolicitacaoParaInstituicaoOuPerito.php';
         } else {
             self::requisicaoInvalida();
             

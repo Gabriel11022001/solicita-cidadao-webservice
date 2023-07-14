@@ -264,7 +264,7 @@ class ValidaCamposObrigatorios
         if (empty($solicitacao->getPrioridade())) {
             $errosForm['prioridade'] = 'Informe a prioridade da solicitação!';
         }
-
+        
         if (empty($solicitacao->getEndereco()->getLogradouro())) {
             $errosForm['logradouro'] = 'Informe o logradouro!';
         }

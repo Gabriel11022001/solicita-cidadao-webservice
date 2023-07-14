@@ -148,4 +148,49 @@ class SolicitacaoServicoDAO extends DAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function encaminharSolicitacaoParaInstituicaoOuPerito(
+        $idSolicitacao,
+        $idInstituicao,
+        $idPerito,
+        $novoStatusSolicitacao,
+        $prioridade,
+        $observacaoSecretario,
+        $observacaoGestorSecretaria
+    ) {
+        $query = 'UPDATE ' . $this->nomeTabela . ' SET status = :novo_status_solicitacao,
+        prioridade = :prioridade, ';
+
+        if (empty($idPerito)) {
+            $query .= 'instituicao_id = :instituicao_id, ';
+        } else {
+            $query .= 'perito_id = :perito_id, ';
+        }
+
+        if (empty($observacaoSecretario)) {
+            $query .= 'observacao_gestor_secretaria = :obs_gestor_secretaria ';
+        } else {
+            $query .= 'observacao_secretario = :obs_secretario ';
+        }
+
+        $query .= ' WHERE id = :solicitacao_servico_id;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':solicitacao_servico_id', $idSolicitacao, PDO::PARAM_INT);
+        $stmt->bindValue(':novo_status_solicitacao', $novoStatusSolicitacao, PDO::PARAM_STR);
+        $stmt->bindValue(':prioridade', $prioridade, PDO::PARAM_STR);
+
+        if (empty($idPerito)) {
+            $stmt->bindValue(':instituicao_id', $idInstituicao, PDO::PARAM_INT);
+        } else {
+            $stmt->bindValue(':perito_id', $idPerito, PDO::PARAM_INT);
+        }
+
+        if (empty($observacaoSecretario)) {
+            $stmt->bindValue(':obs_gestor_secretaria', $observacaoGestorSecretaria, PDO::PARAM_STR);
+        } else {
+            $stmt->bindValue(':obs_secretario', $observacaoSecretario, PDO::PARAM_STR);
+        }
+
+        return $stmt->execute();
+    }
 }
