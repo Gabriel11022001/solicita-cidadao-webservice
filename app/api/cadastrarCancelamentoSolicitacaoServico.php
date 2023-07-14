@@ -46,7 +46,7 @@ try {
     $cancelamentoDAO = new CancelamentoSolicitacaoDAO($conexaoBancoDados, 'tbl_cancelamentos_solicitacoes');
     $solicitacaoServicoDAO = new SolicitacaoServicoDAO($conexaoBancoDados, 'tbl_solicitacoes_servico');
 
-    // validando se existe uma solicitação cadastrada com o e-mail informado
+    // validando se existe uma solicitação cadastrada com o id informado
     if (!$solicitacaoServicoDAO->buscarSolicitacaoPeloId($idSolicitacao)) {
         RespostaHttp::resposta('Não existe uma solicitação de serviço cadastrada no banco de dados com esse id!', 200, null, false);
     } else {

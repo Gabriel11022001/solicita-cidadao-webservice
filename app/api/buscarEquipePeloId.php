@@ -24,6 +24,9 @@ try {
     $equipe = $equipeDAO->buscarPeloId($id);
 
     if ($equipe) {
+        // buscando os técnicos da equipe
+        $tecnicosEquipe = $equipeDAO->buscarTecnicosDaEquipe($id);
+        $equipe['tecnicos'] = $tecnicosEquipe;
         RespostaHttp::resposta('Equipe encontrada com sucesso!', 200, $equipe, true);
     } else {
         RespostaHttp::resposta('Não existe uma equipe cadastrada com esse id no banco de dados!');
@@ -31,4 +34,5 @@ try {
 
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se buscar a equipe pelo id!', $e->getMessage());
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar a equipe pelo id!', $e->getMessage());
 }
