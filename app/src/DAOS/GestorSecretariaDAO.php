@@ -19,4 +19,13 @@ class GestorSecretariaDAO extends UsuarioDAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function buscarEmailsGestoresSecretaria() {
+        $query = 'SELECT tblu.email FROM tbl_usuarios AS tblu, tbl_gestores_secretaria AS tblgs
+        WHERE tblu.id = tblgs.usuario_id AND tblu.status = true;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

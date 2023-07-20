@@ -19,4 +19,13 @@ class SecretarioDAO extends UsuarioDAO
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function buscarEmailsSecretarios() {
+        $query = 'SELECT tblu.email FROM tbl_usuarios AS tblu, tbl_secretarios AS tbls
+        WHERE tblu.id = tbls.usuario_id AND tblu.status = true;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
