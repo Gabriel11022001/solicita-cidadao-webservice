@@ -271,6 +271,7 @@ try {
                     <li><strong>Uf:</strong> ' . $solicitacaoServico->getEndereco()->getEstado() . '</li>
                     <li><strong>Número de residência:</strong> ' . $solicitacaoServico->getEndereco()->getNumero() . '</li>
                     <li><strong>Status:</strong> Aguardando encaminhamento</li>
+                    <li><strong>Posição da solicitação na fila de atendimento:</strong>' . $solicitacaoServico->getPosicaoFilaAtendimento() . '</li>
                 </ul>';
                 // mensagem para os gestores de secretaria e os secretários
                 $mensagemGestoresSecretariaSecretarios = 'Foi realizada uma solicitação de serviço na data de ' . $solicitacaoServico->getDataRegistro()->format('d-m-Y H:i:s') . '!<br>
@@ -285,6 +286,7 @@ try {
                     <li><strong>Uf:</strong> ' . $solicitacaoServico->getEndereco()->getEstado() . '</li>
                     <li><strong>Número de residência:</strong> ' . $solicitacaoServico->getEndereco()->getNumero() . '</li>
                     <li><strong>Status:</strong> Aguardando encaminhamento</li>
+                    <li><strong>Posição da solicitação na fila de atendimento:</strong>' . $solicitacaoServico->getPosicaoFilaAtendimento() . '</li>
                 </ul>';
 
                 if (!GerenciadorEmail::enviarEmail($cidadaoSolicitacao['email'], $mensagemCidadao, 'Realização de solicitação de serviço')) {
@@ -367,5 +369,5 @@ try {
     // realizando o rollback da transação
     $conexaoBancoDados->rollBack();
     Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar a solicitação de serviço!', $e->getMessage());
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a solicitação de serviço!', 200, $e->getMessage(), false);
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a solicitação de serviço!', 200, null, false);
 }
