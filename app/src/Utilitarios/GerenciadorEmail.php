@@ -12,9 +12,10 @@ class GerenciadorEmail
      * Método para realizar o envio de e-mails
      */
     public static function enviarEmail($emailDestinatario, $mensagem, $assunto) {
-        $email = new PHPMailer(true);
-        $email->SMTPDebug = SMTP::DEBUG_SERVER;
+        $email = new PHPMailer();
+        // $email->SMTPDebug = SMTP::DEBUG_SERVER;
         $email->isSMTP();
+        $email->SMTPDebug = 0;
         $email->Host = 'smtp.gmail.com';
         $email->SMTPAuth = true;
         $email->Username = 'solicitacidadao.email.teste@gmail.com';
@@ -29,7 +30,7 @@ class GerenciadorEmail
         $email->Subject = $assunto;
         // corpo do e-mail
         $email->CharSet = 'UTF-8';
-        $email->isHTML();
+        $email->isHTML(true);
         $email->Body = $mensagem;
 
         // efetivando o envio do e-mail

@@ -50,4 +50,14 @@ class PeritoDAO extends UsuarioDAO
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function buscarPeloId($idPerito) {
+        $query = 'SELECT * FROM tbl_peritos AS tblp, tbl_usuarios AS tblu
+        WHERE tblp.usuario_id = tblu.id AND tblp.id = :id_perito;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':id_perito', $idPerito, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

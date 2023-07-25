@@ -13,6 +13,7 @@ use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\GestorSecretariaDAO;
 use SistemaSolicitacaoServico\App\DAOS\NotificacaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\SecretarioDAO;
+use SistemaSolicitacaoServico\App\DAOS\UsuarioDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\GeradorNumeroProtocoloSolicitacao;
 use SistemaSolicitacaoServico\App\Utilitarios\GerenciadorEmail;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
@@ -238,13 +239,14 @@ try {
         if ($solicitacaoServicoDAO->alterarNumeroProtocoloSolicitacaoServico($idSolicitacaoServico, $solicitacaoServico->getNumeroProtocolo())) {
             // registrando a notificação para o cidadão
             $notificacaoDAO = new NotificacaoDAO($conexaoBancoDados, 'tbl_notificacoes');
-            
+            $idUsuario = $cidadaoSolicitacao['usuario_id'];
+
             if (!$notificacaoDAO->salvar([
                 'mensagem' => [
                     'dado' => 'Sua solicitação de serviço foi realizada com sucesso na data de ' . $solicitacaoServico->getDataRegistro()->format('d-m-Y H:i:s') . ', o número de protocolo gerado foi ' . $solicitacaoServico->getNumeroProtocolo() . ', você pode estar acompanhando o status de sua solicitação acessando o sistema da secretaria e filtrando sua solicitação pelo número de protocolo fornecido!',
                     'tipo_dado' => PDO::PARAM_STR
                 ],
-                'usuario_id' => [ 'dado' => $solicitacaoServico->getCidadaoId(), 'tipo_dado' => PDO::PARAM_INT ],
+                'usuario_id' => [ 'dado' => $idUsuario, 'tipo_dado' => PDO::PARAM_INT ],
                 'solicitacao_servico_id' => [
                     'dado' => $idSolicitacaoServico,
                     'tipo_dado' => PDO::PARAM_INT
@@ -349,7 +351,7 @@ try {
                         'prioridade' => $solicitacaoServico->getPrioridade(),
                         'posicao_fila' => $solicitacaoServico->getPosicaoFilaAtendimento(),
                         'cidadao_id' => $solicitacaoServico->getCidadaoId()
-                    ]);
+                    ], true);
                 }
 
             }
@@ -369,5 +371,5 @@ try {
     // realizando o rollback da transação
     $conexaoBancoDados->rollBack();
     Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar a solicitação de serviço!', $e->getMessage());
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a solicitação de serviço!', 200, null, false);
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a solicitação de serviço: ' . $e->getMessage(), 200, null, false);
 }

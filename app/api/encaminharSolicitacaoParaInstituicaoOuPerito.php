@@ -85,7 +85,7 @@ try {
 
     if ($tipoEncaminhamento === 'perito') {
         $peritoDAO = new PeritoDAO($conexaoBancoDados, 'tbl_peritos');
-        $peritoDaSolicitacao = $peritoDAO->obterIdPeritoPeloIdUsuario($peritoId);
+        $peritoDaSolicitacao = $peritoDAO->buscarPeloId($peritoId);
 
         // validando se existe um perito cadastrado no banco de dados com o id informado
         if (!$peritoDaSolicitacao) {
@@ -93,7 +93,6 @@ try {
             exit;
         }
 
-        $peritoId = intval($peritoDaSolicitacao['id']);
     } else {
         $instituicaoDAO = new InstituicaoDAO($conexaoBancoDados, 'tbl_instituicoes');
 
@@ -311,5 +310,5 @@ try {
 } catch (Exception $e) {
     $conexaoBancoDados->rollBack();
     Log::registrarLog('Ocorreu um erro ao tentar-se encaminhar a solicitação!', $e->getMessage());
-    RespostaHttp::resposta('Ocorreu um erro ao tentar-se encaminhar a solicitação!', 200, null, false);
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se encaminhar a solicitação: ' . $e->getMessage(), 200, null, false);
 }
