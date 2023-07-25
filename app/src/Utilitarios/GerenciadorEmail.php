@@ -3,6 +3,7 @@
 namespace SistemaSolicitacaoServico\App\Utilitarios;
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 
 class GerenciadorEmail
 {
@@ -10,7 +11,29 @@ class GerenciadorEmail
     /**
      * Método para realizar o envio de e-mails
      */
-    public static function enviarEmail($emailDestinatario, $mensagem) {
-        $email = new PHPMailer(true);
+    public static function enviarEmail($emailDestinatario, $mensagem, $assunto) {
+        $email = new PHPMailer();
+        // $email->SMTPDebug = SMTP::DEBUG_SERVER;
+        $email->isSMTP();
+        $email->SMTPDebug = 0;
+        $email->Host = 'smtp.gmail.com';
+        $email->SMTPAuth = true;
+        $email->Username = 'solicitacidadao.email.teste@gmail.com';
+        $email->Password = 'doeuqcgdnyfdozgt';
+        $email->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $email->Port = 465;
+        // dados de quem envia o e-mail
+        $email->setFrom('solicitacidadao.email.teste@gmail.com', 'Solicita cidadão');
+        // dados do destinatário
+        $email->addAddress($emailDestinatario);
+        // assunto do e-mail
+        $email->Subject = $assunto;
+        // corpo do e-mail
+        $email->CharSet = 'UTF-8';
+        $email->isHTML(true);
+        $email->Body = $mensagem;
+
+        // efetivando o envio do e-mail
+        return $email->send();
     }
 }

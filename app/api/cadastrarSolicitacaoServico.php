@@ -10,7 +10,12 @@ use SistemaSolicitacaoServico\App\Utilitarios\ValidaCep;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaUF;
 use SistemaSolicitacaoServico\App\DAOS\SolicitacaoServicoDAO;
 use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
+use SistemaSolicitacaoServico\App\DAOS\GestorSecretariaDAO;
+use SistemaSolicitacaoServico\App\DAOS\NotificacaoDAO;
+use SistemaSolicitacaoServico\App\DAOS\SecretarioDAO;
+use SistemaSolicitacaoServico\App\DAOS\UsuarioDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\GeradorNumeroProtocoloSolicitacao;
+use SistemaSolicitacaoServico\App\Utilitarios\GerenciadorEmail;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 $conexaoBancoDados = ConexaoBancoDados::obterConexao();
@@ -70,9 +75,10 @@ try {
     }
 
     $cidadaoDAO = new CidadaoDAO($conexaoBancoDados, 'tbl_cidadaos');
+    $cidadaoSolicitacao = $cidadaoDAO->buscarPeloId($solicitacaoServico->getCidadaoId());
 
     // validando se existe um cidadão cadastrado com o id informado
-    if (!$cidadaoDAO->buscarPeloId($solicitacaoServico->getCidadaoId())) {
+    if (!$cidadaoSolicitacao) {
         RespostaHttp::resposta('Não existe um cidadão cadastrado com esse id no banco de dados!', 200, null, false);
         exit;
     }
@@ -228,21 +234,128 @@ try {
         $solicitacaoServico->setNumeroProtocolo(
             GeradorNumeroProtocoloSolicitacao::gerarNumeroProtocolo($idSolicitacaoServico)
         );
-        // atualizando o número de protocolo da solicitação de serviço
 
+        // atualizando o número de protocolo da solicitação de serviço
         if ($solicitacaoServicoDAO->alterarNumeroProtocoloSolicitacaoServico($idSolicitacaoServico, $solicitacaoServico->getNumeroProtocolo())) {
-            $conexaoBancoDados->commit();
-            RespostaHttp::resposta('A solicitação de serviço foi cadastrada com sucesso!', 201, [
-                'id' => $idSolicitacaoServico,
-                'numero_protocolo' => $solicitacaoServico->getNumeroProtocolo(),
-                'titulo' => $solicitacaoServico->getTitulo(),
-                'descricao' => $solicitacaoServico->getDescricao(),
-                'data_registro' => $solicitacaoServico->getDataRegistro()->format('d-m-Y H:i:s'),
-                'status' => $solicitacaoServico->getStatus(),
-                'prioridade' => $solicitacaoServico->getPrioridade(),
-                'posicao_fila' => $solicitacaoServico->getPosicaoFilaAtendimento(),
-                'cidadao_id' => $solicitacaoServico->getCidadaoId()
-            ]);
+            // registrando a notificação para o cidadão
+            $notificacaoDAO = new NotificacaoDAO($conexaoBancoDados, 'tbl_notificacoes');
+            $idUsuario = $cidadaoSolicitacao['usuario_id'];
+
+            if (!$notificacaoDAO->salvar([
+                'mensagem' => [
+                    'dado' => 'Sua solicitação de serviço foi realizada com sucesso na data de ' . $solicitacaoServico->getDataRegistro()->format('d-m-Y H:i:s') . ', o número de protocolo gerado foi ' . $solicitacaoServico->getNumeroProtocolo() . ', você pode estar acompanhando o status de sua solicitação acessando o sistema da secretaria e filtrando sua solicitação pelo número de protocolo fornecido!',
+                    'tipo_dado' => PDO::PARAM_STR
+                ],
+                'usuario_id' => [ 'dado' => $idUsuario, 'tipo_dado' => PDO::PARAM_INT ],
+                'solicitacao_servico_id' => [
+                    'dado' => $idSolicitacaoServico,
+                    'tipo_dado' => PDO::PARAM_INT
+                ],
+                'data_envio' => [
+                    'dado' => $solicitacaoServico->getDataRegistro()->format('Y-m-d H:i:s'),
+                    'tipo_dado' => PDO::PARAM_STR
+                ]
+            ])) {
+                $conexaoBancoDados->rollBack();
+                RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a solicitação de serviço!', 200, null, false);
+            } else {
+                // cadastrou a notificação com sucesso
+                // enviando e-mail para o cidadão, para os gestores de secretaria e secretários
+                // mensagem para o cidadão
+                $mensagemCidadao = 'Sua solicitação de serviço foi realizada com sucesso<br>
+                Dados da solicitação:<br>
+                <ul>
+                    <li><strong>Data de cadastro:</strong> ' . $solicitacaoServico->getDataRegistro()->format('d-m-Y H:i:s') . '</li>
+                    <li><strong>Protocolo:</strong> ' . $solicitacaoServico->getNumeroProtocolo() . '</li>
+                    <li><strong>Logradouro:</strong> ' . $solicitacaoServico->getEndereco()->getLogradouro() . '</li>
+                    <li><strong>Bairro:</strong> ' . $solicitacaoServico->getEndereco()->getBairro() . '</li>
+                    <li><strong>Cidade:</strong> ' . $solicitacaoServico->getEndereco()->getCidade() . '</li>
+                    <li><strong>Uf:</strong> ' . $solicitacaoServico->getEndereco()->getEstado() . '</li>
+                    <li><strong>Número de residência:</strong> ' . $solicitacaoServico->getEndereco()->getNumero() . '</li>
+                    <li><strong>Status:</strong> Aguardando encaminhamento</li>
+                    <li><strong>Posição da solicitação na fila de atendimento:</strong>' . $solicitacaoServico->getPosicaoFilaAtendimento() . '</li>
+                </ul>';
+                // mensagem para os gestores de secretaria e os secretários
+                $mensagemGestoresSecretariaSecretarios = 'Foi realizada uma solicitação de serviço na data de ' . $solicitacaoServico->getDataRegistro()->format('d-m-Y H:i:s') . '!<br>
+                Dados da solicitação:<br>
+                <ul>
+                    <li><strong>Cidadão:</strong> ' . $cidadaoSolicitacao['nome'] . '</li>
+                    <li><strong>Cpf do cidadão:</strong> ' . $cidadaoSolicitacao['cpf'] . '</li>
+                    <li><strong>Protocolo:</strong> ' . $solicitacaoServico->getNumeroProtocolo() . '</li>
+                    <li><strong>Logradouro:</strong> ' . $solicitacaoServico->getEndereco()->getLogradouro() . '</li>
+                    <li><strong>Bairro:</strong> ' . $solicitacaoServico->getEndereco()->getBairro() . '</li>
+                    <li><strong>Cidade:</strong> ' . $solicitacaoServico->getEndereco()->getCidade() . '</li>
+                    <li><strong>Uf:</strong> ' . $solicitacaoServico->getEndereco()->getEstado() . '</li>
+                    <li><strong>Número de residência:</strong> ' . $solicitacaoServico->getEndereco()->getNumero() . '</li>
+                    <li><strong>Status:</strong> Aguardando encaminhamento</li>
+                    <li><strong>Posição da solicitação na fila de atendimento:</strong>' . $solicitacaoServico->getPosicaoFilaAtendimento() . '</li>
+                </ul>';
+
+                if (!GerenciadorEmail::enviarEmail($cidadaoSolicitacao['email'], $mensagemCidadao, 'Realização de solicitação de serviço')) {
+                    $conexaoBancoDados->rollBack();
+                    RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a solicitação de serviço!', 200, null, false);
+                } else {
+                    // o e-mail foi enviado com sucesso para o cidadão
+                    // enviar o e-mail para os secretários e gestores de secretaria
+                    $emailsSecretarios = [];
+                    $emailsGestoresSecretaria = [];
+                    $secretarioDAO = new SecretarioDAO($conexaoBancoDados, 'tbl_secretarios');
+                    $gestorSecretariaDAO = new GestorSecretariaDAO($conexaoBancoDados, 'tbl_gestores_secretaria');
+                    // buscando os e-mails dos secretários
+                    $emailsSecretarios = $secretarioDAO->buscarEmailsSecretarios();
+                    // buscanco os e-mails dos gestores de secretaria
+                    $emailsGestoresSecretaria = $gestorSecretariaDAO->buscarEmailsGestoresSecretaria();
+
+                    // enviando e-mails para os secretários
+                    if (count($emailsSecretarios) > 0) {
+
+                        foreach ($emailsSecretarios as $email) {
+
+                            if (!GerenciadorEmail::enviarEmail($email['email'], $mensagemGestoresSecretariaSecretarios, 'Solicitação de serviço')) {
+                                $conexaoBancoDados->rollBack();
+                                RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a solicitação de serviço!', 200, null, false);
+                                exit;
+                            }   
+
+                        }
+
+                    }
+
+                    // enviando e-mails para os gestores de secretaria
+                    if (count($emailsGestoresSecretaria) > 0) {
+
+                        foreach ($emailsGestoresSecretaria as $email) {
+
+                            if (!GerenciadorEmail::enviarEmail(
+                                $email['email'],
+                                $mensagemGestoresSecretariaSecretarios,
+                                'Solicitação de serviço'
+                            )) {
+                                $conexaoBancoDados->rollBack();
+                                RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a solicitação de serviço!', 200, null, false);
+                                exit;
+                            }
+
+                        }
+
+                    }
+
+                    $conexaoBancoDados->commit();
+                    RespostaHttp::resposta('A solicitação de serviço foi cadastrada com sucesso!', 201, [
+                        'id' => $idSolicitacaoServico,
+                        'numero_protocolo' => $solicitacaoServico->getNumeroProtocolo(),
+                        'titulo' => $solicitacaoServico->getTitulo(),
+                        'descricao' => $solicitacaoServico->getDescricao(),
+                        'data_registro' => $solicitacaoServico->getDataRegistro()->format('d-m-Y H:i:s'),
+                        'status' => $solicitacaoServico->getStatus(),
+                        'prioridade' => $solicitacaoServico->getPrioridade(),
+                        'posicao_fila' => $solicitacaoServico->getPosicaoFilaAtendimento(),
+                        'cidadao_id' => $solicitacaoServico->getCidadaoId()
+                    ], true);
+                }
+
+            }
+
         } else {
             $conexaoBancoDados->rollBack();
             RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a solicitação de serviço!', 200, null, false);
@@ -258,4 +371,5 @@ try {
     // realizando o rollback da transação
     $conexaoBancoDados->rollBack();
     Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar a solicitação de serviço!', $e->getMessage());
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a solicitação de serviço: ' . $e->getMessage(), 200, null, false);
 }

@@ -39,4 +39,25 @@ class PeritoDAO extends UsuarioDAO
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function buscarEmailPeritoPeloIdPerito($idPerito) {
+        $query = 'SELECT tblu.email FROM tbl_usuarios AS tblu, tbl_peritos AS tblp
+        WHERE tblu.id = tblp.usuario_id
+        AND tblp.id = :perito_id;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':perito_id', $idPerito, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function buscarPeloId($idPerito) {
+        $query = 'SELECT * FROM tbl_peritos AS tblp, tbl_usuarios AS tblu
+        WHERE tblp.usuario_id = tblu.id AND tblp.id = :id_perito;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':id_perito', $idPerito, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

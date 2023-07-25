@@ -24,13 +24,12 @@ try {
     $peritoDAO = new PeritoDAO($conexaoBancoDados, 'tbl_peritos');
     $solicitacaoServicoDAO = new SolicitacaoServicoDAO($conexaoBancoDados, 'tbl_solicitacoes_servico');
 
-    if (!$peritoDAO->buscarUsuarioPeloId($id)) {
+    if (!$peritoDAO->buscarPeloId($id)) {
         RespostaHttp::resposta('Não existe um perito cadastrado no banco de dados com esse id!', 200, null, false);
         exit;
     }
 
-    $peritoId = $peritoDAO->obterIdPeritoPeloIdUsuario($id)['id'];
-    $solicitacoes = $solicitacaoServicoDAO->buscarSolicitacoesServicoPerito($peritoId);
+    $solicitacoes = $solicitacaoServicoDAO->buscarSolicitacoesServicoPerito($id);
 
     if (count($solicitacoes) === 0) {
         RespostaHttp::resposta('Não existem solicitações cadastradas no banco de dados!', 200, null, false);

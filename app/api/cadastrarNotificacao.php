@@ -66,8 +66,8 @@ try {
             'tipo_dado' => PDO::PARAM_INT
         ]
     ];
-
-    if ($notificacaoDAO->salvar($dadosCadastro)) {
+    
+    if ($notificacaoDAO->salvar($dadosCadastro)) {        
         RespostaHttp::resposta('Notificação cadastrada com sucesso!', 201, [
             'id' => intval($conexaoBancoDados->lastInsertId()),
             'mensagem' => $mensagem,
