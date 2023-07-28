@@ -1,5 +1,6 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\Entidades\SolicitacaoServico;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
@@ -14,6 +15,7 @@ use SistemaSolicitacaoServico\App\DAOS\GestorSecretariaDAO;
 use SistemaSolicitacaoServico\App\DAOS\NotificacaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\SecretarioDAO;
 use SistemaSolicitacaoServico\App\DAOS\UsuarioDAO;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\GeradorNumeroProtocoloSolicitacao;
 use SistemaSolicitacaoServico\App\Utilitarios\GerenciadorEmail;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
@@ -23,6 +25,7 @@ $conexaoBancoDados = ConexaoBancoDados::obterConexao();
 $conexaoBancoDados->beginTransaction();
 
 try {
+    Auth::validarToken();
     $solicitacaoServico = new SolicitacaoServico();
     $endereco = new Endereco();
     $solicitacaoServico->setTitulo(mb_strtoupper(trim(ParametroRequisicao::obterParametro('titulo'))));
@@ -367,6 +370,9 @@ try {
         RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a solicitação de serviço!', 200, null, false);
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     // realizando o rollback da transação
     $conexaoBancoDados->rollBack();

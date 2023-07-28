@@ -1,11 +1,14 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\InstituicaoDAO;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
+    Auth::validarToken();
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $instituicaoDAO = new InstituicaoDAO($conexaoBancoDados, 'tbl_instituicoes');
     $instituicoes = $instituicaoDAO->buscarTodasInstituicoesAtivas();
@@ -26,6 +29,9 @@ try {
         
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se buscar todas as instituições ativas!', $e->getMessage());
 }

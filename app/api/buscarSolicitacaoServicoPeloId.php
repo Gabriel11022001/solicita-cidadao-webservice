@@ -1,11 +1,14 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\SolicitacaoServicoDAO;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
 try {
+    Auth::validarToken();
 
     if (!isset($_GET['id'])) {
         RespostaHttp::resposta('O id deve ser informado na url!', 200, null, false);
@@ -30,6 +33,9 @@ try {
         RespostaHttp::resposta('Não existe uma solicitação cadastrada no banco de dados com esse id!');
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se buscar a solicitação pelo id!', $e->getMessage());
     RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar a solicitação pelo id!', 200, null, false);

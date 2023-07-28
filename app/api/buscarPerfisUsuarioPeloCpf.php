@@ -1,13 +1,16 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCpf;
 
 try {
-    
+    Auth::validarToken();
+
     if (!isset($_GET['cpf'])) {
         RespostaHttp::resposta('O cpf não está definido definido como um parêmetro na url!', 200, null, false);
         exit;
@@ -41,6 +44,9 @@ try {
 
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu o seguinte erro ao tentar-se buscar os perfis vinculados ao cpf em questão!', $e->getMessage());
     RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar os perfis vinculados ao cpf em questão!', 200, null, false);

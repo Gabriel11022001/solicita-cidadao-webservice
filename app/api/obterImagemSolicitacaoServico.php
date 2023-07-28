@@ -1,8 +1,12 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
 try {
+    Auth::validarToken();
     
     if (!isset($_GET['nome_imagem'])) {
         RespostaHttp::resposta('Parâmetro não definido na url!', 200, null, false);
@@ -36,6 +40,9 @@ try {
         RespostaHttp::resposta('Essa imagem não está salva no servidor!', 200, null, false);
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     
 }

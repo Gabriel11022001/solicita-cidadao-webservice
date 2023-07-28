@@ -1,10 +1,12 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\UsuarioDAO;
 use SistemaSolicitacaoServico\App\Entidades\Cidadao;
 use SistemaSolicitacaoServico\App\Entidades\Endereco;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
@@ -20,6 +22,7 @@ $conexaoBancoDados = ConexaoBancoDados::obterConexao();
 $conexaoBancoDados->beginTransaction();
 
 try {
+    Auth::validarToken();
     $cidadao = new Cidadao();
     $cidadao->setNome(trim(mb_strtoupper(ParametroRequisicao::obterParametro('nome'))));
     $cidadao->setSobrenome(trim(mb_strtoupper(ParametroRequisicao::obterParametro('sobrenome'))));
@@ -281,6 +284,9 @@ try {
         RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o cidadão!', 200, null, false);
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     // realizando o rollback da transação
     $conexaoBancoDados->rollBack();

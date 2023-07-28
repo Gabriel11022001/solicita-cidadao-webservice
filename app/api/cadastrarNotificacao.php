@@ -1,14 +1,17 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\NotificacaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\SolicitacaoServicoDAO;
 use SistemaSolicitacaoServico\App\DAOS\UsuarioDAO;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
+    Auth::validarToken();
     $mensagem = trim(ParametroRequisicao::obterParametro('mensagem'));
     $idUsuario = intval(ParametroRequisicao::obterParametro('usuario_id'));
     $idSolicitacaoServico = intval(ParametroRequisicao::obterParametro('solicitacao_servico_id'));
@@ -80,6 +83,9 @@ try {
         RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a notificação!', 200, null, false);
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar a notificação!', $e->getMessage());
 }

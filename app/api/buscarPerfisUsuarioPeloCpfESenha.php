@@ -1,5 +1,6 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\GestorInstituicaoDAO;
@@ -7,11 +8,13 @@ use SistemaSolicitacaoServico\App\DAOS\GestorSecretariaDAO;
 use SistemaSolicitacaoServico\App\DAOS\PeritoDAO;
 use SistemaSolicitacaoServico\App\DAOS\SecretarioDAO;
 use SistemaSolicitacaoServico\App\DAOS\TecnicoDAO;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCpf;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
+    Auth::validarToken();
     $errosParametrosRequisicao = [];
 
     if (!isset($_GET['cpf'])) {
@@ -102,6 +105,9 @@ try {
     }
 
     RespostaHttp::resposta('Foram encontrados perfis cadastrados com esse cpf e senha!', 200, $dadosPerfis);
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se buscar os perfis do usuário pelo cpf e senha!', $e->getMessage());
 }

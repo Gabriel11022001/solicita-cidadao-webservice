@@ -1,12 +1,15 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCpf;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
+    Auth::validarToken();
     $errosCampos = [];
 
     if (!isset($_GET['cpf'])) {
@@ -64,6 +67,9 @@ try {
         RespostaHttp::resposta('Não existe um cidadão cadastrado com esse cpf e senha!');
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se buscar o cidadão pelo cpf e senha!', $e->getMessage());
     RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar o cidadão pelo cpf e senha!', 200, null, false);

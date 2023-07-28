@@ -1,5 +1,6 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
@@ -9,6 +10,7 @@ use SistemaSolicitacaoServico\App\DAOS\PeritoDAO;
 use SistemaSolicitacaoServico\App\DAOS\InstituicaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\NotificacaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\SolicitacaoServicoDAO;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\GerenciadorEmail;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 
@@ -16,6 +18,7 @@ $conexaoBancoDados = ConexaoBancoDados::obterConexao();
 $conexaoBancoDados->beginTransaction();
 
 try {
+    Auth::validarToken();
     $instituicaoId = null;
     $peritoId = null;
     $novoStatusSolicitacao = '';
@@ -307,6 +310,9 @@ try {
         RespostaHttp::resposta('Ocorreu um erro ao tentar-se encaminhar a solicitação!', 200, null, false);
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     $conexaoBancoDados->rollBack();
     Log::registrarLog('Ocorreu um erro ao tentar-se encaminhar a solicitação!', $e->getMessage());

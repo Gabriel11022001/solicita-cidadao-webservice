@@ -1,14 +1,17 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\ServicoDAO;
 use SistemaSolicitacaoServico\App\Entidades\TipoServico;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCamposObrigatorios;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
+    Auth::validarToken();
     $tipoServico = new TipoServico();
     $tipoServico->setId(intval(ParametroRequisicao::obterParametro('id')));
     $tipoServico->setNome(mb_strtoupper(trim(ParametroRequisicao::obterParametro('nome'))));
@@ -76,6 +79,9 @@ try {
         RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar os dados do tipo de serviço!', 200, null, false);
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se alterar os dados do tipo de serviço!', $e->getMessage());
 }

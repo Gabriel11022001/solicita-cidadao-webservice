@@ -1,11 +1,14 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\PeritoDAO;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
 try {
+    Auth::validarToken();
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $peritoDAO = new PeritoDAO($conexaoBancoDados, 'tbl_peritos');
     $peritosAtivos = $peritoDAO->buscarTodosPeritosAtivos();
@@ -26,7 +29,10 @@ try {
         }
 
     }
-
+    
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se buscar todos os peritos ativos!', $e->getMessage());
     RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar todos os peritos ativos!', 200, null, false);

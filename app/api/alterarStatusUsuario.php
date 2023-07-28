@@ -1,12 +1,15 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\UsuarioDAO;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
+    Auth::validarToken();
     $idUsuario = trim(ParametroRequisicao::obterParametro('id'));
     $novoStatus = boolval(ParametroRequisicao::obterParametro('novo_status'));
     $errosCampos = [];
@@ -40,6 +43,9 @@ try {
         RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar o status do usuário em questão!', 200, null, false);
     }
     
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se alterar o status do usuário em questão!', $e->getMessage());
 }

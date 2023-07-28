@@ -1,13 +1,16 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\ServicoDAO;
 use SistemaSolicitacaoServico\App\Entidades\TipoServico;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
 try {
+    Auth::validarToken();
     $tipoServico = new TipoServico();
     $tipoServico->setId(intval(ParametroRequisicao::obterParametro('id')));
     $tipoServico->setStatus(ParametroRequisicao::obterParametro('novo_status'));
@@ -41,6 +44,9 @@ try {
         RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar o status do tipo de serviço!', 200, null, false);
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se alterar o status do tipo de serviço!', $e->getMessage());
     RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar o status do tipo de serviço!', 200, null, false);

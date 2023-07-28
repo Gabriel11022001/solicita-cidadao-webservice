@@ -1,17 +1,20 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\CancelamentoSolicitacaoDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\DAOS\SolicitacaoServicoDAO;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 
 $conexaoBancoDados = ConexaoBancoDados::obterConexao();
 // iniciando a transação
 $conexaoBancoDados->beginTransaction();
 
 try {
+    Auth::validarToken();
     $motivo = trim(ParametroRequisicao::obterParametro('motivo'));
     $idSolicitacao = intval(ParametroRequisicao::obterParametro('id_solicitacao'));
     $dataCancelamento = new DateTime('now');
@@ -83,6 +86,9 @@ try {
 
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     // realizando o rollback
     $conexaoBancoDados->rollBack();
