@@ -23,6 +23,12 @@ class Auth
 
     public static function validarToken() {
         $cabecalhos = getallheaders();
+
+        if (!isset($cabecalhos['Authorization'])) {
+
+            throw new AuthException('O token para autenticação não foi informado!');
+        }
+
         $token = $cabecalhos['Authorization'];
 
         if (empty($token)) {

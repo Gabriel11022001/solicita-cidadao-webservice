@@ -24,7 +24,7 @@ try {
         RespostaHttp::resposta('Informe todos os dados obrigatórios!', 200, $errosDados, false);
         exit;
     }
-
+    
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $equipeDAO = new EquipeDAO($conexaoBancoDados, 'tbl_equipes');
     $equipeComNomeInformado = $equipeDAO->buscarEquipePeloNome($equipeEditar->getNome());

@@ -78,4 +78,5 @@ try {
     RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se atribuir o técnico a uma equipe!', $e->getMessage());
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se atribuir o técnico a uma equipe!', 200, null, false);
 }

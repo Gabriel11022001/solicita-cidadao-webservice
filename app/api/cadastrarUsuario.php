@@ -357,6 +357,7 @@ try {
     }
 
 } catch (AuthException $e) {
+    $conexaoBancoDados->rollBack();
     Log::registrarLog('Erro de autenticação!', $e->getMessage());
     RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {

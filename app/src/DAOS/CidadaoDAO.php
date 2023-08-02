@@ -62,4 +62,16 @@ class CidadaoDAO extends UsuarioDAO
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public static function obterEmailCidadao($conexaoBancoDados, $idCidadao) {
+        $query = 'SELECT tblu.email FROM tbl_usuarios AS tblu,
+        tbl_cidadaos AS tblc
+        WHERE tblu.id = tblc.usuario_id
+        AND tblc.id = :id_cidadao;';
+        $stmt = $conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':id_cidadao', $idCidadao, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

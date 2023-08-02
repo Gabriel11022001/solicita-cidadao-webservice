@@ -59,6 +59,8 @@ class Rota
             $arquivoCarregar = 'cadastrarCancelamentoSolicitacaoServico.php';
         } elseif ($endpoint === '/usuario/login') {
             $arquivoCarregar = 'login.php';
+        } elseif ($endpoint === '/laudo') {
+            $arquivoCarregar = 'registrarLaudo.php';
         } else {
             self::requisicaoInvalida();
             

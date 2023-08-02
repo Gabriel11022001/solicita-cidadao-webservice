@@ -96,19 +96,42 @@ try {
             exit;
         }
 
+        // validando se o perito está ativo
+        if (!$peritoDaSolicitacao['status']) {
+            RespostaHttp::resposta('O perito em questão está com o perfil inativo!', 200, null, false);
+            exit;
+        }
+
     } else {
         $instituicaoDAO = new InstituicaoDAO($conexaoBancoDados, 'tbl_instituicoes');
+        $instituicaoDaSolicitacao = $instituicaoDAO->buscarPeloId($instituicaoId);
 
         // validando se existe uma instituição cadastrada no banco de dados com o id informado
-        if (!$instituicaoDAO->buscarPeloId($instituicaoId)) {
+        if (!$instituicaoDaSolicitacao) {
             RespostaHttp::resposta('Não existe uma instituição cadastrada no banco de dados com esse id!', 200, null, false);
+            exit;
+        }
+
+        // validando se a instituição está ativa
+        if (!$instituicaoDaSolicitacao) {
+            RespostaHttp::resposta('A instituição em questão não está ativa!', 200, null, false);
             exit;
         }
 
     }
 
-    if (!$solicitacaoServicoDAO->buscarSolicitacaoPeloId($idSolicitacao)) {
+    $solicitacao = $solicitacaoServicoDAO->buscarPeloId($idSolicitacao);
+
+    if (!$solicitacao) {
         RespostaHttp::resposta('Não existe uma solicitação de serviço cadastrada no banco de dados com esse id!', 200, null, false);
+        exit;
+    }
+
+    // validando se a solicitação já foi encaminhada
+    if (!empty($solicitacao['perito_id'])
+    || !empty($solicitacao['instituicao_id'])
+    || !empty($solicitacao['equipe_id'])) {
+        RespostaHttp::resposta('Essa solicitação já foi encaminhada!', 200, null, false);
         exit;
     }
 
@@ -311,6 +334,7 @@ try {
     }
 
 } catch (AuthException $e) {
+    $conexaoBancoDados->rollBack();
     Log::registrarLog('Erro de autenticação!', $e->getMessage());
     RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
