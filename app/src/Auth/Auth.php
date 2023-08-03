@@ -5,6 +5,7 @@ namespace SistemaSolicitacaoServico\App\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\TokenDAO;
 use SistemaSolicitacaoServico\App\Exceptions\AuthException;
+use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
 class Auth
 {
@@ -24,12 +25,23 @@ class Auth
     public static function validarToken() {
         $cabecalhos = getallheaders();
 
-        if (!isset($cabecalhos['Authorization'])) {
+        if (array_key_exists('Authorization', $cabecalhos) && !isset($cabecalhos['Authorization'])) {
 
             throw new AuthException('O token para autenticação não foi informado!');
         }
 
-        $token = $cabecalhos['Authorization'];
+        if (array_key_exists('authorization', $cabecalhos) && !isset($cabecalhos['authorization'])) {
+
+            throw new AuthException('O token para autenticação não foi informado!');
+        }
+
+        $token = '';
+
+        if (array_key_exists('Authorization', $cabecalhos)) {
+            $token = $cabecalhos['Authorization'];
+        } else {
+            $token = $cabecalhos['authorization'];
+        }
 
         if (empty($token)) {
 

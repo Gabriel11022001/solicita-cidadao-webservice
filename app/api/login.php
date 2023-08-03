@@ -119,7 +119,7 @@ try {
         if (count($perfilSecretarioUsuario) > 0) {
             $perfis['secretario'] = $perfilSecretarioUsuario;
         }
-
+        
         if (count($perfis) === 0) {
             RespostaHttp::resposta('Cpf ou senha inválidos!', 200, null, false);
         } else {
