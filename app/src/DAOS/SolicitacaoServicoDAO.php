@@ -205,4 +205,12 @@ class SolicitacaoServicoDAO extends DAO
         
         return $stmt->execute();
     }
+
+    public static function concluirSolicitacao($conexaoBancoDados, $idSolicitacao) {
+        $query = "UPDATE tbl_solicitacoes_servico SET status = 'Concluído', posicao_fila = -1 WHERE id = :solicitacao_id;";
+        $stmt = $conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':solicitacao_id', $idSolicitacao, PDO::PARAM_INT);
+        
+        return $stmt->execute();
+    }
 }

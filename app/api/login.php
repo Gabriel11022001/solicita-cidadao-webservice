@@ -47,7 +47,7 @@ try {
 
     if ($plataformaLogin != 'web' && $plataformaLogin != 'app') {
         $errosDados['plataforma_login'] = 'Informe se o login está sendo feito pelo aplicativo ou pelo sistema web!';
-    }
+    }   
 
     if (count($errosDados) > 0) {
         RespostaHttp::resposta('Ocorreram erros de validação de dados!', 200, $errosDados, false);
@@ -56,7 +56,7 @@ try {
 
     $senha = md5($senha);
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
-
+    
     if ($plataformaLogin === 'app') {
         // tentativa de login no app do cidadão
         $cidadaoDAO = new CidadaoDAO($conexaoBancoDados, 'tbl_cidadaos');
@@ -111,7 +111,7 @@ try {
         if (count($perfilGestorInstituicaoUsuario) > 0) {
             $perfis['gestor_instituicao'] = $perfilGestorInstituicaoUsuario;
         }
-
+        
         if (count($perfilGestorSecretariaUsuario) > 0) {
             $perfis['gestor_secretaria'] = $perfilGestorSecretariaUsuario;
         }

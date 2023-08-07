@@ -61,6 +61,8 @@ class Rota
             $arquivoCarregar = 'login.php';
         } elseif ($endpoint === '/laudo') {
             $arquivoCarregar = 'registrarLaudo.php';
+        } elseif ($endpoint === '/evidencia') {
+            $arquivoCarregar = 'registrarEvidencia.php';
         } else {
             self::requisicaoInvalida();
             

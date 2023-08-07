@@ -40,7 +40,7 @@ class CidadaoDAO extends UsuarioDAO
     }
 
     public function buscarDadosCidadaoPeloIdSolicitacao($idSolicitacao) {
-        $query = 'SELECT tblu.id, tblu.nome, tblu.cpf, tblu.email FROM tbl_usuarios AS tblu,
+        $query = 'SELECT tblu.id, tblu.nome, tblu.cpf, tblu.email, tblu.telefone FROM tbl_usuarios AS tblu,
         tbl_cidadaos AS tblc, tbl_solicitacoes_servico AS tbls
         WHERE tblu.id = tblc.usuario_id
         AND tblc.id = tbls.cidadao_id
