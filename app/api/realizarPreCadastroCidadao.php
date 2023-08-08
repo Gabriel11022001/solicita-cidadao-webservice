@@ -44,10 +44,6 @@ try {
         $errosDados['telefone'] = 'Informe o telefone do cidadão!';
     }
 
-    if (empty($cidadao->getEmail())) {
-        $errosDados['email'] = 'Informe o e-mail do cidadão!';
-    }
-
     if (empty($cidadao->getSenha())) {
         $errosDados['senha'] = 'Informe a senha do cidadão!';
     }
@@ -66,11 +62,15 @@ try {
         $errosDados['cpf'] = 'O cpf informado é inválido!';
     }
     
-    // validando o e-mail
-    if (!ValidaEmail::validarEmail($cidadao->getEmail())) {
-        $errosDados['email'] = 'O e-mail informado é inválido!';
-    } elseif (mb_strlen($cidadao->getEmail()) > 255 || mb_strlen($cidadao->getEmail()) < 3) {
-        $errosDados['email'] = 'O e-mail deve possuir no mínimo 3 caracteres e no máximo 255 caracteres!';
+    if (strlen($cidadao->getEmail()) > 0) {
+
+        // validando o e-mail
+        if (!ValidaEmail::validarEmail($cidadao->getEmail())) {
+            $errosDados['email'] = 'O e-mail informado é inválido!';
+        } elseif (mb_strlen($cidadao->getEmail()) > 255 || mb_strlen($cidadao->getEmail()) < 3) {
+            $errosDados['email'] = 'O e-mail deve possuir no mínimo 3 caracteres e no máximo 255 caracteres!';
+        }
+
     }
 
     // validando se o nome possui no mínimo 3 caracteres
@@ -89,9 +89,9 @@ try {
 
     // validando a senha
     if ((mb_strlen($cidadao->getSenha()) < 6) || (mb_strlen($cidadao->getSenha()) > 25)) {
-        $errosCampos['senha'] = 'A senha deve possuir no mínimo 6 caracteres e no máximo 25 caracteres!';
+        $errosDados['senha'] = 'A senha deve possuir no mínimo 6 caracteres e no máximo 25 caracteres!';
     } elseif  ($cidadao->getSenha() != $senhaConfirmacao) {
-        $errosCampos['senha_confirmacao'] = 'A senha e a senha de confirmação devem ser iguais!';
+        $errosDados['senha_confirmacao'] = 'A senha e a senha de confirmação devem ser iguais!';
     }
 
     if (count($errosDados) > 0) {
@@ -161,24 +161,28 @@ try {
         exit;
     }
 
-    // enviando e-mail para o cidadão informando que foi realizado um pré-cadastro para ele no sistema
-    if (!GerenciadorEmail::enviarEmail(
-        $cidadao->getEmail(),
-        'Você foi pré-cadastrado no sistema de solicitações de serviço! Acesse o sistema para poder continuar informando seus dados cadastrais!<br>
-        Dados informados no cadastro:<br>
-        <ul>
-            <li>Nome: ' . $cidadao->getNome() . '</li>
-            <li>Sobrenome: ' . $cidadao->getSobrenome() . '</li>
-            <li>Telefone: ' . $cidadao->getTelefone() . '</li>
-            <li>E-mail: ' . $cidadao->getEmail() . '</li>
-            <li>Cpf: ' . $cidadao->getCpf() . '</li>
-            <li>Senha para acessar o sistema: ' . $cidadao->getSenha() . '</li>
-        </ul>',
-        'Pré-cadastro'
-    )) {
-        $conexaoBancoDados->rollBack();
-        RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o cidadão!', 200, null, false);
-        exit;
+    if (strlen($cidadao->getEmail()) > 0) {
+
+        // enviando e-mail para o cidadão informando que foi realizado um pré-cadastro para ele no sistema
+        if (!GerenciadorEmail::enviarEmail(
+            $cidadao->getEmail(),
+            'Você foi pré-cadastrado no sistema de solicitações de serviço! Acesse o sistema para poder continuar informando seus dados cadastrais!<br>
+            Dados informados no cadastro:<br>
+            <ul>
+                <li>Nome: ' . $cidadao->getNome() . '</li>
+                <li>Sobrenome: ' . $cidadao->getSobrenome() . '</li>
+                <li>Telefone: ' . $cidadao->getTelefone() . '</li>
+                <li>E-mail: ' . $cidadao->getEmail() . '</li>
+                <li>Cpf: ' . $cidadao->getCpf() . '</li>
+                <li>Senha para acessar o sistema: ' . $cidadao->getSenha() . '</li>
+            </ul>',
+            'Pré-cadastro'
+        )) {
+            $conexaoBancoDados->rollBack();
+            RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o cidadão no envio de e-mail!', 200, null, false);
+            exit;
+        }
+
     }
 
     $conexaoBancoDados->commit();
