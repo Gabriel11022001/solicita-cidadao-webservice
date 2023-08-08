@@ -33,7 +33,7 @@ try {
     }
 
     $solicitacoes = $solicitacaoServicoDAO->buscarTodasSolicitacoesServicoCidadao($idCidadao);
-
+    
     if (count($solicitacoes) === 0) {
         RespostaHttp::resposta('Não existem solicitações de serviço cadastradas!', 200, [], true);
     } else {

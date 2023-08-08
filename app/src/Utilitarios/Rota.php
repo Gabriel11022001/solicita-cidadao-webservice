@@ -63,6 +63,8 @@ class Rota
             $arquivoCarregar = 'registrarLaudo.php';
         } elseif ($endpoint === '/evidencia') {
             $arquivoCarregar = 'registrarEvidencia.php';
+        } elseif ($endpoint === '/cidadao/pre-cadastro') {
+            $arquivoCarregar = 'realizarPreCadastroCidadao.php';
         } else {
             self::requisicaoInvalida();
             

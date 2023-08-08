@@ -13,7 +13,7 @@ try {
     $idUsuario = trim(ParametroRequisicao::obterParametro('id'));
     $novoStatus = boolval(ParametroRequisicao::obterParametro('novo_status'));
     $errosCampos = [];
-
+    
     if (empty($idUsuario)) {
         $errosCampos['id'] = 'Informe o id do usuário em questão!';
     }

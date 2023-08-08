@@ -21,7 +21,7 @@ try {
         RespostaHttp::resposta('Informe o id da instituição!', 200, null, false);
         exit;
     }
-
+    
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $solicitacaoServicoDAO = new SolicitacaoServicoDAO($conexaoBancoDados, 'tbl_solicitacoes_servico');
     $solicitacoesInstituicao = $solicitacaoServicoDAO->buscarSolicitacoesServicoInstituicaoParaEncaminharParaEquipe($idInstituicao);

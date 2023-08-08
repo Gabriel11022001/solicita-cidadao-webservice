@@ -185,7 +185,7 @@ try {
             }
     
         }
-    
+        
         if (!$todosEmailsForamEnviadosComSucesso) {
             $conexaoBancoDados->rollBack();
             RespostaHttp::resposta('Ocorreu um erro ao tentar-se registrar a evidência!', 200, null, false);
@@ -193,7 +193,7 @@ try {
         }
     
     }
-
+    
     $conexaoBancoDados->commit();
     RespostaHttp::resposta('A solicitação foi registrada com sucesso!', 200, [
         'id' => $idEvidencia,

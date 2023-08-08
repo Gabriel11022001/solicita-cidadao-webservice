@@ -50,7 +50,7 @@ try {
         RespostaHttp::resposta('Não existe um técnico cadastrado no banco de dados com esse id!', 200, null, false);
         exit;
     }
-
+    
     $equipe = $equipeDAO->buscarPeloId($idEquipe);
     if (!$equipe) {
         // não existe uma equipe cadastrada com esse id no banco de dados
