@@ -23,23 +23,23 @@ class Auth
 
     public static function validarToken() {
         $cabecalhos = getallheaders();
-
-        if (array_key_exists('Authorization', $cabecalhos) && !isset($cabecalhos['Authorization'])) {
-
-            throw new AuthException('O token para autenticação não foi informado!');
-        }
-
-        if (array_key_exists('authorization', $cabecalhos) && !isset($cabecalhos['authorization'])) {
+        
+        if (array_key_exists('X-Auth-Token', $cabecalhos) && !isset($cabecalhos['X-Auth-Token'])) {
 
             throw new AuthException('O token para autenticação não foi informado!');
         }
 
+        if (array_key_exists('x-auth-token', $cabecalhos) && !isset($cabecalhos['x-auth-token'])) {
+
+            throw new AuthException('O token para autenticação não foi informado!');
+        }
+        
         $token = '';
 
-        if (array_key_exists('Authorization', $cabecalhos)) {
-            $token = $cabecalhos['Authorization'];
+        if (array_key_exists('X-Auth-Token', $cabecalhos)) {
+            $token = $cabecalhos['X-Auth-Token'];
         } else {
-            $token = $cabecalhos['authorization'];
+            $token = $cabecalhos['x-auth-token'];
         }
 
         if (empty($token)) {
