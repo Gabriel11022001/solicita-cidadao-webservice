@@ -5,7 +5,6 @@ namespace SistemaSolicitacaoServico\App\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\TokenDAO;
 use SistemaSolicitacaoServico\App\Exceptions\AuthException;
-use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
 class Auth
 {
