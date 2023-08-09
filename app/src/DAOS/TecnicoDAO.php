@@ -38,4 +38,22 @@ class TecnicoDAO extends UsuarioDAO
 
         return $stmt->execute();
     }
+
+    public static function buscarEmailsTecnicosRelacionadosASolicitacaoServico($conexaoBancoDados, $idSolicitacao) {
+        $query = 'SELECT tblu.email FROM
+        tbl_usuarios AS tblu,
+        tbl_equipes AS tble,
+        tbl_tecnicos AS tblt,
+        tbl_solicitacoes_servico AS tbls
+        WHERE tbls.equipe_id = tble.id
+        AND tble.id = tblt.equipe_id
+        AND tblu.id = tblt.usuario_id
+        AND tbls.id = :sol_id
+        AND tblu.status = true;';
+        $stmt = $conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':sol_id', $idSolicitacao, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
@@ -7,8 +8,10 @@ use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\EquipeDAO;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCamposObrigatorios;
 use SistemaSolicitacaoServico\App\Entidades\Equipe;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 
 try {
+    Auth::validarToken();
     $equipeEditar = new Equipe();
     $equipeEditar->setId(intval(ParametroRequisicao::obterParametro('id')));
     $equipeEditar->setNome(trim(ParametroRequisicao::obterParametro('nome')));
@@ -21,7 +24,7 @@ try {
         RespostaHttp::resposta('Informe todos os dados obrigatórios!', 200, $errosDados, false);
         exit;
     }
-
+    
     $conexaoBancoDados = ConexaoBancoDados::obterConexao();
     $equipeDAO = new EquipeDAO($conexaoBancoDados, 'tbl_equipes');
     $equipeComNomeInformado = $equipeDAO->buscarEquipePeloNome($equipeEditar->getNome());
@@ -61,6 +64,9 @@ try {
         RespostaHttp::resposta('Já existe outra equipe cadastrada com o nome informado, informe outro nome!', 200, null, false);
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se editar a equipe!', $e->getMessage());
     RespostaHttp::resposta('Ocorreu um erro ao tentar-se editar a equipe!', 200, null, false);

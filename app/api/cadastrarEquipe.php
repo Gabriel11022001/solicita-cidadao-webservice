@@ -1,14 +1,17 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\EquipeDAO;
 use SistemaSolicitacaoServico\App\Entidades\Equipe;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCamposObrigatorios;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
+    Auth::validarToken();
     $equipe = new Equipe();
     $equipe->setNome(mb_strtoupper(trim(ParametroRequisicao::obterParametro('nome'))));
     $equipe->setDescricao(trim(ParametroRequisicao::obterParametro('descricao')));
@@ -45,6 +48,9 @@ try {
         RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar a equipe!', 200, null, false);
     }
     
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar a equipe!', $e->getMessage());
 }

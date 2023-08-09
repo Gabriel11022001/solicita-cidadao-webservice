@@ -40,7 +40,7 @@ class CidadaoDAO extends UsuarioDAO
     }
 
     public function buscarDadosCidadaoPeloIdSolicitacao($idSolicitacao) {
-        $query = 'SELECT tblu.id, tblu.nome, tblu.cpf, tblu.email FROM tbl_usuarios AS tblu,
+        $query = 'SELECT tblu.id, tblu.nome, tblu.cpf, tblu.email, tblu.telefone FROM tbl_usuarios AS tblu,
         tbl_cidadaos AS tblc, tbl_solicitacoes_servico AS tbls
         WHERE tblu.id = tblc.usuario_id
         AND tblc.id = tbls.cidadao_id
@@ -58,6 +58,18 @@ class CidadaoDAO extends UsuarioDAO
         AND tblu.id = :id_usuario;';
         $stmt = $this->conexaoBancoDados->prepare($query);
         $stmt->bindValue(':id_usuario', $idUsuario, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function obterEmailCidadao($conexaoBancoDados, $idCidadao) {
+        $query = 'SELECT tblu.email FROM tbl_usuarios AS tblu,
+        tbl_cidadaos AS tblc
+        WHERE tblu.id = tblc.usuario_id
+        AND tblc.id = :id_cidadao;';
+        $stmt = $conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':id_cidadao', $idCidadao, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);

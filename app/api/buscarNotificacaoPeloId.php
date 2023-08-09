@@ -1,12 +1,15 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\NotificacaoDAO;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
-    
+    Auth::validarToken();
+
     if (!isset($_GET['id'])) {
         RespostaHttp::resposta('O parâmetro não foi definido na url!', 200, null, false);
         exit;
@@ -37,6 +40,9 @@ try {
 
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se buscar a notificação pelo id!', $e->getMessage());
 }

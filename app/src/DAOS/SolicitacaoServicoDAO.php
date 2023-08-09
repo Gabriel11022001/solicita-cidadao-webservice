@@ -96,7 +96,8 @@ class SolicitacaoServicoDAO extends DAO
     public function buscarSolicitacoesServicoInstituicaoParaEncaminharParaEquipe($idInstituicao) {
         $query = "SELECT id, titulo, protocolo, posicao_fila,
         status, prioridade, data_registro
-        FROM tbl_solicitacoes_servico WHERE status = 'Aguardando encaminhamento a equipe responsável'
+        FROM tbl_solicitacoes_servico 
+        WHERE status = 'Aguardando encaminhamento a equipe responsável'
         AND instituicao_id = :instituicao_id
         ORDER BY posicao_fila ASC;";
         $stmt = $this->conexaoBancoDados->prepare($query);
@@ -193,6 +194,23 @@ class SolicitacaoServicoDAO extends DAO
             $stmt->bindValue(':obs_secretario', $observacaoSecretario, PDO::PARAM_STR);
         }
 
+        return $stmt->execute();
+    }
+
+    public static function alterarStatusSolicitacao($conexaoBancoDados, $idSolicitacao, $novoStatus) {
+        $query = 'UPDATE tbl_solicitacoes_servico SET status = :novo_status WHERE id = :id;';
+        $stmt = $conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':id', $idSolicitacao, PDO::PARAM_INT);
+        $stmt->bindValue(':novo_status', $novoStatus, PDO::PARAM_STR);
+        
+        return $stmt->execute();
+    }
+
+    public static function concluirSolicitacao($conexaoBancoDados, $idSolicitacao) {
+        $query = "UPDATE tbl_solicitacoes_servico SET status = 'Concluído', posicao_fila = -1 WHERE id = :solicitacao_id;";
+        $stmt = $conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':solicitacao_id', $idSolicitacao, PDO::PARAM_INT);
+        
         return $stmt->execute();
     }
 }

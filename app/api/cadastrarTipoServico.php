@@ -1,13 +1,16 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\ServicoDAO;
 use SistemaSolicitacaoServico\App\Entidades\TipoServico;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
 try {
+    Auth::validarToken();
     $tipoServico = new TipoServico();
     $tipoServico->setNome(mb_strtoupper(trim(ParametroRequisicao::obterParametro('nome'))));
     $tipoServico->setDescricao(trim(ParametroRequisicao::obterParametro('descricao')));
@@ -71,6 +74,9 @@ try {
         RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o tipo de serviço!', 200, null, false);
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se cadastrar o tipo de serviço!', $e->getMessage());
     RespostaHttp::resposta('Ocorreu um erro ao tentar-se cadastrar o tipo de serviço!', 200, null, false);

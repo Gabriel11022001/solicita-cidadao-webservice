@@ -1,12 +1,15 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\SolicitacaoServicoDAO;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
+    Auth::validarToken();
     
     if (!isset($_GET['cidadao_id'])) {
         RespostaHttp::resposta('O id do cidadão não foi definido como parâmetro na url!', 200, null, false);
@@ -30,7 +33,7 @@ try {
     }
 
     $solicitacoes = $solicitacaoServicoDAO->buscarTodasSolicitacoesServicoCidadao($idCidadao);
-
+    
     if (count($solicitacoes) === 0) {
         RespostaHttp::resposta('Não existem solicitações de serviço cadastradas!', 200, [], true);
     } else {
@@ -47,6 +50,9 @@ try {
 
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se consultar as solicitações de serviço!', $e->getMessage());
     RespostaHttp::resposta('Ocorreu um erro ao tentar-se consultar as solicitações de serviço!', 200, null, false);

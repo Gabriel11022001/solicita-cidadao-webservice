@@ -69,4 +69,5 @@ try {
 
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se alterar a senha do perfil em questão!', $e->getMessage());
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar a senha do perfil em questão!', 200, null, false);
 }

@@ -57,6 +57,14 @@ class Rota
             $arquivoCarregar = 'cadastrarSolicitacaoServico.php';
         } elseif ($endpoint === '/cancelamento-solicitacao-servico') {
             $arquivoCarregar = 'cadastrarCancelamentoSolicitacaoServico.php';
+        } elseif ($endpoint === '/usuario/login') {
+            $arquivoCarregar = 'login.php';
+        } elseif ($endpoint === '/laudo') {
+            $arquivoCarregar = 'registrarLaudo.php';
+        } elseif ($endpoint === '/evidencia') {
+            $arquivoCarregar = 'registrarEvidencia.php';
+        } elseif ($endpoint === '/cidadao/pre-cadastro') {
+            $arquivoCarregar = 'realizarPreCadastroCidadao.php';
         } else {
             self::requisicaoInvalida();
             

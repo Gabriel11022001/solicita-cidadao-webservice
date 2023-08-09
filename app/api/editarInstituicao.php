@@ -1,9 +1,11 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\InstituicaoDAO;
 use SistemaSolicitacaoServico\App\Entidades\Endereco;
 use SistemaSolicitacaoServico\App\Entidades\Instituicao;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\ValidaCamposObrigatorios;
@@ -15,6 +17,7 @@ use SistemaSolicitacaoServico\App\Utilitarios\ValidaUF;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
+    Auth::validarToken();
     // objeto representando o endereço da instituição
     $endereco = new Endereco();
     $endereco->setLogradouro(trim(ParametroRequisicao::obterParametro('logradouro')));
@@ -229,6 +232,9 @@ try {
         RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar os dados da instituição!', 200, null, false);
     }
 
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se alterar os dados da instituição!', $e->getMessage());
 }

@@ -1,12 +1,15 @@
 <?php
 
+use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\NotificacaoDAO;
+use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 use SistemaSolicitacaoServico\App\Utilitarios\Log;
 
 try {
+    Auth::validarToken();
     $id = trim(ParametroRequisicao::obterParametro('id'));
 
     if (empty($id)) {
@@ -35,6 +38,9 @@ try {
         RespostaHttp::resposta('Ocorreu um erro ao tentar-se alterar o status da notificação para visualizado!', 200, null, false);
     }
     
+} catch (AuthException $e) {
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
     Log::registrarLog('Ocorreu um erro ao tentar-se alterar o status da notificação para visualizado!', $e->getMessage());
     var_dump($e->getMessage());
