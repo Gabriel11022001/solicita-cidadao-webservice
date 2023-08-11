@@ -65,6 +65,8 @@ class Rota
             $arquivoCarregar = 'registrarEvidencia.php';
         } elseif ($endpoint === '/cidadao/pre-cadastro') {
             $arquivoCarregar = 'realizarPreCadastroCidadao.php';
+        } elseif ($endpoint === '/codigo-recuperacao/buscar') {
+            $arquivoCarregar = 'buscarCodigoRecuperacaoSenha.php';
         } else {
             self::requisicaoInvalida();
             
@@ -248,6 +250,8 @@ class Rota
             $arquivoCarregar = 'editarEquipe.php';
         } elseif ($endpoint === '/solicitacao-servico/encaminhar-instituicao-ou-perito') {
             $arquivoCarregar = 'encaminharSolicitacaoParaInstituicaoOuPerito.php';
+        } elseif ($endpoint === '/usuario/recuperar-senha') {
+            $arquivoCarregar = 'recuperarSenha.php';
         } else {
             self::requisicaoInvalida();
             

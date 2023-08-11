@@ -22,11 +22,11 @@ class CodigoRecuperacaoSenhaDAO
         return $stmt->execute();
     }
 
-    public function buscarCodigoRecuperacaoSenha($id) {
+    public function buscarCodigoRecuperacaoSenha($codigo) {
         $query = 'SELECT * FROM tbl_codigos_recuperacao_senha
-        WHERE id = :id;';
+        WHERE codigo = :codigo;';
         $stmt = $this->conexaoBancoDados->prepare($query);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':codigo', $codigo, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
