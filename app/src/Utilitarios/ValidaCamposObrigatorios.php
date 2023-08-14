@@ -287,4 +287,54 @@ class ValidaCamposObrigatorios
 
         return $errosForm;
     }
+
+    public static function validarFormularioEditarUsuario($usuario) {
+        $errosCampos = [];
+
+        if (empty($usuario->getId())) {
+            $errosCampos['id'] = 'Informe o id do usuário!';
+        }
+
+        if (empty($usuario->getNome())) {
+            $errosCampos['nome'] = 'Informe o nome do usuário!';
+        }
+
+        if (empty($usuario->getSobrenome())) {
+            $errosCampos['sobrenome'] = 'Informe o sobrenome do usuário!';
+        }
+
+        if (empty($usuario->getTelefone())) {
+            $errosCampos['telefone'] = 'Informe o telefone do usuário!';
+        }
+
+        if (empty($usuario->getEmail())) {
+            $errosCampos['email'] = 'Informe o e-mail do usuário!';
+        }
+
+        if (empty($usuario->getSexo())) {
+            $errosCampos['sexo'] = 'Informe o sexo do usuário!';
+        }
+
+        if (empty($usuario->getDataNascimento())) {
+            $errosCampos['data_nascimento'] = 'Informe a data de nascimento!';
+        }
+
+        if (empty($usuario->getEndereco()->getLogradouro())) {
+            $errosCampos['logradouro'] = 'Informe o logradouro!';
+        }
+
+        if (empty($usuario->getEndereco()->getCidade())) {
+            $errosCampos['cidade'] = 'Informe a cidade!';
+        }
+
+        if (empty($usuario->getEndereco()->getBairro())) {
+            $errosCampos['bairro'] = 'Informe o bairro!';
+        }
+
+        if (empty($usuario->getEndereco()->getEstado())) {
+            $errosCampos['estado'] = 'Informe o estado!';
+        }
+
+        return $errosCampos;
+    }
 }
