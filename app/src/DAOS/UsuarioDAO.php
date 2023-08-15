@@ -84,4 +84,41 @@ class UsuarioDAO extends DAO
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function editar($dadosUsuarioEditar) {
+        $query = 'UPDATE tbl_usuarios SET nome = :nome, sobrenome = :sobrenome,
+        telefone = :telefone, cpf = :cpf, email = :email, status = :status,
+        sexo = :sexo, data_nascimento = :data_nascimento, logradouro = :logradouro,
+        complemento = :complemento, cep = :cep, cidade = :cidade, bairro = :bairro,
+        estado = :estado, numero_residencia = :numero_residencia
+        WHERE id = :id;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':nome', $dadosUsuarioEditar['nome']['dado'], $dadosUsuarioEditar['nome']['tipo_dado']);
+        $stmt->bindValue(':sobrenome', $dadosUsuarioEditar['sobrenome']['dado'], $dadosUsuarioEditar['sobrenome']['tipo_dado']);
+        $stmt->bindValue(':telefone', $dadosUsuarioEditar['telefone']['dado'], $dadosUsuarioEditar['telefone']['tipo_dado']);
+        $stmt->bindValue(':email', $dadosUsuarioEditar['email']['dado'], $dadosUsuarioEditar['email']['tipo_dado']);
+        $stmt->bindValue(':sexo', $dadosUsuarioEditar['sexo']['dado'], $dadosUsuarioEditar['sexo']['tipo_dado']);
+        $stmt->bindValue(':cpf', $dadosUsuarioEditar['cpf']['dado'], $dadosUsuarioEditar['cpf']['tipo_dado']);
+        $stmt->bindValue(':status', $dadosUsuarioEditar['status']['dado'], $dadosUsuarioEditar['status']['tipo_dado']);
+        $stmt->bindValue(':data_nascimento', $dadosUsuarioEditar['data_nascimento']['dado'], $dadosUsuarioEditar['data_nascimento']['tipo_dado']);
+        $stmt->bindValue(':cep', $dadosUsuarioEditar['cep']['dado'], $dadosUsuarioEditar['cep']['tipo_dado']);
+        $stmt->bindValue(':logradouro', $dadosUsuarioEditar['logradouro']['dado'], $dadosUsuarioEditar['logradouro']['tipo_dado']);
+        $stmt->bindValue(':complemento', $dadosUsuarioEditar['complemento']['dado'], $dadosUsuarioEditar['complemento']['tipo_dado']);
+        $stmt->bindValue(':estado', $dadosUsuarioEditar['estado']['dado'], $dadosUsuarioEditar['estado']['tipo_dado']);
+        $stmt->bindValue(':numero_residencia', $dadosUsuarioEditar['numero_residencia']['dado'], $dadosUsuarioEditar['numero_residencia']['tipo_dado']);
+        $stmt->bindValue(':cidade', $dadosUsuarioEditar['cidade']['dado'], $dadosUsuarioEditar['cidade']['tipo_dado']);
+        $stmt->bindValue(':bairro', $dadosUsuarioEditar['bairro']['dado'], $dadosUsuarioEditar['bairro']['tipo_dado']);
+        $stmt->bindValue(':id', $dadosUsuarioEditar['id']['dado'], $dadosUsuarioEditar['id']['tipo_dado']);
+
+        return $stmt->execute();
+    }
+
+    public function alterarIdInstituicao($idUsuario, $idNovaInstituicao, $tabela) {
+        $query = 'UPDATE ' . $tabela . ' SET instituicao_id = :instituicao_id WHERE usuario_id = :usuario_id;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':instituicao_id', $idNovaInstituicao, PDO::PARAM_INT);
+        $stmt->bindValue(':usuario_id', $idUsuario, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
 }

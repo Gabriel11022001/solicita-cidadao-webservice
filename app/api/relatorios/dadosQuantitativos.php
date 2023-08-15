@@ -2,6 +2,9 @@
 
 use SistemaSolicitacaoServico\App\Auth\Auth;
 use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
+use SistemaSolicitacaoServico\App\DAOS\GestorInstituicaoDAO;
+use SistemaSolicitacaoServico\App\DAOS\RelatorioDAO;
+use SistemaSolicitacaoServico\App\DAOS\TecnicoDAO;
 use SistemaSolicitacaoServico\App\DAOS\UsuarioDAO;
 use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
@@ -24,6 +27,51 @@ try {
     if (count($errosDados) > 0) {
         RespostaHttp::resposta('Informe todos os dados obrigatórios!', 200, $errosDados, false);
         exit;
+    }
+
+    if ($tipoUsuario != 'cidadão' && $tipoUsuario != 'gestor-secretaria'
+    && $tipoUsuario != 'técnico' && $tipoUsuario != 'perito'
+    && $tipoUsuario != 'gestor-instituição' && $tipoUsuario != 'secretário') {
+        $errosDados['tipo_usuario'] = 'O tipo de usuário informado está incorreto!';
+    }
+
+    if ($idUsuario <= 0) {
+        $errosDados['usuario_id'] = 'Id do usuário inválido!';
+    }
+
+    if (count($errosDados) > 0) {
+        RespostaHttp::resposta('Ocorreram erros de validação de dados!', 200, $errosDados, false);
+        exit;
+    }
+
+    $dados = [];
+    $conexaoBancoDados = ConexaoBancoDados::obterConexao();
+    $relatorioDAO = new RelatorioDAO($conexaoBancoDados);
+    $usuarioDAO = new UsuarioDAO($conexaoBancoDados, 'tbl_usuarios');
+
+    if (!$usuarioDAO->buscarPeloId($idUsuario)) {
+        RespostaHttp::resposta('Não existe um usuário cadastrado no banco de dados com esse id!', 200, null, false);
+        exit;
+    }
+
+    if ($tipoUsuario === 'cidadão') {
+        $dados = $relatorioDAO->obterDadosQuantitativosCidadao($idUsuario);
+    } elseif ($tipoUsuario === 'perito') {
+        $dados = $relatorioDAO->obterDadosQuantitativosPerito($idUsuario);
+    } elseif ($tipoUsuario === 'secretário' || $tipoUsuario === 'gestor-secretaria') {
+        $dados = $relatorioDAO->obterDadosQuantitativosGestorSecretariaSecretario();
+    } elseif ($tipoUsuario === 'técnico') {
+        $idEquipe = null;
+        $tecnicoDAO = new TecnicoDAO($conexaoBancoDados, 'tbl_tecnicos');
+        $dadosTecnico = $tecnicoDAO->buscarUsuarioPeloId($idUsuario);
+        $idEquipe = $dadosTecnico['equipe_id'];
+        $dados = $relatorioDAO->obterDadosQuantitativosTecnico($idEquipe);
+    } else {
+        $idInstituicao = null;
+        $gestorInstituicaoDAO = new GestorInstituicaoDAO($conexaoBancoDados, 'tbl_gestores_instituicao');
+        $dadosGestorInstituicao = $gestorInstituicaoDAO->buscarUsuarioPeloId($idUsuario);
+        $idInstituicao = $dadosGestorInstituicao['instituicao_id'];
+        $dados = $relatorioDAO->obterDadosQuantitativosGestorInstituicao($idInstituicao);
     }
 
 } catch (AuthException $e) {
