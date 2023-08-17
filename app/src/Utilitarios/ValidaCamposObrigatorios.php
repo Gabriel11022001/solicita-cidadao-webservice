@@ -196,7 +196,7 @@ class ValidaCamposObrigatorios
         return $erros;
     }
 
-    public static function validarFormularioCadastrarUsuario($usuario, $tipoUsuarioCadastrar) {
+    public static function validarFormularioCadastrarUsuario($usuario) {
         $errosFormulario = [];
 
         if (empty($usuario->getNome())) {
@@ -205,6 +205,42 @@ class ValidaCamposObrigatorios
 
         if (empty($usuario->getSobrenome())) {
             $errosFormulario['sobrenome'] = 'Informe o sobrenome do usuário!';
+        }
+
+        if (empty($usuario->getTelefone())) {
+            $errosFormulario['telefone'] = 'Informe o telefone do usuário!';
+        }
+
+        if (empty($usuario->getEmail())) {
+            $errosFormulario['email'] = 'Informe o e-mail do usuário!';
+        }
+
+        if (empty($usuario->getSexo())) {
+            $errosFormulario['sexo'] = 'Informe o sexo do usuário!';
+        }
+
+        if (empty($usuario->getEndereco()->getLogradouro())) {
+            $errosFormulario['logradouro'] = 'Informe o logradouro!';
+        }
+
+        if (empty($usuario->getEndereco()->getCidade())) {
+            $errosFormulario['cidade'] = 'Informe a cidade!';
+        }
+
+        if (empty($usuario->getEndereco()->getBairro())) {
+            $errosFormulario['bairro'] = 'Informe o bairro!';
+        }
+
+        if (empty($usuario->getEndereco()->getEstado())) {
+            $errosFormulario['estado'] = 'Informe o estado!';
+        }
+
+        if (empty($usuario->getCpf())) {
+            $errosFormulario['cpf'] = 'Informe o cpf!';
+        }
+
+        if (empty($usuario->getSenha())) {
+            $errosFormulario['senha'] = 'Informe a senha!';
         }
 
         return $errosFormulario;
@@ -333,6 +369,10 @@ class ValidaCamposObrigatorios
 
         if (empty($usuario->getEndereco()->getEstado())) {
             $errosCampos['estado'] = 'Informe o estado!';
+        }
+
+        if (empty($usuario->getCpf())) {
+            $errosCampos['cpf'] = 'Informe o cpf!';
         }
 
         return $errosCampos;

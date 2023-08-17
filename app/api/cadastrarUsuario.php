@@ -60,8 +60,16 @@ try {
     $endereco->setNumero(trim(ParametroRequisicao::obterParametro('numero_residencia')));
     $idDaInstituicao = null;
     $usuario->setEndereco($endereco);
-    $errosDadosUsuario = ValidaCamposObrigatorios::validarFormularioCadastrarUsuario($usuario, $tipoUsuarioCadastrar);
+    $errosDadosUsuario = ValidaCamposObrigatorios::validarFormularioCadastrarUsuario($usuario);
     
+    if (empty($senhaConfirmacao)) {
+        $errosDadosUsuario['senha_confirmacao'] = 'Informe a senha de confirmação!';
+    }
+
+    if (empty($dataNascimentoUsuario)) {
+        $errosDadosUsuario['data_nascimento'] = 'Informe a data de nascimento!';
+    }
+
     // validando se foi informado o tipo do usuário que será cadastrado
     if (empty($tipoUsuarioCadastrar)) {
         $errosDadosUsuario['tipo_usuario_cadastrar'] = 'Informe o tipo do usuário que será cadastrado!';
