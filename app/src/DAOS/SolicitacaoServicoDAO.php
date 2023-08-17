@@ -213,4 +213,15 @@ class SolicitacaoServicoDAO extends DAO
         
         return $stmt->execute();
     }
+
+    public static function encaminharSolicitacaoParaInstituicao($conexaoBancoDados, $idSolicitacao, $idInstituicao, $novoStatusSolicitacao) {
+        $query = 'UPDATE tbl_solicitacoes_servico SET status = :novo_status, instituicao_id = :id_instituicao
+        WHERE id = :id_solicitacao;';
+        $stmt = $conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':novo_status', $novoStatusSolicitacao, PDO::PARAM_BOOL);
+        $stmt->bindValue(':id_instituicao', $idInstituicao, PDO::PARAM_INT);
+        $stmt->bindValue(':id_solicitacao', $idSolicitacao, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
 }

@@ -254,6 +254,8 @@ class Rota
             $arquivoCarregar = 'recuperarSenha.php';
         } elseif ($endpoint === '/usuario') {
             $arquivoCarregar = 'editarUsuario.php';
+        } elseif ($endpoint === '/solicitacao-servico/encaminhar-solicitacao-aprovada-pelo-perito') {
+            $arquivoCarregar = 'encaminharSolicitacaoAprovadaPeloPerito.php';
         } else {
             self::requisicaoInvalida();
             
