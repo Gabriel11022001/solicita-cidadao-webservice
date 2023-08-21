@@ -134,7 +134,7 @@ try {
         RespostaHttp::resposta('Essa solicitação já foi encaminhada!', 200, null, false);
         exit;
     }
-
+    
     if ($solicitacaoServicoDAO->encaminharSolicitacaoParaInstituicaoOuPerito(
         $idSolicitacao,
         $instituicaoId,

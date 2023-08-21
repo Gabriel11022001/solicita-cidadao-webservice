@@ -67,6 +67,8 @@ class Rota
             $arquivoCarregar = 'realizarPreCadastroCidadao.php';
         } elseif ($endpoint === '/codigo-recuperacao/buscar') {
             $arquivoCarregar = 'buscarCodigoRecuperacaoSenha.php';
+        } elseif ($endpoint === '/relatorio/dados-quantitativos') {
+            $arquivoCarregar = '/relatorios/dadosQuantitativos.php';
         } else {
             self::requisicaoInvalida();
             

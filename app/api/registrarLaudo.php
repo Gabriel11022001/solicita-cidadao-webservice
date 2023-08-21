@@ -6,6 +6,7 @@ use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\GestorSecretariaDAO;
 use SistemaSolicitacaoServico\App\DAOS\LaudoDAO;
 use SistemaSolicitacaoServico\App\DAOS\NotificacaoDAO;
+use SistemaSolicitacaoServico\App\DAOS\PeritoDAO;
 use SistemaSolicitacaoServico\App\DAOS\SecretarioDAO;
 use SistemaSolicitacaoServico\App\DAOS\SolicitacaoServicoDAO;
 use SistemaSolicitacaoServico\App\Entidades\Laudo;
@@ -48,6 +49,33 @@ try {
     $laudoDAO = new LaudoDAO($conexaoBancoDados, 'tbl_laudos');
     $solicitacaoServicoDAO = new SolicitacaoServicoDAO($conexaoBancoDados, 'tbl_solicitacoes_servico');
     $solicitacao = $solicitacaoServicoDAO->buscarPeloId($laudo->getSolicitacaoServicoId());
+    $idPerito = $solicitacao['perito_id'];
+    $peritoDAO = new PeritoDAO($conexaoBancoDados, 'tbl_peritos');
+    $dadosPeritoSolicitacao = $peritoDAO->buscarPeloId($idPerito);
+    $qtdSolicitacoesJaAprovou = intval($dadosPeritoSolicitacao['qtd_solicitacoes_aprovou']);
+    $qtdSolicitacoesJaReprovou = intval($dadosPeritoSolicitacao['qtd_solicitacoes_reprovou']);
+
+    if ($laudo->getSolicitacaoPodeSerTratada()) {
+        // incrementar a qtd de solicitações que o perito já aprovou
+        $qtdSolicitacoesJaAprovou++;
+
+        if (!$peritoDAO->atualizarQtdSolicitacoesJaAprovou($idPerito, $qtdSolicitacoesJaAprovou)) {
+            $conexaoBancoDados->rollBack();
+            RespostaHttp::resposta('Ocorreu um erro ao tentar-se registrar o laudo!', 200, null, false);
+            exit;
+        }
+
+    } else {
+        // incrementar a qtd de solicitações que o perito já reprovou
+        $qtdSolicitacoesJaReprovou++;
+
+        if (!$peritoDAO->atualizarQtdSolicitacoesJaReprovou($idPerito, $qtdSolicitacoesJaReprovou)) {
+            $conexaoBancoDados->rollBack();
+            RespostaHttp::resposta('Ocorreu um erro ao tentar-se registrar o laudo!', 200, null, false);
+            exit;
+        }
+
+    }
 
     if (!$solicitacao) {
         RespostaHttp::resposta('Não existe uma solicitação cadastrada com esse id!', 200, null, false);
@@ -89,7 +117,7 @@ try {
             $mensagem .= 'aprovada pelo perito!';
         } else {
             $novoStatusSolicitacao = 'Reprovado pelo perito';
-            $mensagem = 'reprovada pelo perito!';
+            $mensagem .= 'reprovada pelo perito!';
         }
 
         // alterando o status da solicitação de serviço

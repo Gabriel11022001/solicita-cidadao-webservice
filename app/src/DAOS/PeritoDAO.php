@@ -60,4 +60,24 @@ class PeritoDAO extends UsuarioDAO
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function atualizarQtdSolicitacoesJaAprovou($peritoId, $qtdSolicitacoesJaAprovou) {
+        $query = 'UPDATE ' . $this->nomeTabela . ' SET qtd_solicitacoes_aprovou = :qtd_solicitacoes_ja_aprovou
+        WHERE id = :perito_id;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':perito_id', $peritoId, PDO::PARAM_INT);
+        $stmt->bindValue(':qtd_solicitacoes_ja_aprovou', $qtdSolicitacoesJaAprovou, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    public function atualizarQtdSolicitacoesJaReprovou($peritoId, $qtdSolicitacoesJaReprovou) {
+        $query = 'UPDATE ' . $this->nomeTabela . ' SET qtd_solicitacoes_reprovou = :qtd_solicitacoes_ja_reprovou
+        WHERE id = :perito_id;';
+        $stmt = $this->conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':perito_id', $peritoId, PDO::PARAM_INT);
+        $stmt->bindValue(':qtd_solicitacoes_ja_reprovou', $qtdSolicitacoesJaReprovou, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
 }

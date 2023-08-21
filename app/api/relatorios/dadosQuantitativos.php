@@ -7,6 +7,7 @@ use SistemaSolicitacaoServico\App\DAOS\RelatorioDAO;
 use SistemaSolicitacaoServico\App\DAOS\TecnicoDAO;
 use SistemaSolicitacaoServico\App\DAOS\UsuarioDAO;
 use SistemaSolicitacaoServico\App\Exceptions\AuthException;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
@@ -74,8 +75,15 @@ try {
         $dados = $relatorioDAO->obterDadosQuantitativosGestorInstituicao($idInstituicao);
     }
 
+    if (count($dados) === 0) {
+        RespostaHttp::resposta('Não foram encontrados dados para o usuário em questão!', 200, $dados, false);
+        exit;
+    }
+
+    RespostaHttp::resposta('Foram encontrados os seguintes dados para o usuário em questão!', 200, $dados, true);
 } catch (AuthException $e) {
 
 } catch (Exception $e) {
-
+    Log::registrarLog('Ocorreu um erro ao tentar-se buscar os dados quantitativos!', $e->getMessage());
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se buscar os dados quantitativos!' . $e->getMessage(), 200, null, false);
 }
