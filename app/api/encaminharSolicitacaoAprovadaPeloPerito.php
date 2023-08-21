@@ -5,9 +5,11 @@ use SistemaSolicitacaoServico\App\BancoDados\ConexaoBancoDados;
 use SistemaSolicitacaoServico\App\DAOS\CidadaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\GestorInstituicaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\InstituicaoDAO;
+use SistemaSolicitacaoServico\App\DAOS\NotificacaoDAO;
 use SistemaSolicitacaoServico\App\DAOS\SolicitacaoServicoDAO;
 use SistemaSolicitacaoServico\App\Exceptions\AuthException;
 use SistemaSolicitacaoServico\App\Utilitarios\GerenciadorEmail;
+use SistemaSolicitacaoServico\App\Utilitarios\Log;
 use SistemaSolicitacaoServico\App\Utilitarios\ParametroRequisicao;
 use SistemaSolicitacaoServico\App\Utilitarios\RespostaHttp;
 
@@ -76,14 +78,47 @@ try {
         exit;
     }
 
+    $notificacaoDAO = new NotificacaoDAO($conexaoBancoDados, 'tbl_notificacoes');
     $cidadaoDAO = new CidadaoDAO($conexaoBancoDados, 'tbl_cidadaos');
     $gestorInstituicaoDAO = new GestorInstituicaoDAO($conexaoBancoDados, 'tbl_gestores_instituicao');
     $emailCidadao = $cidadaoDAO->buscarPeloId($solicitacao['cidadao_id'])['email'];
     $emailsGestoresInstituicao = $gestorInstituicaoDAO->buscarEmailsGestoresInstituicao($instituicaoId);
+    $dataRegistroNotificacao = new DateTime('now');
+    $dadosCidadaoRelacionadoASolicitacao = $cidadaoDAO->buscarDadosCidadaoPeloIdSolicitacao($solicitacaoId);
+    $dadosNotificacaoCadastrar = [
+        'mensagem' => [
+            'dado' => 'A solicitação de protocolo ' . $solicitacao['protocolo'] . ' foi encaminhada a uma instituição para análise!',
+            'tipo_dado' => PDO::PARAM_STR
+        ],
+        'usuario_id' => [
+            'dado' => $dadosCidadaoRelacionadoASolicitacao['id'],
+            'tipo_dado' => PDO::PARAM_INT
+        ],
+        'solicitacao_servico_id' => [
+            'dado' => $solicitacaoId,
+            'tipo_dado' => PDO::PARAM_INT
+        ],
+        'data_envio' => [
+            'dado' => $dataRegistroNotificacao->format('Y-m-d H:i:s'),
+            'tipo_dado' => PDO::PARAM_STR
+        ]
+    ];
+    
+    if (!$notificacaoDAO->salvar($dadosNotificacaoCadastrar)) {
+        $conexaoBancoDados->rollBack();
+        RespostaHttp::resposta('Ocorreu um erro ao tentar-se encaminhar a solicitação!', 200, null, false);
+        exit;
+    }
 
     if (!GerenciadorEmail::enviarEmail(
         $emailCidadao,
-        '',
+        'A solicitação de protocolo ' . $solicitacao['protocolo'] . ' foi encaminhada a uma instituição para tratamento!<br>
+        Dados da solicitação:<br>
+        <ul>
+            <li><strong>Protocolo da solicitação:</strong> ' . $solicitacao['protocolo'] . '</li>
+            <li><strong>Data de encaminhamento:</strong> ' . $dataRegistroNotificacao->format('d-m-Y H:i:s') . '</li>
+            <li><strong>Posição da solicitação na fila de atendimento:</strong> ' . $solicitacao['posicao_fila'] . '</li>
+        </ul>',
         'Encaminhamento de solicitação'
     )) {
         $conexaoBancoDados->rollBack();
@@ -98,7 +133,23 @@ try {
 
         if (!GerenciadorEmail::enviarEmail(
             $emailGestor,
-            '',
+            'A instituição a qual você faz parte recebeu uma solicitação para análise!<br>
+            Dados da solicitação:<br>
+            <ul>
+                <li><strong>Cidadão:</strong> ' . $dadosCidadaoRelacionadoASolicitacao['nome'] . '</li>
+                <li><strong>Cpf do cidadão:</strong> ' . $dadosCidadaoRelacionadoASolicitacao['cpf'] . '</li>
+                <li><strong>Protocolo:</strong> ' . $solicitacao['protocolo'] . '</li>
+                <li><strong>Status:</strong> ' . $novoStatusSolicitacao . '</li>
+                <li><strong>Data de encaminhamento:</strong> ' . $dataRegistroNotificacao->format('d-m-Y H:i:s') . '</li>
+                <li><strong>Logradouro:</strong> ' . $solicitacao['logradouro'] . '</li>
+                <li><strong>Complemento:</strong> ' . $solicitacao['complemento'] . '</li>
+                <li><strong>Bairro:</strong> ' . $solicitacao['bairro'] . '</li>
+                <li><strong>Cidade:</strong> ' . $solicitacao['cidade'] . '</li>
+                <li><strong>Estado:</strong> ' . $solicitacao['estado'] . '</li>
+                <li><strong>Número de residência:</strong> ' . $solicitacao['numero'] . '</li>
+                <li><strong>CEP:</strong> ' . $solicitacao['cep'] . '</li>
+                <li><strong>Prioridade da solicitação:</strong> ' . $solicitacao['prioridade'] . '</li>
+            </ul>',
             'Encaminhamento de solicitação'
         )) {
             $todosEmailsForamEnviados = false;
@@ -119,7 +170,9 @@ try {
         'novo_status_solicitacao' => $novoStatusSolicitacao
     ], true);
 } catch (AuthException $e) {
-
+    Log::registrarLog('Erro de autenticação!', $e->getMessage());
+    RespostaHttp::resposta($e->getMessage(), 200, null, false);
 } catch (Exception $e) {
-
+    Log::registrarLog('Ocorreu um erro ao tentar-se encaminhar a solicitação!', $e->getMessage());
+    RespostaHttp::resposta('Ocorreu um erro ao tentar-se encaminhar a solicitação!', 200, null, false);
 }

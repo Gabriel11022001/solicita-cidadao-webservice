@@ -190,7 +190,7 @@ try {
         }
 
         if ($tipoEncaminhamento === 'perito') {
-            $dadosNotificacaoCadastrar['mensagem'] = 'Sua solicitação foi encaminhada a um perito para análise!';
+            $dadosNotificacaoCadastrar['mensagem'] = 'A solicitação de protocolo ' . $solicitacaoEncaminhamento['protocolo'] . ' foi encaminhada a um perito para análise!';
             $mensagemCidadao = 'Sua solicitação foi encaminhada a um perito para análise<br>
             Dados da solicitação:
             <ul>
@@ -199,7 +199,7 @@ try {
                 <li><strong>Posição da solicitação na fila de atendimento:</strong> ' . $solicitacaoEncaminhamento['posicao_fila'] . '</li>
             </ul>';
         } else {
-            $dadosNotificacaoCadastrar['mensagem'] = 'Sua solicitação foi encaminhada a uma instituição para tratamento!';
+            $dadosNotificacaoCadastrar['mensagem'] = 'A solicitação de protocolo ' . $solicitacaoEncaminhamento['protocolo'] . ' foi encaminhada a uma instituição para tratamento!';
             $mensagemCidadao = 'Sua solicitação foi encaminhada a uma instituição para tratamento<br>
             Dados da solicitação:
             <ul>
