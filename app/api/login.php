@@ -90,7 +90,7 @@ try {
         $gestorSecretariaDAO = new GestorSecretariaDAO($conexaoBancoDados, 'tbl_gestores_secretaria');
         $secretarioDAO = new SecretarioDAO($conexaoBancoDados, 'tbl_secretarios');
         $perfilCidadaoUsuario = $cidadaoDAO->buscarPeloCpfSenha($cpf, $senha);
-        $perfilPeritoUsuario = $cidadaoDAO->buscarPeloCpfSenha($cpf, $senha);
+        $perfilPeritoUsuario = $peritoDAO->buscarPeloCpfSenha($cpf, $senha);
         $perfilSecretarioUsuario = $secretarioDAO->buscarPeloCpfSenha($cpf, $senha);
         $perfilTecnicoUsuario = $tecnicoDAO->buscarPeloCpfSenha($cpf, $senha);
         $perfilGestorSecretariaUsuario = $gestorSecretariaDAO->buscarPeloCpfSenha($cpf, $senha);
