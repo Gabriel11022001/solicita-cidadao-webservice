@@ -224,4 +224,37 @@ class SolicitacaoServicoDAO extends DAO
 
         return $stmt->execute();
     }
+
+    public static function definirNuloParaColunaInstituicaoIdDaSolicitacao(
+        $conexaoBancoDados,
+        $idSolicitacao
+    ) {
+        $query = 'UPDATE tbl_solicitacoes_servico SET instituicao_id = null
+        WHERE id = :id_solicitacao;';
+        $stmt = $conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':id_solicitacao', $idSolicitacao, PDO::PARAM_INPUT_OUTPUT);
+
+        return $stmt->execute();
+    }
+
+    public static function reencaminharSolicitacaoParaPerito($conexaoBancoDados, $idSolicitacao, $idPerito) {
+        $query = "UPDATE tbl_solicitacoes_servico SET perito_id = :perito_id,
+        instituicao_id = null, 
+        status = 'Aguardando análise do perito'
+        WHERE id = :id_solicitacao;";
+        $stmt = $conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':perito_id', $idPerito, PDO::PARAM_INT);
+        $stmt->bindValue(':id_solicitacao', $idSolicitacao, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    public static function definirNuloParaColunaEquipeIdDaSolicitacao($conexaoBancoDados, $idSolicitacao) {
+        $query = 'UPDATE tbl_solicitacoes_servico SET equipe_id = null
+        WHERE id = :id_solicitacao;';
+        $stmt = $conexaoBancoDados->prepare($query);
+        $stmt->bindValue(':id_solicitacao', $idSolicitacao, PDO::PARAM_INPUT_OUTPUT);
+
+        return $stmt->execute();
+    }
 }

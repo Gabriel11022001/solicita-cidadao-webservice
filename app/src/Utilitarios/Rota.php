@@ -258,6 +258,8 @@ class Rota
             $arquivoCarregar = 'editarUsuario.php';
         } elseif ($endpoint === '/solicitacao-servico/encaminhar-solicitacao-aprovada-pelo-perito') {
             $arquivoCarregar = 'encaminharSolicitacaoAprovadaPeloPerito.php';
+        } elseif ($endpoint === '/solicitacao-servico/reencaminhar') {
+            $arquivoCarregar = 'reencaminharSolicitacao.php';
         } else {
             self::requisicaoInvalida();
             

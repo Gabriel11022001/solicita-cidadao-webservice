@@ -133,6 +133,42 @@ class RelatorioDAO
     AND equipe_id = :equipe_id
     AND data_limite_para_tratamento IS NOT NULL
     AND TO_CHAR(CURRENT_DATE, 'YYYY-MM-DD') > TO_CHAR(data_limite_para_tratamento, 'YYYY-MM-DD');";
+    // query que retorna a quantidade de equipes cadastradas da instituição
+    private $qQuantidadeEquipesCadastradasInstituicao = 'SELECT COUNT(DISTINCT equipe_id) AS quantidade_de_equipes
+    FROM tbl_tecnicos
+    WHERE instituicao_id = :instituicao_id;';
+    // query que retorna a quantidade de solicitações da instituição aguardando encaminhamento a equipe
+    private $qSolicitacoesInstituicaoAguardandoEncaminhamentoEquipeResponsavel = "SELECT COUNT(*) AS qtd_solicitacoes_aguardando_encaminhamento_equipe_responsavel
+    FROM tbl_solicitacoes_servico WHERE instituicao_id = :instituicao_id
+    AND status = 'Aguardando encaminhamento a equipe responsável';";
+    // query que retorna a quantidade de solicitações atribuidas as equipes da instituição
+    private $qSolicitacoesAtribuidasAsEquipes = "SELECT COUNT(*) AS qtd_solicitacoes_atribuidas_equipes
+    FROM tbl_solicitacoes_servico WHERE equipe_id IS NOT NULL
+    AND instituicao_id = :instituicao_id
+    AND status = 'Aguardando tratamento';";
+    // query que retorna a quantidade de solicitações que já foram tratadas pela instituição
+    private $qSolicitacoesJaForamTratadasInstituicao = "SELECT COUNT(*) AS qtd_solicitacoes_ja_foram_tratadas
+    FROM tbl_solicitacoes_servico WHERE instituicao_id = :instituicao_id
+    AND status = 'Concluído';";
+    // query que retorna a quantidade de solicitações que já foram canceladas pela instituição
+    private $qSolicitacoesJaForamCanceladasInstituicao = "SELECT COUNT(*) AS qtd_solicitacoes_ja_foram_canceladas
+    FROM tbl_solicitacoes_servico WHERE instituicao_id = :instituicao_id
+    AND status = 'Cancelado';";
+    // query que retorna o total de solicitações que já foram atribuidas a instituição
+    private $qSolicitacoesNumeroTotalInstituicao = "SELECT COUNT(*) AS total_solicitacoes_ja_foram_atribuidas
+    FROM tbl_solicitacoes_servico WHERE instituicao_id = :instituicao_id;";
+    // query que retorna a média das notas das solicitações da instituição
+    private $qSolicitacoesMediaNotasInstituicao = "SELECT ROUND(AVG(nota_avaliativa)::numeric, 2) AS nota_media FROM tbl_solicitacoes_servico
+    WHERE nota_avaliativa IS NOT NULL
+    AND status = 'Concluído'
+    AND instituicao_id = :instituicao_id;";
+    // query que retorna a quantidade de solicitações da instituição aguardando tratamento que ultrapassaram a data limite para tratamento
+    private $qSolicitacoesStatusAguardandoTratamentoQueUltrapassaramDataLimiteTratamentoInstituicao = "SELECT COUNT(*) AS qtd_solicitacoes_extrapolaram_data_limite_tratamento
+    FROM tbl_solicitacoes_servico
+    WHERE status = 'Aguardando tratamento'
+    AND instituicao_id = :instituicao_id
+    AND data_limite_para_tratamento IS NOT NULL
+    AND TO_CHAR(CURRENT_DATE, 'YYYY-MM-DD') > TO_CHAR(data_limite_para_tratamento, 'YYYY-MM-DD');";
 
     public function __construct($conexaoBancoDados) {
         $this->conexaoBancoDados = $conexaoBancoDados;
@@ -233,7 +269,42 @@ class RelatorioDAO
     }   
 
     public function obterDadosQuantitativosGestorInstituicao($idInstituicao) {
+        var_dump($idInstituicao);
+        $dados = [];
+        $stmt = $this->conexaoBancoDados->prepare($this->qQuantidadeEquipesCadastradasInstituicao);
+        $stmt->bindValue(':instituicao_id', $idInstituicao, PDO::PARAM_INT);
+        $stmt->execute();
+        $dados[] = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $this->conexaoBancoDados->prepare($this->qSolicitacoesAtribuidasAsEquipes);
+        $stmt->bindValue(':instituicao_id', $idInstituicao, PDO::PARAM_INT);
+        $stmt->execute();
+        $dados[] = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $this->conexaoBancoDados->prepare($this->qSolicitacoesMediaNotasInstituicao);
+        $stmt->bindValue(':instituicao_id', $idInstituicao, PDO::PARAM_INT);
+        $stmt->execute();
+        $dados[] = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $this->conexaoBancoDados->prepare($this->qSolicitacoesInstituicaoAguardandoEncaminhamentoEquipeResponsavel);
+        $stmt->bindValue(':instituicao_id', $idInstituicao, PDO::PARAM_INT);
+        $stmt->execute();
+        $dados[] = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $this->conexaoBancoDados->prepare($this->qSolicitacoesJaForamTratadasInstituicao);
+        $stmt->bindValue(':instituicao_id', $idInstituicao, PDO::PARAM_INT);
+        $stmt->execute();
+        $dados[] = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $this->conexaoBancoDados->prepare($this->qSolicitacoesJaForamCanceladasInstituicao);
+        $stmt->bindValue(':instituicao_id', $idInstituicao, PDO::PARAM_INT);
+        $stmt->execute();
+        $dados[] = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $this->conexaoBancoDados->prepare($this->qSolicitacoesNumeroTotalInstituicao);
+        $stmt->bindValue(':instituicao_id', $idInstituicao, PDO::PARAM_INT);
+        $stmt->execute();
+        $dados[] = $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $this->conexaoBancoDados->prepare($this->qSolicitacoesStatusAguardandoTratamentoQueUltrapassaramDataLimiteTratamentoInstituicao);
+        $stmt->bindValue(':instituicao_id', $idInstituicao, PDO::PARAM_INT);
+        $stmt->execute();
+        $dados[] = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        return $dados;
     }
 
     public function obterDadosQuantitativosTecnico($idEquipe) {
